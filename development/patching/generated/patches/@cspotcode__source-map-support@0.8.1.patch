@@ -1,0 +1,18 @@
+diff --git a/source-map-support.js b/source-map-support.js
+index ad830b62f47db3f0d04843dde5649a4b03fbcfae..1ac3b8cc5e92f09db5e19e9000419519a2dccc95 100644
+--- a/source-map-support.js
++++ b/source-map-support.js
+@@ -339,7 +339,12 @@ function retrieveSourceMapURL(source) {
+   var lastMatch, match;
+   while (match = re.exec(fileData)) lastMatch = match;
+   if (!lastMatch) return null;
+-  return lastMatch[1];
++  var begin = lastMatch.index + lastMatch[0].length;
++var end = fileData.indexOf("
++egin);
++if (end < 0) end = fileData.length;
++while (end > begin && fileData[end - 1].match(/s/)) end--;
++return fileData.substring(begin, end);
+ };
+ 
+ // Can be overridden by the retrieveSourceMap option to install. Takes a

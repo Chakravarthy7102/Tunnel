@@ -1,0 +1,40 @@
+{
+	"@tunnel/cli": {
+		"version": "0.4.6"
+	},
+	"@tunnel/cli-staging": {
+		"version": "0.4.12"
+	},
+	"@tunnel/cli-source": {
+		"version": "0.4.1022"
+	},
+	"@tunnel/cli-single-executable-application": {
+		"version": "0.4.75",
+		"supportedTargets": {
+			"darwin-arm64": true,
+			"darwin-x64": true,
+			"linux-arm64": true,
+			"linux-ppc64": true,
+			"linux-s390x": true,
+			"linux-x64": true,
+			"win32-arm64": true,
+			"win32-ia32": true,
+			"win32-x64": true
+		}
+	},
+	"@tunnel/angular": {
+		"version": "0.0.0"
+	},
+	"@tunnel/nextjs": {
+		"version": "0.0.12"
+	},
+	"@tunnel/react": {
+		"version": "0.0.7"
+	},
+	"@tunnel/svelte": {
+		"version": "0.0.0"
+	},
+	"@tunnel/vue": {
+		"version": "0.0.1"
+	}
+}

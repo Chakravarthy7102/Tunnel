@@ -1,0 +1,35 @@
+modules:
+  jira:adminPage:
+    - key: admin-page
+      title: Tunnel
+      resource: configure-page
+      resolver:
+        function: admin-page-resolver
+  webtrigger:
+    - key: webtrigger
+      function: web-trigger-fn
+  function:
+    - key: admin-page-resolver
+      handler: configure-page-resolver.handler
+    - key: web-trigger-fn
+      handler: web-trigger-fn.handler
+resources:
+  - key: configure-page
+    path: ../forge-app-configure-page-ui/dist
+remotes:
+  - key: tunnel-dev
+    baseUrl: https://tunnel.dev
+app:
+  id: ari:cloud:ecosystem::app/7402df27-a9dd-4c7b-a903-2e8fa9aee8df
+  runtime:
+    name: nodejs18.x
+permissions:
+  scopes:
+    - 'read:jira-user'
+    - 'read:jira-work'
+    - 'write:jira-work'
+  external:
+    images:
+      - 'https://tunnel.dev/assets/images/jira.svg'
+      - 'https://tunnel.dev/assets/images/logo.png'
+      - 'https://tunnel.dev/assets/images/light-full-transparent.svg'

@@ -1,0 +1,6 @@
+procs:
+  webapp: "infisical run -- pnpm webapp/dev"
+  convex: "pnpm database/dev"
+  localtunnel-server: "infisical run -- pnpm localtunnel-server/start"
+  stripe-listen: "infisical run -- pnpm webapp/stripe-listen"
+  _: pnpm local-development/proxy

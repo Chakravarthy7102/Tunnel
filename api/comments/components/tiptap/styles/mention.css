@@ -1,0 +1,11 @@
+.items {
+	@apply bg-popover rounded-md border p-1 text-popover-foreground shadow-md border-solid border-input relative overflow-hidden;
+}
+
+.item {
+	@apply w-full relative flex gap-x-2 cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm transition-colors;
+}
+
+.item.is-selected {
+	@apply bg-dropdown;
+}

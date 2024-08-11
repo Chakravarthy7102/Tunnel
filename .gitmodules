@@ -1,0 +1,49 @@
+# SSH URLs must be used to prevent Vercel from cloning submodules on deployments
+[submodule "repos/candybox2/candybox2.github.io"]
+	path = repos/candybox2/candybox2.github.io
+	url = git@github.com:candybox2/candybox2.github.io
+[submodule "repos/HabitRPG/habitica"]
+	path = repos/HabitRPG/habitica
+	url = git@github.com:HabitRPG/habitica
+[submodule "repos/HabitRPG/habitica-images"]
+	path = repos/HabitRPG/habitica-images
+	url = git@github.com:HabitRPG/habitica-images
+[submodule "repos/lichess-org/lila"]
+	path = repos/lichess-org/lila
+	url = git@github.com:lichess-org/lila
+[submodule "repos/OpenSignLabs/OpenSign"]
+	path = repos/OpenSignLabs/OpenSign
+	url = git@github.com:OpenSignLabs/OpenSign
+[submodule "repos/jitsi/jitsi-meet"]
+	path = repos/jitsi/jitsi-meet
+	url = git@github.com:jitsi/jitsi-meet
+[submodule "repos/baptisteArno/typebot.io"]
+	path = repos/baptisteArno/typebot.io
+	url = git@github.com:baptisteArno/typebot.io
+[submodule "repos/element-hq/element-web"]
+	path = repos/element-hq/element-web
+	url = git@github.com:element-hq/element-web
+[submodule "repos/codicocodes/speedtyper.dev"]
+	path = repos/codicocodes/speedtyper.dev
+	url = git@github.com:codicocodes/speedtyper.dev
+[submodule "repos/bitwarden/server"]
+	path = repos/bitwarden/server
+	url = git@github.com:bitwarden/server
+[submodule "repos/RocketChat/Rocket.Chat"]
+	path = repos/RocketChat/Rocket.Chat
+	url = git@github.com:RocketChat/Rocket.Chat
+[submodule "repos/bitwarden/clients"]
+	path = repos/bitwarden/clients
+	url = git@github.com:bitwarden/clients
+[submodule "repos/mastodon/mastodon"]
+	path = repos/mastodon/mastodon
+	url = git@github.com:mastodon/mastodon
+[submodule "repos/monkeytypegame/monkeytype"]
+	path = repos/monkeytypegame/monkeytype
+	url = git@github.com:monkeytypegame/monkeytype
+[submodule "repos/ActivityWatch/activitywatch"]
+	path = repos/ActivityWatch/activitywatch
+	url = git@github.com:ActivityWatch/activitywatch
+[submodule "repos/codecombat/codecombat"]
+	path = repos/codecombat/codecombat
+	url = git@github.com:codecombat/codecombat

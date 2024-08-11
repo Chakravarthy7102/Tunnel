@@ -1,0 +1,130 @@
+import type { Context } from './context.ts';
+import { blobToDataUrl, consoleWarn, IN_FIREFOX, IN_SAFARI } from './utils.ts';
+
+export type BaseFetchOptions = RequestInit & {
+	url: string;
+	timeout?: number;
+	responseType?: 'text' | 'dataUrl';
+};
+
+export type ContextFetchOptions = BaseFetchOptions & {
+	requestType?: 'text' | 'image';
+	imageDom?: HTMLImageElement | SVGImageElement;
+};
+
+export async function baseFetch(options: BaseFetchOptions): Promise<string> {
+	const { url, timeout, responseType, ...requestInit } = options;
+
+	const controller = new AbortController();
+
+	const timer = timeout ?
+		setTimeout(() => controller.abort(), timeout) :
+		undefined;
+
+	return fetch(url, { signal: controller.signal, ...requestInit })
+		.then(async (response) => {
+			if (!response.ok) {
+				throw new Error('Failed fetch, not 2xx response', { cause: response });
+			}
+
+			switch (responseType) {
+				case 'dataUrl': {
+					return response.blob().then(blobToDataUrl);
+				}
+
+				default: {
+					return response.text();
+				}
+			}
+		})
+		.finally(() => clearTimeout(timer));
+}
+
+export async function contextFetch(
+	context: Context,
+	options: ContextFetchOptions,
+) {
+	const { url: rawUrl, requestType = 'text', responseType = 'text', imageDom } =
+		options;
+	let url = rawUrl;
+
+	const {
+		timeout,
+		acceptOfImage,
+		requests,
+		fetchFn,
+		fetch: {
+			requestInit,
+			bypassingCache,
+			placeholderImage,
+		},
+		workers,
+	} = context;
+
+	if (requestType === 'image' && (IN_SAFARI || IN_FIREFOX)) {
+		context.drawImageCount++;
+	}
+
+	let request = requests.get(rawUrl);
+	if (!request) {
+		// cache bypass so we dont have CORS issues with cached images
+		// ref: https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Bypassing_the_cache
+		if (bypassingCache) {
+			if (bypassingCache instanceof RegExp && bypassingCache.test(url)) {
+				url += (/\?/.test(url) ? '&' : '?') + Date.now();
+			}
+		}
+
+		const baseFetchOptions: BaseFetchOptions = {
+			url,
+			timeout,
+			responseType,
+			headers: requestType === 'image' ? { accept: acceptOfImage } : undefined,
+			...requestInit,
+		};
+
+		request = {
+			type: requestType,
+			resolve: undefined,
+			reject: undefined,
+			response: null as any,
+		};
+
+		request.response = (async () => {
+			if (fetchFn) {
+				const result = await fetchFn(rawUrl, baseFetchOptions);
+
+				if (result) return result;
+			}
+
+			if (!IN_SAFARI && rawUrl.startsWith('http') && workers.length > 0) {
+				return new Promise<string>((resolve, reject) => {
+					const worker = workers[requests.size & (workers.length - 1)];
+					worker!.postMessage({ rawUrl, ...baseFetchOptions });
+					request!.resolve = resolve;
+					request!.reject = reject;
+				});
+			}
+
+			return baseFetch(baseFetchOptions);
+		})().catch(async (error) => {
+			requests.delete(rawUrl);
+
+			if (requestType === 'image' && placeholderImage) {
+				consoleWarn(
+					'Failed to fetch image base64, trying to use placeholder image',
+					url,
+				);
+				return typeof placeholderImage === 'string' ?
+					placeholderImage :
+					placeholderImage(imageDom!);
+			}
+
+			throw error;
+		}) as any;
+
+		requests.set(rawUrl, request);
+	}
+
+	return request.response;
+}

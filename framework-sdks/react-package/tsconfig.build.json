@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"jsx": "preserve",
+		"allowImportingTsExtensions": true,
+		"tsBuildInfoFile": null,
+		"incremental": false,
+		"rootDir": ".",
+		"outDir": "dist",
+		"module": "Node16",
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"noEmit": false,
+		"moduleResolution": "Node16"
+	},
+	"include": ["exports"]
+}

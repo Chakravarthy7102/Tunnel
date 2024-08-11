@@ -1,0 +1,4 @@
+{
+	"name": "@tunnel/cli-single-executable-application-darwin-arm64",
+	"bin": "./tunnel"
+}

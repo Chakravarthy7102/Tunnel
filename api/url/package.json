@@ -1,0 +1,26 @@
+{
+	"name": "@-/url",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./api": "./exports/api.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"deepmerge-ts": "5.1.0",
+		"destru": "2.0.3",
+		"is-local-ip": "1.1.0",
+		"query-string": "9.0.0",
+		"safer-url": "1.0.1"
+	},
+	"publishable": true
+}

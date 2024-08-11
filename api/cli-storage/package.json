@@ -1,0 +1,29 @@
+{
+	"name": "@-/cli-storage",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/actor": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/dot-tunnel-directory": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/release": "1.1.0",
+		"filter-obj": "6.0.0",
+		"onetime": "7.0.0",
+		"p-memoize": "7.1.1",
+		"unstorage": "1.10.1"
+	},
+	"publishable": true
+}

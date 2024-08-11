@@ -1,0 +1,21 @@
+{
+	"name": "@-/tunnel-instance-evergreen-preview",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#types": "./types/_.ts",
+		"#tables/*": "./tables/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"corvex": "0.0.42"
+	},
+	"publishable": {
+		"./selections": true,
+		"./tables": true
+	}
+}

@@ -1,0 +1,49 @@
+import { defineTest } from '#utils/test.ts';
+import { defineTestFixtures } from '@-/database-test-fixtures';
+import { expect } from 'playwright/test';
+
+export const getFixtures = defineTestFixtures(
+	'project-create-second',
+	({ authSession }) => ({
+		user: {
+			type: 'User',
+			authSession: authSession.actor(),
+		},
+		organization: {
+			type: 'Organization',
+			ownerUser: 'user',
+		},
+		project: {
+			type: 'Project',
+			ownerOrganization: 'organization',
+		},
+	}),
+);
+
+const test = defineTest({
+	async getState(args) {
+		return {
+			fixtures: await getFixtures(args),
+		};
+	},
+});
+
+test('creating a second project', async ({ state, page }) => {
+	const {
+		organization,
+	} = state.fixtures;
+
+	await page.goto(`https://tunnel.test/${organization.slug}/projects`);
+	await page.getByRole('button', { name: 'New Project' }).click();
+	await page.getByLabel('Project Name').fill('My New Project');
+	await page.getByRole('button', { name: 'Create' }).click();
+	await expect(page).toHaveURL(
+		new RegExp(`https://tunnel.test/${organization.slug}/projects/`),
+	);
+
+	// Navigating to the "Projects" page in the sidebar should show two projects
+	await page.getByRole('link', { name: 'Projects' }).click();
+	await expect(page).toHaveURL(
+		`https://tunnel.test/${organization.slug}/projects`,
+	);
+});

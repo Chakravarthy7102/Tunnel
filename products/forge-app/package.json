@@ -1,0 +1,18 @@
+{
+	"name": "@-/forge-app",
+	"type": "commonjs",
+	"dependencies": {
+		"@forge/api": "3.2.0",
+		"@forge/resolver": "1.5.25",
+		"data-uri-to-buffer": "6.0.2",
+		"form-data": "4.0.0"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/forge-app-configure-page-ui": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/zod": "workspace:*",
+		"dotenv": "16.4.5",
+		"pathe": "1.1.2"
+	}
+}

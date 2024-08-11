@@ -1,0 +1,26 @@
+{
+	"name": "@-/tunnel-instance-page-secret-storage",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"dependencies": {
+		"@-/cookies": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"destru": "2.0.3",
+		"onetime": "7.0.0",
+		"unstorage": "1.10.1"
+	},
+	"devDependencies": {
+		"@-/database": "workspace:*"
+	},
+	"publishable": true
+}

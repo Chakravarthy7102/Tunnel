@@ -1,0 +1,14 @@
+{
+	"name": "@-/dot-tunnel-directory",
+	"type": "module",
+	"imports": {
+		"#utils/*": "./utils/*",
+		"#types": "./types/_.ts"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/logger": "workspace:*",
+		"pathe": "1.1.2"
+	},
+	"publishable": true
+}

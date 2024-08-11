@@ -1,0 +1,27 @@
+{
+	"name": "@-/rrweb-player",
+	"type": "module",
+	"imports": {
+		"#utils/*": "./utils/*",
+		"#types/*": "./types/*",
+		"#hooks/*": "./hooks/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/client-doc": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/file": "workspace:*",
+		"@-/modern-screenshot": "workspace:*",
+		"@uidotdev/usehooks": "2.4.1",
+		"lucide-react": "0.268.0",
+		"react": "*",
+		"react-dom": "*",
+		"rrweb": "2.0.0-alpha.11",
+		"rrweb-snapshot": "2.0.0-alpha.11",
+		"use-debounce": "5.2.1"
+	},
+	"devDependencies": {
+		"@rrweb/types": "2.0.0-alpha.11"
+	},
+	"publishable": true
+}

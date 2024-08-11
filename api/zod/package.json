@@ -1,0 +1,11 @@
+{
+	"name": "@-/zod",
+	"type": "module",
+	"imports": { "#utils/*": "./utils/*", "#types": "./types/_.ts" },
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"zod": "3.22.4",
+		"zod-validation-error": "2.1.0"
+	},
+	"publishable": true
+}

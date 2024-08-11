@@ -1,0 +1,44 @@
+diff --git a/lib/index.d.ts b/lib/index.d.ts
+index daab9a649b73b02f3472e6c68f64ade2a86ed9f4..18e46208ca9aa07566192c0624364405b64bf709 100644
+--- a/lib/index.d.ts
++++ b/lib/index.d.ts
+@@ -1,24 +1,24 @@
+ import { SetStateAction, Dispatch } from 'react';
+ 
+-type DispatchWithCallback<A, S> = (
+-  value: A,
+-  callback: Callback<S>,
++export type DispatchWithCallback<A, S> = (
++	value: A,
++	callback?: Callback<S>,
+ ) => void;
+ 
+-type Callback<S> = (state: S) => void | (() => void | undefined);
++export type Callback<S> = (state: S) => void | (() => void | undefined);
+ 
+ declare function useStateWithCallback<S>(
+-  initialState: S,
++  initialState: S | (() => S),
+   callback: Callback<S>,
+ ): [S, Dispatch<SetStateAction<S>>];
+ 
+ export declare function useStateWithCallbackInstant<S>(
+-  initialState: S,
++  initialState: S | (() => S),
+   callback: Callback<S>,
+ ): [S, Dispatch<SetStateAction<S>>];
+ 
+ export declare function useStateWithCallbackLazy<S>(
+-  initialState: S,
++  initialState: S | (() => S),
+ ): [S, DispatchWithCallback<SetStateAction<S>, S>];
+ 
+ export default useStateWithCallback;
+diff --git a/lib/index.js b/lib/index.js
+index 224f5618b5572f10ac5fe5719aea9b8e557b330f..c07611406ad2da2578523c9ec3ac41b912684352 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -1 +1 @@
+-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["use-state-with-callback"]=t(require("react")):e["use-state-with-callback"]=t(e.react)}(window,function(e){return function(e){var t={};function r(n){if(t[n])return t[n].exports;var u=t[n]={i:n,l:!1,exports:{}};return e[n].call(u.exports,u,u.exports,r),u.l=!0,u.exports}return r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var u in e)r.d(n,u,function(t){return e[t]}.bind(null,u));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=1)}([function(t,r){t.exports=e},function(e,t,r){"use strict";r.r(t),r.d(t,"useStateWithCallbackInstant",function(){return o}),r.d(t,"useStateWithCallbackLazy",function(){return c});var n=r(0);function u(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){var r=[],n=!0,u=!1,o=void 0;try{for(var c,f=e[Symbol.iterator]();!(n=(c=f.next()).done)&&(r.push(c.value),!t||r.length!==t);n=!0);}catch(e){u=!0,o=e}finally{try{n||null==f.return||f.return()}finally{if(u)throw o}}return r}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}()}var o=function(e,t){var r=u(n.useState(e),2),o=r[0],c=r[1],f=n.useRef(!1);return n.useLayoutEffect(function(){f.current?t(o):f.current=!0},[o,t]),[o,c]},c=function(e){var t=n.useRef(null),r=u(n.useState(e),2),o=r[0],c=r[1];n.useEffect(function(){t.current&&(t.current(o),t.current=null)},[o]);var f=n.useCallback(function(e,r){return t.current=r,c(e)},[]);return[o,f]};t.default=function(e,t){var r=u(n.useState(e),2),o=r[0],c=r[1],f=n.useRef(!1);return n.useEffect(function(){f.current?t(o):f.current=!0},[o,t]),[o,c]}}])});
+\ No newline at end of file
++!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports["use-state-with-callback"]=t(require("react")):e["use-state-with-callback"]=t(e.react)}((typeof window===undefined?undefined:window),function(e){return function(e){var t={};function r(n){if(t[n])return t[n].exports;var u=t[n]={i:n,l:!1,exports:{}};return e[n].call(u.exports,u,u.exports,r),u.l=!0,u.exports}return r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var u in e)r.d(n,u,function(t){return e[t]}.bind(null,u));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=1)}([function(t,r){t.exports=e},function(e,t,r){"use strict";r.r(t),r.d(t,"useStateWithCallbackInstant",function(){return o}),r.d(t,"useStateWithCallbackLazy",function(){return c});var n=r(0);function u(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){var r=[],n=!0,u=!1,o=void 0;try{for(var c,f=e[Symbol.iterator]();!(n=(c=f.next()).done)&&(r.push(c.value),!t||r.length!==t);n=!0);}catch(e){u=!0,o=e}finally{try{n||null==f.return||f.return()}finally{if(u)throw o}}return r}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}()}var o=function(e,t){var r=u(n.useState(e),2),o=r[0],c=r[1],f=n.useRef(!1);return n.useLayoutEffect(function(){f.current?t(o):f.current=!0},[o,t]),[o,c]},c=function(e){var t=n.useRef(null),r=u(n.useState(e),2),o=r[0],c=r[1];n.useEffect(function(){t.current&&(t.current(o),t.current=null)},[o]);var f=n.useCallback(function(e,r){return t.current=r,c(e)},[]);return[o,f]};t.default=function(e,t){var r=u(n.useState(e),2),o=r[0],c=r[1],f=n.useRef(!1);return n.useEffect(function(){f.current?t(o):f.current=!0},[o,t]),[o,c]}}])});

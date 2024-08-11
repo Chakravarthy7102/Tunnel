@@ -1,0 +1,75 @@
+@import '../../../design/design-system/globals.css';
+@import '../../../api/comments/components/tiptap/styles/mention.css';
+@import '../../../api/comments/components/tiptap/styles/styles.css';
+@import '../../../api/rrweb-player/styles/styles.scss';
+
+:root {
+	--tunnelbgprimary: #171717;
+	--tunnelbgsecondary: #1e1e1e;
+	--tunnelbgtertiary: #252525;
+	--tunnelbgquaternary: #2c2c2c;
+	--tunnelborder: #303030;
+	--primary: #6e9dff;
+	--secondary: #403ba3;
+	--accent: #ffcc6e;
+	--tunneltext: #c8c9d9;
+}
+
+.toolbar-container {
+	transition: 1000ms ease;
+	transition-property: width;
+}
+
+::-webkit-scrollbar {
+	height: 5px;
+	width: 5px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-popover;
+	@apply rounded-lg;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-accent;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@keyframes slideIn {
+	0% {
+		opacity: 0;
+		transform: translateX(-50%) scale(0.96);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(-50%) scale(1);
+	}
+}
+
+@keyframes slideOut {
+	0% {
+		opacity: 1;
+		transform: translateX(-50%) scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateX(-50%) scale(0.96);
+	}
+}

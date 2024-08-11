@@ -1,0 +1,15 @@
+{
+  "packages":
+    [
+      "api/*",
+      "configuration/*",
+      "design/*",
+      "development/*",
+      "devops/*",
+      "namespaces/*",
+      "products/*",
+      "testing/*",
+      "integrations/*",
+      "framework-sdks/*"
+    ]
+}

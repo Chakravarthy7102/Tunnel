@@ -1,0 +1,17 @@
+{
+	"name": "@-/notification",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#tables/*": "./tables/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"corvex": "0.0.42"
+	},
+	"publishable": {
+		"./tables": true
+	}
+}

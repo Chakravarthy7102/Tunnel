@@ -1,0 +1,26 @@
+{
+	"name": "@-/local-development",
+	"type": "module",
+	"imports": {
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/services-config": "workspace:*",
+		"express": "4.19.2",
+		"fkill": "9.0.0",
+		"http-proxy-middleware": "3.0.0",
+		"ky": "1.2.4",
+		"onetime": "7.0.0",
+		"p-event": "6.0.1",
+		"pathe": "1.1.2"
+	},
+	"devDependencies": {
+		"@types/express": "4.17.21",
+		"mprocs": "0.6.4"
+	}
+}

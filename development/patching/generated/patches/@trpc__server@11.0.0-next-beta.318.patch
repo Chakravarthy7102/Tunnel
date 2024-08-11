@@ -1,0 +1,164 @@
+diff --git a/dist/@trpc/server/index.d.ts b/dist/@trpc/server/index.d.ts
+index d470438d72ddc9eda1bbb43021fc2df317b6eafb..bfb89f378ec91950f041ca70c6df67ecbe8f0f4c 100644
+--- a/dist/@trpc/server/index.d.ts
++++ b/dist/@trpc/server/index.d.ts
+@@ -2,7 +2,9 @@ export { TRPCError,
+ /**
+  * @deprecated use `experimental_trpcMiddleware` instead
+  */
+-experimental_standaloneMiddleware, experimental_standaloneMiddleware as experimental_trpcMiddleware, initTRPC, callProcedure as callTRPCProcedure, getTRPCErrorFromUnknown, transformTRPCResponse, createFlatProxy as createTRPCFlatProxy, type inferProcedureInput, type inferProcedureOutput, type inferProcedureBuilderResolverOptions, type inferRouterError, type inferRouterInputs, type inferRouterOutputs, type inferRouterContext, type inferClientTypes as inferTRPCClientTypes, type AnyClientTypes as AnyTRPCClientTypes, type inferTransformedProcedureOutput, type inferTransformedSubscriptionOutput, type AnyProcedure as AnyTRPCProcedure, type AnyRouter as AnyTRPCRouter, type AnyMiddlewareFunction as AnyTRPCMiddlewareFunction, type CombinedDataTransformer as TRPCCombinedDataTransformer, type ProcedureType as TRPCProcedureType, type AnyMutationProcedure as AnyTRPCMutationProcedure, type AnyQueryProcedure as AnyTRPCQueryProcedure, type RouterRecord as TRPCRouterRecord, type AnySubscriptionProcedure as AnyTRPCSubscriptionProcedure, type ProcedureOptions as TRPCProcedureOptions, } from '../../unstable-core-do-not-import';
++experimental_standaloneMiddleware, experimental_standaloneMiddleware as experimental_trpcMiddleware, initTRPC, callProcedure as callTRPCProcedure, getTRPCErrorFromUnknown, transformTRPCResponse, createFlatProxy as createTRPCFlatProxy, type inferProcedureInput, type inferProcedureOutput, type inferProcedureBuilderResolverOptions, type inferRouterError, type inferRouterInputs, type inferRouterOutputs, type inferRouterContext, type inferClientTypes as inferTRPCClientTypes, type AnyClientTypes as AnyTRPCClientTypes, type inferTransformedProcedureOutput, type inferTransformedSubscriptionOutput, type AnyProcedure as AnyTRPCProcedure, type AnyRouter as AnyTRPCRouter, type AnyMiddlewareFunction as AnyTRPCMiddlewareFunction, type CombinedDataTransformer as TRPCCombinedDataTransformer, type ProcedureType as TRPCProcedureType, type AnyMutationProcedure as AnyTRPCMutationProcedure, type AnyQueryProcedure as AnyTRPCQueryProcedure, type RouterRecord as TRPCRouterRecord, type AnySubscriptionProcedure as AnyTRPCSubscriptionProcedure, type ProcedureOptions as TRPCProcedureOptions, type QueryProcedure,
++type MutationProcedure,
++} from '../../unstable-core-do-not-import';
+ export type { 
+ /**
+  * @deprecated use `AnyTRPCProcedure` instead
+diff --git a/dist/unstable-core-do-not-import/middleware.js b/dist/unstable-core-do-not-import/middleware.js
+index 6d2b30eb4f03ffc6b7528fc865b01461b2e43271..9e6aca179b80b1bfab20dfb6f302991478e75da7 100644
+--- a/dist/unstable-core-do-not-import/middleware.js
++++ b/dist/unstable-core-do-not-import/middleware.js
+@@ -43,7 +43,13 @@ var utils = require('./utils.js');
+         let parsedInput;
+         const rawInput = await opts.getRawInput();
+         try {
+-            parsedInput = await parse(rawInput);
++            parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+         } catch (cause) {
+             throw new TRPCError.TRPCError({
+                 code: 'BAD_REQUEST',
+diff --git a/dist/unstable-core-do-not-import/middleware.mjs b/dist/unstable-core-do-not-import/middleware.mjs
+index 0cf4418c2e83ea57001ca559051af97ab2d53cc1..e2534339e8956eed6aec6cc6a1e02252d8e75219 100644
+--- a/dist/unstable-core-do-not-import/middleware.mjs
++++ b/dist/unstable-core-do-not-import/middleware.mjs
+@@ -41,7 +41,13 @@ import { isObject } from './utils.mjs';
+         let parsedInput;
+         const rawInput = await opts.getRawInput();
+         try {
+-            parsedInput = await parse(rawInput);
++            parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+         } catch (cause) {
+             throw new TRPCError({
+                 code: 'BAD_REQUEST',
+diff --git a/dist/unstable-core-do-not-import/parser.d.ts b/dist/unstable-core-do-not-import/parser.d.ts
+index 50fa5c6b26242c19f531e0a9a98d4cdc6f313df0..55d2e3ad98bb59870e06c5d74f303bdc4d4eca94 100644
+--- a/dist/unstable-core-do-not-import/parser.d.ts
++++ b/dist/unstable-core-do-not-import/parser.d.ts
+@@ -17,14 +17,21 @@ export type ParserScaleEsque<TInput> = {
+ };
+ export type ParserWithoutInput<TInput> = ParserCustomValidatorEsque<TInput> | ParserMyZodEsque<TInput> | ParserScaleEsque<TInput> | ParserSuperstructEsque<TInput> | ParserYupEsque<TInput>;
+ export type ParserWithInputOutput<TInput, TParsedInput> = ParserZodEsque<TInput, TParsedInput>;
+-export type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any>;
+-export type inferParser<TParser extends Parser> = TParser extends ParserWithInputOutput<infer $TIn, infer $TOut> ? {
+-    in: $TIn;
+-    out: $TOut;
+-} : TParser extends ParserWithoutInput<infer $InOut> ? {
+-    in: $InOut;
+-    out: $InOut;
+-} : never;
+-export type ParseFn<TType> = (value: unknown) => Promise<TType> | TType;
++type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any> | ((input: unknown, ctx: any) => ParserWithInputOutput<any, any> | ParserWithoutInput<any> );
++export type inferParser<TParser extends Parser> =
++	TParser extends (input: unknown, ctx: any) => infer $Parser
++		? inferParser<$Parser>
++		: TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
++			? {
++					in: $TIn;
++					out: $TOut;
++				}
++			: TParser extends ParserWithoutInput<infer $InOut>
++			? {
++					in: $InOut;
++					out: $InOut;
++				}
++			: never;
++export type ParseFn<TType> = (value: unknown, ctx: any) => Promise<TType> | TType;
+ export declare function getParseFn<TType>(procedureParser: Parser): ParseFn<TType>;
+ //# sourceMappingURL=parser.d.ts.map
+\ No newline at end of file
+diff --git a/src/@trpc/server/index.ts b/src/@trpc/server/index.ts
+index 933f708f02698adca5bc9cf8dc394c0232b88126..f5fbffb53935e090c72e59d9d46d991e93fd1897 100644
+--- a/src/@trpc/server/index.ts
++++ b/src/@trpc/server/index.ts
+@@ -32,6 +32,8 @@ export {
+   type RouterRecord as TRPCRouterRecord,
+   type AnySubscriptionProcedure as AnyTRPCSubscriptionProcedure,
+   type ProcedureOptions as TRPCProcedureOptions,
++type QueryProcedure,
++type MutationProcedure,
+ } from '../../unstable-core-do-not-import';
+ 
+ export type {
+diff --git a/src/unstable-core-do-not-import/middleware.ts b/src/unstable-core-do-not-import/middleware.ts
+index 2d800491e4666e74b39e5fec3944ce9f0ea2cc69..4f0d4f61ce8c66315d41fe5457cbc3e9556387f6 100644
+--- a/src/unstable-core-do-not-import/middleware.ts
++++ b/src/unstable-core-do-not-import/middleware.ts
+@@ -185,7 +185,13 @@ export function createInputMiddleware<TInput>(parse: ParseFn<TInput>) {
+ 
+       const rawInput = await opts.getRawInput();
+       try {
+-        parsedInput = await parse(rawInput);
++        parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+       } catch (cause) {
+         throw new TRPCError({
+           code: 'BAD_REQUEST',
+diff --git a/src/unstable-core-do-not-import/parser.ts b/src/unstable-core-do-not-import/parser.ts
+index ee6db04ff12211c6ed02665efe89df7364af9068..ec24aeb5ad4fdc787e06613f146e92ef6bbd3461 100644
+--- a/src/unstable-core-do-not-import/parser.ts
++++ b/src/unstable-core-do-not-import/parser.ts
+@@ -36,22 +36,24 @@ export type ParserWithInputOutput<TInput, TParsedInput> = ParserZodEsque<
+   TParsedInput
+ >;
+ 
+-export type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any>;
++type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any> | ((input: unknown, ctx: any) => ParserWithInputOutput<any, any> | ParserWithoutInput<any> );
+ 
+ export type inferParser<TParser extends Parser> =
+-  TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
+-    ? {
+-        in: $TIn;
+-        out: $TOut;
+-      }
+-    : TParser extends ParserWithoutInput<infer $InOut>
+-    ? {
+-        in: $InOut;
+-        out: $InOut;
+-      }
+-    : never;
+-
+-export type ParseFn<TType> = (value: unknown) => Promise<TType> | TType;
++	TParser extends (input: unknown, ctx: any) => infer $Parser
++		? inferParser<$Parser>
++		: TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
++			? {
++					in: $TIn;
++					out: $TOut;
++				}
++			: TParser extends ParserWithoutInput<infer $InOut>
++			? {
++					in: $InOut;
++					out: $InOut;
++				}
++			: never;
++
++export type ParseFn<TType> = (value: unknown, ctx: any) => Promise<TType> | TType;
+ 
+ export function getParseFn<TType>(procedureParser: Parser): ParseFn<TType> {
+   const parser = procedureParser as any;

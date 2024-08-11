@@ -1,0 +1,21 @@
+{
+	"name": "@-/emails",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"loops": "0.2.1"
+	}
+}

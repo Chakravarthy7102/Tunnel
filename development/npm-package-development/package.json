@@ -1,0 +1,10 @@
+{
+	"name": "@-/npm-package-development",
+	"type": "module",
+	"devDependencies": {
+		"@-/packages-config": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"execa": "8.0.1",
+		"pathe": "1.1.2"
+	}
+}

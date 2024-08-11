@@ -1,0 +1,15 @@
+{
+	"name": "@-/procedure",
+	"type": "module",
+	"exports": "./exports/main.ts",
+	"imports": {
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/errors": "workspace:*",
+		"@-/trpc": "workspace:*",
+		"@-/zod": "workspace:*",
+		"errok": "0.1.2"
+	},
+	"publishable": true
+}

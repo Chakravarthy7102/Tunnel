@@ -1,0 +1,34 @@
+{
+	"name": "@-/env",
+	"type": "module",
+	"imports": {
+		"#data/*": "./data/*",
+		"#exports/*": "./exports/*",
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts",
+		"./app": "./exports/app.js"
+	},
+	"dependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"dotenv": "16.4.5",
+		"get-monorepo-root": "1.2.1",
+		"is-ci": "3.0.1",
+		"is-docker": "3.0.0",
+		"memoize": "10.0.0",
+		"onetime": "7.0.0",
+		"pathe": "1.1.2"
+	},
+	"devDependencies": {
+		"@types/is-ci": "3.0.0"
+	},
+	"publishable": {
+		".": true,
+		"./app": true
+	}
+}

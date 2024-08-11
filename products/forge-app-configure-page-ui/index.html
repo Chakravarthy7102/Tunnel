@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en" data-theme="dark:dark light:light" data-color-mode="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<style data-theme="dark">
+			html[data-color-mode="light"][data-theme~="light:dark"],
+			html[data-color-mode="dark"][data-theme~="dark:dark"] {
+			 background-color: #0d0d0d;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/entry/main.tsx"></script>
+	</body>
+</html>

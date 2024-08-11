@@ -1,0 +1,26 @@
+{
+	"name": "@-/patch-response",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#utils/*": "./utils/*",
+		"#types": "./types/_.ts"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/logger": "workspace:*",
+		"@-/tunnel-instance-page-toolbar": "workspace:*",
+		"@-/tunneled-service-environment": "workspace:*",
+		"@-/tunneled-service-window-injection": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"content-security-policy-parser": "0.4.1",
+		"fast-sort": "3.4.0",
+		"lodash.findlast": "4.6.0",
+		"parse5": "7.1.2"
+	},
+	"devDependencies": {
+		"@types/lodash.findlast": "4.6.7",
+		"type-fest": "4.15.0"
+	},
+	"publishable": true
+}

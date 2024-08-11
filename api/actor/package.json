@@ -1,0 +1,19 @@
+{
+	"name": "@-/actor",
+	"type": "module",
+	"description": "Utilities for handling actors (authenticated entities) in Tunnel",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"@-/zod": "workspace:*"
+	},
+	"publishable": true
+}

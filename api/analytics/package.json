@@ -1,0 +1,35 @@
+{
+	"name": "@-/analytics",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#events/*": "./events/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/user": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"errok": "0.1.2",
+		"onetime": "7.0.0",
+		"posthog-js": "1.122.0",
+		"posthog-node": "4.0.0",
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		".": false,
+		"./client": true
+	}
+}

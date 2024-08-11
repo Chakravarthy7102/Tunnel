@@ -1,0 +1,30 @@
+diff --git a/esm/vanilla.d.mts b/esm/vanilla.d.mts
+index 9ded8413283a88b2dc4cf36439400557da2c9e83..9d2b100cb9acb7e038df68a18074a328a69ada79 100644
+--- a/esm/vanilla.d.mts
++++ b/esm/vanilla.d.mts
+@@ -1,7 +1,7 @@
+ type SetStateInternal<T> = {
+-    _(partial: T | Partial<T> | {
+-        _(state: T): T | Partial<T>;
+-    }['_'], replace?: boolean | undefined): void;
++	_(partial: Partial<T> | {
++			_<U extends T>(state: U): Partial<U>;
++	}['_'], replace?: boolean | undefined): void;
+ }['_'];
+ export interface StoreApi<T> {
+     setState: SetStateInternal<T>;
+diff --git a/vanilla.d.ts b/vanilla.d.ts
+index 9ded8413283a88b2dc4cf36439400557da2c9e83..9d2b100cb9acb7e038df68a18074a328a69ada79 100644
+--- a/vanilla.d.ts
++++ b/vanilla.d.ts
+@@ -1,7 +1,7 @@
+ type SetStateInternal<T> = {
+-    _(partial: T | Partial<T> | {
+-        _(state: T): T | Partial<T>;
+-    }['_'], replace?: boolean | undefined): void;
++	_(partial: Partial<T> | {
++			_<U extends T>(state: U): Partial<U>;
++	}['_'], replace?: boolean | undefined): void;
+ }['_'];
+ export interface StoreApi<T> {
+     setState: SetStateInternal<T>;

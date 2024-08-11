@@ -1,0 +1,12 @@
+{
+	"name": "@-/eslint-config",
+	"type": "module",
+	"description": "Tunnel's Flat ESLint configuration",
+	"dependencies": {
+		"@eslint/eslintrc": "3.0.2",
+		"@eslint/js": "9.1.1",
+		"eslint-plugin-jsonc": "2.15.1",
+		"eslint-plugin-unicorn": "52.0.0",
+		"typescript-eslint": "7.7.1"
+	}
+}

@@ -1,0 +1,12 @@
+pre-push:
+  follow: true
+  commands:
+    pre-push-hook:
+      run: pnpm git-hooks/pre-push
+      files: git diff --name-only HEAD @{push}
+
+post-merge:
+  follow: true
+  commands:
+    post-merge-hook:
+      run: pnpm git-hooks/post-merge

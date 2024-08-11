@@ -1,0 +1,27 @@
+{
+	"name": "@-/dot-tunnel-json",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#classes/*": "./classes/*",
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"destru": "2.0.3",
+		"errok": "0.1.2",
+		"pathe": "1.1.2"
+	},
+	"publishable": true
+}

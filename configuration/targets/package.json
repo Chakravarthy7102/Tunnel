@@ -1,0 +1,13 @@
+{
+	"name": "@-/targets",
+	"type": "module",
+	"imports": {
+		"#utils/*": "./utils/*",
+		"#types": "./types/_.ts"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"is-apple-silicon": "1.0.1"
+	},
+	"publishable": true
+}

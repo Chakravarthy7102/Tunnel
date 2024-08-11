@@ -1,0 +1,150 @@
+name: Prepare new deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  TUNNEL_MONOREPO_DIRPATH: ${{ github.workspace }}
+
+# Only one new deployment should be prepared at a time
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  bump-database-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - run: pnpm install --no-frozen-lockfile --filter=@-/database...
+
+      - name: Deploy new versions of convex functions
+        run: |
+          pnpm database/bump-version
+
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+
+  # We need to build `@tunnel/cli` before pushing to `release` so that the npm package is already in the registry when the new webapp deploys
+  build-and-publish-tunnel-cli-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - name: Authenticate with npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - run: pnpm install --no-frozen-lockfile --filter=@-/cli-source...
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+
+      - name: Build and publish @tunnel/cli-source
+        run: pnpm cli-source/publish --build --patch-bump
+
+  trigger-new-deployment:
+    runs-on: ubuntu-latest
+    needs: [bump-database-version, build-and-publish-tunnel-cli-source]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ref: ${{ github.ref_name }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - name: Authenticate with npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - run: pnpm install --no-frozen-lockfile --filter=@-/ci-cd...
+
+      - name: Trigger new deployment
+        run: pnpm ci-cd/prepare-new-deployment
+
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}

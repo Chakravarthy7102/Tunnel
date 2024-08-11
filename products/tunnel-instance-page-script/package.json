@@ -1,0 +1,50 @@
+{
+	"name": "@-/tunnel-instance-page-script",
+	"type": "module",
+	"imports": {
+		"#scripts/*": "./scripts/*",
+		"#test/*": "./test/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/auth": "workspace:*",
+		"@-/cookies": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/tunnel-instance-page-secret-storage": "workspace:*",
+		"@-/tunneled-service-environment": "workspace:*",
+		"@-/tunneled-service-globals": "workspace:*",
+		"@-/tunneled-service-window-injection": "workspace:*",
+		"@-/zod": "workspace:*",
+		"cookie-es": "1.0.0",
+		"destru": "2.0.3",
+		"es-cookie": "1.4.0",
+		"history-events": "1.0.4",
+		"js-base64": "3.7.7",
+		"query-string": "9.0.0",
+		"uniqbye": "1.0.0"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/database-test-fixtures": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@-/url": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@swc/core": "1.4.2",
+		"@tunnel/release": "1.1.0",
+		"@types/http-server": "0.12.2",
+		"commander": "11.1.0",
+		"desm": "1.3.0",
+		"dotenv": "16.4.5",
+		"http-server": "14.1.1",
+		"pathe": "1.1.2",
+		"pify": "6.1.0",
+		"uniqbye": "1.0.0"
+	},
+	"publishable": {
+		"./scripts": false
+	}
+}

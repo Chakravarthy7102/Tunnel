@@ -1,0 +1,13 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index fd393ae0b496a8c065bc1d455ebdbc26ce49990c..973653032ee0a1ff3a8b3e2f5a16ff12dd0616ce 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -66,7 +66,7 @@ await delay(2000);
+ await memoizedGot('https://sindresorhus.com');
+ ```
+ */
+-export default function pMemoize<FunctionToMemoize extends AnyAsyncFunction, CacheKeyType>(fn: FunctionToMemoize, { cacheKey, cache, }?: Options<FunctionToMemoize, CacheKeyType>): FunctionToMemoize;
++export default function pMemoize<FunctionToMemoize, CacheKeyType>(fn: FunctionToMemoize, { cacheKey, cache, }?: Options<FunctionToMemoize, CacheKeyType>): FunctionToMemoize;
+ /**
+ - Only class methods and getters/setters can be memoized, not regular functions (they aren't part of the proposal);
+ - Only [TypeScript’s decorators](https://www.typescriptlang.org/docs/handbook/decorators.html#parameter-decorators) are supported, not [Babel’s](https://babeljs.io/docs/en/babel-plugin-proposal-decorators), which use a different version of the proposal;

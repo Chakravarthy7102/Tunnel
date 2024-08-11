@@ -1,0 +1,35 @@
+{
+	"name": "@-/project-live-preview",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#functions/*": "./functions/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"plaindeepmerge": "1.0.0"
+	},
+	"publishable": {
+		".": true,
+		"./api": false,
+		"./functions": false,
+		"./schemas": true,
+		"./selections": true,
+		"./tables": true
+	}
+}

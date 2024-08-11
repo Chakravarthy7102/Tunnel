@@ -1,0 +1,4 @@
+{
+	"name": "@tunnel/cli-single-executable-application-win32-x64",
+	"bin": "./tunnel"
+}

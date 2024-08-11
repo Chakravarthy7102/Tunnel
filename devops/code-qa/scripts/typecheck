@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname "$0")
+(cd ../.. && NODE_OPTIONS=--max-old-space-size=32768 $BASEDIR/../../../node_modules/.bin/tsc -p $BASEDIR/../../../tsconfig.json $@)

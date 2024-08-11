@@ -1,0 +1,194 @@
+name: Code QA
+
+on:
+  pull_request:
+    types: [ready_for_review, synchronize, edited]
+
+env:
+  TUNNEL_MONOREPO_DIRPATH: ${{ github.workspace }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      # We need to install all dependencies for linting to work
+      - run: pnpm install --no-frozen-lockfile --ignore-scripts
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.eslintcache
+          key: eslint-cache-${{ github.sha }}
+          restore-keys: |
+            eslint-cache-
+      - name: Run lint
+        run: pnpm code-qa/lint
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ github.workspace }}/.eslintcache
+          key: eslint-cache-${{ github.sha }}
+
+  typecheck:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - name: Install dependencies
+        # We need to install all dependencies for typechecking to work
+        run: |
+          pnpm install --no-frozen-lockfile --ignore-scripts
+          pnpm webapp/generate
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.tsbuildinfo
+          key: tsbuildinfo-cache-${{ github.sha }}
+          restore-keys: |
+            tsbuildinfo-cache-
+      - name: Run typecheck
+        run: pnpm code-qa/typecheck
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ github.workspace }}/.tsbuildinfo
+          key: tsbuildinfo-cache-${{ github.sha }}
+
+  run-playwright-tests:
+    if: false
+    # if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0 coredns.io=1.11.1 mkcert.dev=1.4.4 mozilla.org/nss=3.92.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node certutil
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - name: Install dependencies
+        run: |
+          pnpm install --no-frozen-lockfile --filter @-/code-qa...
+          pnpm --filter=@-/playwright-tests exec playwright install
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/playwright-tests/test-results/.auth
+          key: playwright-auth-cache-${{ github.sha }}
+          restore-keys: |
+            playwright-auth-cache-
+      - uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/products/webapp/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      - name: Run Playwright Tests
+        run: pnpm code-qa/test
+
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ github.workspace }}/playwright-tests/test-results/.auth
+          key: playwright-auth-cache-${{ github.sha }}
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ github.workspace }}/products/webapp/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ github.sha }}
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}

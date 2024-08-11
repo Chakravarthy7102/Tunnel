@@ -1,0 +1,41 @@
+{
+	"extends": "https://raw.githubusercontent.com/Tunnel-Labs/dprint-config/main/dprint.jsonc",
+	"excludes": [
+		"**/node_modules",
+		"**/.cache",
+		"**/.next",
+		"**/.vercel",
+		"**/.output",
+		"**/package-lock.json",
+		"**/.build",
+		"**/.build-*",
+		"**/build",
+		"**/dist",
+		"pnpm-lock.yaml",
+		"pnpm-workspace.yaml",
+		"**/generated",
+		"**/_generated",
+		"testing/javascript-framework-instrumentation-compatibility-tests/css",
+		"**/fixture",
+		"**/*.md",
+		"repos"
+	],
+	"plugins": [
+		"https://plugins.dprint.dev/exec-0.4.4.json@c207bf9b9a4ee1f0ecb75c594f774924baf62e8e53a2ce9d873816a408cecbf7"
+	],
+	"exec": {
+		"useTabs": false,
+		"indentWidth": 4,
+		"associations": [
+			"**/_.{js,jsx,cjs,mjs,ts,tsx,cts,mts,*.js,*.jsx,*.cjs,*.mjs,*.ts,*.tsx,*.cts,*.mts}"
+		],
+		"commands": [
+			{
+				"command": "development/dprint-plugin-reexport/bin/dprint-plugin-reexport.js {{file_path}}",
+				"associations": [
+					"**/_.{js,jsx,cjs,mjs,ts,tsx,cts,mts,*.js,*.jsx,*.cjs,*.mjs,*.ts,*.tsx,*.cts,*.mts}"
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,42 @@
+diff --git a/dist/tiny-invariant.cjs.js b/dist/tiny-invariant.cjs.js
+index 0734005a03ab6377081360b156e5a64e62ab0a4f..fd3a65f8a238f55202c8ed6bd2073b4ee0b5ed5f 100644
+--- a/dist/tiny-invariant.cjs.js
++++ b/dist/tiny-invariant.cjs.js
+@@ -1,6 +1,6 @@
+ 'use strict';
+ 
+-var isProduction = process.env.NODE_ENV === 'production';
++var isProduction = false;
+ var prefix = 'Invariant failed';
+ function invariant(condition, message) {
+     if (condition) {
+diff --git a/dist/tiny-invariant.esm.js b/dist/tiny-invariant.esm.js
+index 07c9a58538a1da825202e1c58cd9d9fbd375f9ab..3693d7b51aeea5e7041be028226e42be44e69819 100644
+--- a/dist/tiny-invariant.esm.js
++++ b/dist/tiny-invariant.esm.js
+@@ -1,4 +1,4 @@
+-var isProduction = process.env.NODE_ENV === 'production';
++var isProduction = false;
+ var prefix = 'Invariant failed';
+ function invariant(condition, message) {
+     if (condition) {
+diff --git a/dist/tiny-invariant.js b/dist/tiny-invariant.js
+index c70256bcb694dbbfe7b44c0b272c58785c615994..3fa9bc4c5bc33fa947c9f38e1309007d6a083b47 100644
+--- a/dist/tiny-invariant.js
++++ b/dist/tiny-invariant.js
+@@ -4,7 +4,7 @@
+     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.invariant = factory());
+ })(this, (function () { 'use strict';
+ 
+-    var isProduction = process.env.NODE_ENV === 'production';
++    var isProduction = false;
+     var prefix = 'Invariant failed';
+     function invariant(condition, message) {
+         if (condition) {
+diff --git a/dist/tiny-invariant.min.js b/dist/tiny-invariant.min.js
+index c7685bfd70d465871ca732742666b7f454a55b4e..0f5472cb44b75bfa729176a260eef0f87aebcef2 100644
+--- a/dist/tiny-invariant.min.js
++++ b/dist/tiny-invariant.min.js
+@@ -1 +1 @@
+-!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e="undefined"!=typeof globalThis?globalThis:e||self).invariant=n()}(this,(function(){"use strict";return function(e,n){if(!e)throw new Error("Invariant failed")}}));
++!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e="undefined"!=typeof globalThis?globalThis:e||self).invariant=n()}(this,(function(){"use strict";return function(e,n){if(!e)throw new Error("Invariant failed: " + (typeof n === 'function' ? n() : n))}}));

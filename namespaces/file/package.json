@@ -1,0 +1,35 @@
+{
+	"name": "@-/file",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#functions/*": "./functions/*",
+		"#hooks/*": "./hooks/*",
+		"#tables/*": "./tables/*",
+		"#typeguards/*": "./typeguards/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/client-doc": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/zod": "workspace:*",
+		"corvex": "0.0.42",
+		"react": "*",
+		"swr": "2.2.5"
+	},
+	"publishable": {
+		".": true,
+		"./react": true,
+		"./selections": true,
+		"./tables": true,
+		"./typeguards": true
+	}
+}

@@ -1,0 +1,18 @@
+diff --git a/lib/workos.js b/lib/workos.js
+index 8787ad29cfb49d53004357a8204236595384c8f2..cbd1bb18df2e01c55e5816cd380d9e959bf28f89 100644
+--- a/lib/workos.js
++++ b/lib/workos.js
+@@ -132,11 +132,11 @@ class WorkOS {
+     }
+     emitWarning(warning) {
+         // process might be undefined in some environments
+-        if (typeof (process === null || process === void 0 ? void 0 : process.emitWarning) !== 'function') {
++        if (true) {
+             //  tslint:disable:no-console
+             return console.warn(`WorkOS: ${warning}`);
+         }
+-        return process.emitWarning(warning, 'WorkOS');
++        // return process.emitWarning(warning, 'WorkOS');
+     }
+     handleFetchError({ path, error }) {
+         var _a;

@@ -1,0 +1,37 @@
+{
+	"name": "@-/cli-source",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"devDependencies": {
+		"@-/bin-stubs": "workspace:*",
+		"@-/cli-core": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/dot-tunnel-directory": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/tunnel-instance-page-script": "workspace:*",
+		"@-/tunnel-instance-page-service-worker": "workspace:*",
+		"@-/tunnel-instance-page-toolbar": "workspace:*",
+		"@-/tunnel-public-packages-metadata": "workspace:*",
+		"@-/tunneled-service-window-injection": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"commander": "11.1.0",
+		"dotenv": "16.4.5",
+		"es-main": "1.3.0",
+		"execa": "8.0.1",
+		"get-monorepo-root": "1.2.1",
+		"import-meta-resolve": "3.0.0",
+		"pathe": "1.1.2",
+		"read-pkg-up": "10.1.0"
+	},
+	"publishable": true
+}

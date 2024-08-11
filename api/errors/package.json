@@ -1,0 +1,21 @@
+{
+	"name": "@-/errors",
+	"type": "module",
+	"imports": {
+		"#classes/*": "./classes/*",
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/client-doc": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/logger": "workspace:*",
+		"errok": "0.1.2"
+	},
+	"devDependencies": {
+		"type-fest": "4.15.0"
+	},
+	"publishable": true
+}

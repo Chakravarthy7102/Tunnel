@@ -1,0 +1,12 @@
+{
+	"language": "typescript",
+	"app": "tsx entry/main.ts",
+	"projectId": "72fc8c71-0269-42d9-b702-5262107245c2",
+	"sendCrashReports": "true",
+	"terraformProviders": [
+		"digitalocean/digitalocean"
+	],
+	"terraformModules": [],
+	"context": {
+	}
+}

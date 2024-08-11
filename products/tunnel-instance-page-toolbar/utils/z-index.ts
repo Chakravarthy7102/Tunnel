@@ -1,0 +1,17 @@
+export const zIndex = {
+	inboxDrawer: 1000,
+	videoSettingsPopover: 1000,
+	videoSettingsPopoverPortal: 999,
+	inboxDrawerPortal: 999,
+	commentBox: 990,
+	video: 980,
+	pill: 0,
+	pillMenu: 970,
+	toast: 970,
+	commentCursor: 960,
+	commentCursorAvatar: 959,
+	commentIcon: 950,
+	commentIconAvatar: 949,
+	comboBox: 10_000_000,
+	expandedImage: 50,
+};

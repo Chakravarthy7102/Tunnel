@@ -1,0 +1,301 @@
+diff --git a/typings/entries/all.d.ts b/typings/entries/all.d.ts
+index d67ff92447f1072894f5be2a7fe0d80d9bc1467a..0070a087e22b61b916725a5b97c08c4353e4dc2a 100644
+--- a/typings/entries/all.d.ts
++++ b/typings/entries/all.d.ts
+@@ -1,4 +1,4 @@
+-export * from '../index';
+-export * from '../packer';
+-export * from '../plugins/console/record';
+-export * from '../plugins/console/replay';
++export * from '../index.js';
++export * from '../packer/index.js';
++export * from '../plugins/console/record/index.js';
++export * from '../plugins/console/replay/index.js';
+diff --git a/typings/entries/record-pack.d.ts b/typings/entries/record-pack.d.ts
+index c0ea472f9000e8b85b016d69784765d698c5c3b6..16447c6e5be31e3f9fc6bb35920eeee89a4ebb81 100644
+--- a/typings/entries/record-pack.d.ts
++++ b/typings/entries/record-pack.d.ts
+@@ -1,2 +1,2 @@
+-export * from '../record/index';
+-export * from '../packer/pack';
++export * from '../record/index.js';
++export * from '../packer/pack.js';
+diff --git a/typings/entries/replay-unpack.d.ts b/typings/entries/replay-unpack.d.ts
+index 5789d90285e5ee1cbe49764b0025de7b27abb058..afa5a84600d3e9f121873fd447787038536f43ff 100644
+--- a/typings/entries/replay-unpack.d.ts
++++ b/typings/entries/replay-unpack.d.ts
+@@ -1,2 +1,2 @@
+-export * from '../replay';
+-export * from '../packer/unpack';
++export * from '../replay/index.js';
++export * from '../packer/unpack.js';
+diff --git a/typings/index.d.ts b/typings/index.d.ts
+index 0621e3e49b885506728f908f5e208767884ec3d5..c9ef4f32f2fea094aa42a57daeaa4575589b5e57 100644
+--- a/typings/index.d.ts
++++ b/typings/index.d.ts
+@@ -1,9 +1,9 @@
+-import record from './record';
+-import { Replayer } from './replay';
+-import { _mirror } from './utils';
+-import * as utils from './utils';
++import record from './record/index.js';
++import { Replayer } from './replay/index.js';
++import { _mirror } from './utils.js';
++import * as utils from './utils.js';
+ export { EventType, IncrementalSource, MouseInteractions, ReplayerEvents, } from '@rrweb/types';
+-export type { recordOptions } from './types';
++export type { recordOptions } from './types.js';
+ declare const addCustomEvent: <T>(tag: string, payload: T) => void;
+ declare const freezePage: () => void;
+ export { record, addCustomEvent, freezePage, Replayer, _mirror as mirror, utils, };
+diff --git a/typings/packer/index.d.ts b/typings/packer/index.d.ts
+index beca5f61fbfe16103ce8af07998802c490520340..ae55b1b2e4f9a2701be68668f89324a147396bc7 100644
+--- a/typings/packer/index.d.ts
++++ b/typings/packer/index.d.ts
+@@ -1,2 +1,2 @@
+-export { pack } from './pack';
+-export { unpack } from './unpack';
++export { pack } from './pack.js';
++export { unpack } from './unpack.js';
+diff --git a/typings/packer/pack.d.ts b/typings/packer/pack.d.ts
+index da24e925c6cdde8876f29d6d7d31544b409ac756..4a0c8bb5da5bb6fe35b61289f4ad672c0b0c7d3f 100644
+--- a/typings/packer/pack.d.ts
++++ b/typings/packer/pack.d.ts
+@@ -1,2 +1,2 @@
+-import { PackFn } from './base';
++import { PackFn } from './base.js';
+ export declare const pack: PackFn;
+diff --git a/typings/packer/unpack.d.ts b/typings/packer/unpack.d.ts
+index 002c745b1227b625cb8ceb221632a43326cac0a6..2d7856146e6b79360aa144a7d871ef4cf4593824 100644
+--- a/typings/packer/unpack.d.ts
++++ b/typings/packer/unpack.d.ts
+@@ -1,2 +1,2 @@
+-import { UnpackFn } from './base';
++import { UnpackFn } from './base.js';
+ export declare const unpack: UnpackFn;
+diff --git a/typings/plugins/canvas-webrtc/replay/index.d.ts b/typings/plugins/canvas-webrtc/replay/index.d.ts
+index d6bbddd3a95001966eb04dbc9811864e10999f5b..687bdd5c4351a4cc1d718678e189387af98703b2 100644
+--- a/typings/plugins/canvas-webrtc/replay/index.d.ts
++++ b/typings/plugins/canvas-webrtc/replay/index.d.ts
+@@ -1,4 +1,4 @@
+-import type { ReplayPlugin } from '../../../types';
++import type { ReplayPlugin } from '../../../types.js';
+ export declare class RRWebPluginCanvasWebRTCReplay {
+     private canvasFoundCallback;
+     private signalSendCallback;
+diff --git a/typings/plugins/console/record/stringify.d.ts b/typings/plugins/console/record/stringify.d.ts
+index 0c61d90195b209f6ae38158f3b939a6d4ce5b06d..57f75c0e2476747ea7d83b9ce5eb701bf91360cc 100644
+--- a/typings/plugins/console/record/stringify.d.ts
++++ b/typings/plugins/console/record/stringify.d.ts
+@@ -1,2 +1,2 @@
+-import type { StringifyOptions } from './index';
++import type { StringifyOptions } from './index.js';
+ export declare function stringify(obj: unknown, stringifyOptions?: StringifyOptions): string;
+diff --git a/typings/plugins/console/replay/index.d.ts b/typings/plugins/console/replay/index.d.ts
+index 15308def0fc70876a14e37d1d70ad7aa15086ddc..a6432b9b190b9dcf4cbdcca0eaf905fd81782670 100644
+--- a/typings/plugins/console/replay/index.d.ts
++++ b/typings/plugins/console/replay/index.d.ts
+@@ -1,5 +1,5 @@
+-import { LogLevel, LogData } from '../record';
+-import type { ReplayPlugin } from '../../../types';
++import { LogLevel, LogData } from '../record/index.js';
++import type { ReplayPlugin } from '../../../types.js';
+ type ReplayLogger = Partial<Record<LogLevel, (data: LogData) => void>>;
+ type LogReplayConfig = {
+     level?: LogLevel[];
+diff --git a/typings/plugins/sequential-id/replay/index.d.ts b/typings/plugins/sequential-id/replay/index.d.ts
+index 7d2a61adef78e95e3f7f0a6178e6a9ff2cb256e3..4eb0d2c94c76011466aa233130c39b499f9e23af 100644
+--- a/typings/plugins/sequential-id/replay/index.d.ts
++++ b/typings/plugins/sequential-id/replay/index.d.ts
+@@ -1,5 +1,5 @@
+-import type { SequentialIdOptions } from '../record';
+-import type { ReplayPlugin } from '../../../types';
++import type { SequentialIdOptions } from '../record/index.js';
++import type { ReplayPlugin } from '../../../types.js';
+ type Options = SequentialIdOptions & {
+     warnOnMissingId: boolean;
+ };
+diff --git a/typings/record/error-handler.d.ts b/typings/record/error-handler.d.ts
+index b6f90e44394087798752928b28e43c66733abcaa..336aa54dcaf37055749e8c866069b8d5d0fe5fd2 100644
+--- a/typings/record/error-handler.d.ts
++++ b/typings/record/error-handler.d.ts
+@@ -1,4 +1,4 @@
+-import type { ErrorHandler } from '../types';
++import type { ErrorHandler } from '../types.js';
+ type Callback = (...args: unknown[]) => unknown;
+ export declare function registerErrorHandler(handler: ErrorHandler | undefined): void;
+ export declare function unregisterErrorHandler(): void;
+diff --git a/typings/record/iframe-manager.d.ts b/typings/record/iframe-manager.d.ts
+index ddf2f4800fd9a85e3fa7f30ca9da52c6a13b9937..088d03051f846a4889cb779cb93c60c9c9534ff2 100644
+--- a/typings/record/iframe-manager.d.ts
++++ b/typings/record/iframe-manager.d.ts
+@@ -1,7 +1,7 @@
+ import type { Mirror, serializedNodeWithId } from 'rrweb-snapshot';
+-import CrossOriginIframeMirror from './cross-origin-iframe-mirror';
++import CrossOriginIframeMirror from './cross-origin-iframe-mirror.js';
+ import type { eventWithTime, mutationCallBack } from '@rrweb/types';
+-import type { StylesheetManager } from './stylesheet-manager';
++import type { StylesheetManager } from './stylesheet-manager.js';
+ export declare class IframeManager {
+     private iframes;
+     private crossOriginIframeMap;
+diff --git a/typings/record/index.d.ts b/typings/record/index.d.ts
+index 0fd8dcfeb2719ce0da779be0bc4b9467d72eed41..b2503f1fda1baf1fd1fd4e964e5db62561a65d59 100644
+--- a/typings/record/index.d.ts
++++ b/typings/record/index.d.ts
+@@ -1,4 +1,4 @@
+-import type { recordOptions } from '../types';
++import type { recordOptions } from '../types.js';
+ import { eventWithTime, listenerHandler } from '@rrweb/types';
+ declare function record<T = eventWithTime>(options?: recordOptions<T>): listenerHandler | undefined;
+ declare namespace record {
+diff --git a/typings/record/mutation.d.ts b/typings/record/mutation.d.ts
+index 2c6d5c36510dafaab695f249e4cc2680a7959a78..e22f2cc0113ff444ee0bbe9eb44db4ae1bf12361 100644
+--- a/typings/record/mutation.d.ts
++++ b/typings/record/mutation.d.ts
+@@ -1,4 +1,4 @@
+-import type { MutationBufferParam } from '../types';
++import type { MutationBufferParam } from '../types.js';
+ import type { mutationRecord } from '@rrweb/types';
+ export default class MutationBuffer {
+     private frozen;
+diff --git a/typings/record/observer.d.ts b/typings/record/observer.d.ts
+index 2179149c3a39f14bb4dc1451c6988dbe2a411da0..267b92af892b85b3db53790582697f9f8a448e9f 100644
+--- a/typings/record/observer.d.ts
++++ b/typings/record/observer.d.ts
+@@ -1,6 +1,6 @@
+-import type { observerParam, MutationBufferParam } from '../types';
++import type { observerParam, MutationBufferParam } from '../types.js';
+ import { listenerHandler, hooksParam } from '@rrweb/types';
+-import MutationBuffer from './mutation';
++import MutationBuffer from './mutation.js';
+ export declare const mutationBuffers: MutationBuffer[];
+ export declare function initMutationObserver(options: MutationBufferParam, rootEl: Node): MutationObserver;
+ export declare function initScrollObserver({ scrollCb, doc, mirror, blockClass, blockSelector, sampling, }: Pick<observerParam, 'scrollCb' | 'doc' | 'mirror' | 'blockClass' | 'blockSelector' | 'sampling'>): listenerHandler;
+diff --git a/typings/record/processed-node-manager.d.ts b/typings/record/processed-node-manager.d.ts
+index ce7028ae54366cb5bb6206afba0c5941cbe62aff..6096d88dc40d3357319070106196086d562c3289 100644
+--- a/typings/record/processed-node-manager.d.ts
++++ b/typings/record/processed-node-manager.d.ts
+@@ -1,4 +1,4 @@
+-import type MutationBuffer from './mutation';
++import type MutationBuffer from './mutation.js';
+ export default class ProcessedNodeManager {
+     private nodeMap;
+     private loop;
+diff --git a/typings/record/shadow-dom-manager.d.ts b/typings/record/shadow-dom-manager.d.ts
+index 63842a3110eb73dfe3d9fe95c5b3a9d97d67a3c9..96a025a4ef6673d761307bc506a1687f1df2c9ac 100644
+--- a/typings/record/shadow-dom-manager.d.ts
++++ b/typings/record/shadow-dom-manager.d.ts
+@@ -1,4 +1,4 @@
+-import type { MutationBufferParam } from '../types';
++import type { MutationBufferParam } from '../types.js';
+ import type { mutationCallBack, scrollCallback, SamplingStrategy } from '@rrweb/types';
+ import type { Mirror } from 'rrweb-snapshot';
+ type BypassOptions = Omit<MutationBufferParam, 'doc' | 'mutationCb' | 'mirror' | 'shadowDomManager'> & {
+diff --git a/typings/record/stylesheet-manager.d.ts b/typings/record/stylesheet-manager.d.ts
+index 896c17e61c6655fe297dab2c9cb8e07902fd7a59..b988a4207760c74b96c41f1390406c6964e65bf5 100644
+--- a/typings/record/stylesheet-manager.d.ts
++++ b/typings/record/stylesheet-manager.d.ts
+@@ -1,6 +1,6 @@
+ import type { serializedNodeWithId } from 'rrweb-snapshot';
+ import type { adoptedStyleSheetCallback, mutationCallBack } from '@rrweb/types';
+-import { StyleSheetMirror } from '../utils';
++import { StyleSheetMirror } from '../utils.js';
+ export declare class StylesheetManager {
+     private trackedLinkElements;
+     private mutationCb;
+diff --git a/typings/replay/canvas/2d.d.ts b/typings/replay/canvas/2d.d.ts
+index 3883703005e6e8978a9daddf1f7b03e75e57ac93..44ab323e3d8f5a1d1e208ef8552a6d3c2826e226 100644
+--- a/typings/replay/canvas/2d.d.ts
++++ b/typings/replay/canvas/2d.d.ts
+@@ -1,4 +1,4 @@
+-import type { Replayer } from '../';
++import type { Replayer } from '..//index.js';
+ import type { canvasMutationCommand } from '@rrweb/types';
+ export default function canvasMutation({ event, mutations, target, imageMap, errorHandler, }: {
+     event: Parameters<Replayer['applyIncremental']>[0];
+diff --git a/typings/replay/canvas/deserialize-args.d.ts b/typings/replay/canvas/deserialize-args.d.ts
+index 25617aec863fcf9c4afd7d4cebd630b1491b2f14..b7e926752f96e382b628ee42dc5638fa25fcb0e3 100644
+--- a/typings/replay/canvas/deserialize-args.d.ts
++++ b/typings/replay/canvas/deserialize-args.d.ts
+@@ -1,4 +1,4 @@
+-import type { Replayer } from '../';
++import type { Replayer } from '..//index.js';
+ import type { CanvasArg, SerializedCanvasArg } from '@rrweb/types';
+ export declare function variableListFor(ctx: CanvasRenderingContext2D | WebGLRenderingContext | WebGL2RenderingContext, ctor: string): any[];
+ export declare function isSerializedArg(arg: unknown): arg is SerializedCanvasArg;
+diff --git a/typings/replay/canvas/index.d.ts b/typings/replay/canvas/index.d.ts
+index 7b9fb6f0facb06a8a80a745636ca04fe62fa18ce..74f1005c30643628fe2b6914be7c794baeba2b2a 100644
+--- a/typings/replay/canvas/index.d.ts
++++ b/typings/replay/canvas/index.d.ts
+@@ -1,4 +1,4 @@
+-import type { Replayer } from '..';
++import type { Replayer } from '../index.js';
+ import { canvasMutationData } from '@rrweb/types';
+ export default function canvasMutation({ event, mutation, target, imageMap, canvasEventMap, errorHandler, }: {
+     event: Parameters<Replayer['applyIncremental']>[0];
+diff --git a/typings/replay/canvas/webgl.d.ts b/typings/replay/canvas/webgl.d.ts
+index fd73b61e83043eb270c45e3c20a8a45c9cb56fd9..b496875e2759a95cfb36880567b85177cdd200d2 100644
+--- a/typings/replay/canvas/webgl.d.ts
++++ b/typings/replay/canvas/webgl.d.ts
+@@ -1,4 +1,4 @@
+-import type { Replayer } from '../';
++import type { Replayer } from '..//index.js';
+ import { CanvasContext, canvasMutationCommand } from '@rrweb/types';
+ export default function webglMutation({ mutation, target, type, imageMap, errorHandler, }: {
+     mutation: canvasMutationCommand;
+diff --git a/typings/replay/index.d.ts b/typings/replay/index.d.ts
+index fb426f48f09d0282d878a48088768f74c2ef7528..2999553326417e759682e857ae4c80edc01b859b 100644
+--- a/typings/replay/index.d.ts
++++ b/typings/replay/index.d.ts
+@@ -1,8 +1,8 @@
+ import { Mirror } from 'rrweb-snapshot';
+ import { RRDocument } from 'rrdom';
+-import { Timer } from './timer';
+-import { createPlayerService, createSpeedService } from './machine';
+-import type { playerConfig } from '../types';
++import { Timer } from './timer.js';
++import { createPlayerService, createSpeedService } from './machine.js';
++import type { playerConfig } from '../types.js';
+ import { eventWithTime, playerMetaData, Handler } from '@rrweb/types';
+ import './styles/style.css';
+ export declare class Replayer {
+diff --git a/typings/replay/machine.d.ts b/typings/replay/machine.d.ts
+index 71128f66b470e6f6f2690536f5c7799a48b6c278..1b1f4c5063706acef03f786095658005741a541d 100644
+--- a/typings/replay/machine.d.ts
++++ b/typings/replay/machine.d.ts
+@@ -1,7 +1,7 @@
+ import { StateMachine } from '@xstate/fsm';
+-import type { playerConfig } from '../types';
++import type { playerConfig } from '../types.js';
+ import { eventWithTime, Emitter } from '@rrweb/types';
+-import { Timer } from './timer';
++import { Timer } from './timer.js';
+ export type PlayerContext = {
+     events: eventWithTime[];
+     timer: Timer;
+diff --git a/typings/types.d.ts b/typings/types.d.ts
+index 426aedc30d85616d60450b26860d8c7009b604f5..f0ea4f014e06ee332cad3d7adbf35eae16dcc516 100644
+--- a/typings/types.d.ts
++++ b/typings/types.d.ts
+@@ -1,13 +1,13 @@
+ import type { Mirror, MaskInputOptions, SlimDOMOptions, MaskInputFn, MaskTextFn, DataURLOptions } from 'rrweb-snapshot';
+-import type { PackFn, UnpackFn } from './packer/base';
+-import type { IframeManager } from './record/iframe-manager';
+-import type { ShadowDomManager } from './record/shadow-dom-manager';
+-import type { Replayer } from './replay';
++import type { PackFn, UnpackFn } from './packer/base.js';
++import type { IframeManager } from './record/iframe-manager.js';
++import type { ShadowDomManager } from './record/shadow-dom-manager.js';
++import type { Replayer } from './replay/index.js';
+ import type { RRNode } from 'rrdom';
+-import type { CanvasManager } from './record/observers/canvas/canvas-manager';
+-import type { StylesheetManager } from './record/stylesheet-manager';
++import type { CanvasManager } from './record/observers/canvas/canvas-manager.js';
++import type { StylesheetManager } from './record/stylesheet-manager.js';
+ import type { addedNodeMutation, blockClass, canvasMutationCallback, eventWithTime, fontCallback, hooksParam, inputCallback, IWindow, KeepIframeSrcFn, listenerHandler, maskTextClass, mediaInteractionCallback, mouseInteractionCallBack, mousemoveCallBack, mutationCallBack, RecordPlugin, SamplingStrategy, scrollCallback, selectionCallback, styleDeclarationCallback, styleSheetRuleCallback, viewportResizeCallback } from '@rrweb/types';
+-import type ProcessedNodeManager from './record/processed-node-manager';
++import type ProcessedNodeManager from './record/processed-node-manager.js';
+ export type recordOptions<T> = {
+     emit?: (e: T, isCheckout?: boolean) => void;
+     checkoutEveryNth?: number;

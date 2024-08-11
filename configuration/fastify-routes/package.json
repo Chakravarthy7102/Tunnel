@@ -1,0 +1,16 @@
+{
+	"name": "@-/fastify-routes",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/logger": "workspace:*",
+		"fastify": "4.26.1",
+		"pathe": "1.1.2"
+	},
+	"publishable": true
+}

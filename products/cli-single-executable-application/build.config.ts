@@ -1,0 +1,231 @@
+import { cli } from '@-/cli-helpers';
+import { logger } from '@-/logger';
+import { packageDirpaths } from '@-/packages-config';
+import { defineBuildConfig, getReleaseFromOptions } from '@-/unbuild';
+import { z } from '@-/zod';
+import type { Release } from '@tunnel/release';
+// @ts-expect-error: no types
+import decompressTarxz from 'decomp-tarxz';
+// @ts-expect-error: no types
+import decompressUnzip from 'decomp-unzip';
+import destr from 'destru';
+import download from 'downl';
+import { execa } from 'execa';
+import fs from 'fs-extra';
+import makeEmptyDir from 'make-empty-dir';
+import { outdent } from 'outdent';
+import path from 'pathe';
+// @ts-expect-error: no typings
+import { inject } from 'postject';
+import replaceInFile from 'replace-in-file';
+import type { PackageJson } from 'type-fest';
+
+export default defineBuildConfig({
+	entries: [{
+		input: 'bin/tunnel.ts',
+		platform: 'node',
+		format: 'cjs',
+		builder: 'esbuild',
+	}],
+	hooks: {
+		async 'build:done'(ctx) {
+			const { release, version } = getReleaseFromOptions(ctx.options);
+
+			if (release !== null) {
+				const targets = await fs.promises.readdir(
+					path.join(packageDirpaths.cliSingleExecutableApplication, 'targets'),
+				);
+
+				await Promise.all(
+					targets.map(async (target) =>
+						buildTargetedCliSingleExecutableApplication({ target, version })
+					),
+				);
+			}
+
+			await buildUntargetedCliSingleExecutableApplication({ release, version });
+		},
+	},
+});
+
+async function buildUntargetedCliSingleExecutableApplication({
+	release,
+	version,
+}: {
+	release: Release;
+	version: string;
+}) {
+	const distDirpath = path.join(
+		packageDirpaths.cliSingleExecutableApplication,
+		'.build',
+	);
+
+	// Make the JavaScript file an executable
+	await fs.promises.rename(
+		path.join(distDirpath, 'tunnel.js'),
+		path.join(distDirpath, 'tunnel'),
+	);
+	await fs.promises.chmod(path.join(distDirpath, 'tunnel'), 0o755);
+	await replaceInFile.replaceInFile({
+		files: path.join(distDirpath, 'tunnel'),
+		from: /^.*\n/,
+		to: outdent({ trimTrailingNewline: false })`
+			#!/usr/bin/env node
+		`,
+	});
+
+	await fs.promises.writeFile(
+		path.join(distDirpath, 'package.json'),
+		JSON.stringify(
+			{
+				name: '@tunnel/cli-single-executable-application',
+				version,
+				bin: { tunnel: release === null ? './tunnel.js' : './tunnel' },
+				files: ['tunnel', 'package.json'],
+			},
+			null,
+			'\t',
+		),
+	);
+
+	await fs.promises.writeFile(
+		path.join(
+			packageDirpaths.cliSingleExecutableApplication,
+			'.build/tunnel.js',
+		),
+		outdent`
+			#!/usr/bin/env node
+			require(__dirname + '/tunnel');
+		`,
+	);
+	await fs.promises.chmod(
+		path.join(
+			packageDirpaths.cliSingleExecutableApplication,
+			'.build/tunnel.js',
+		),
+		0o755,
+	);
+}
+
+export async function buildTargetedCliSingleExecutableApplication({
+	target,
+	version,
+}: {
+	target: string;
+	version: string;
+}) {
+	const targetDirpath = path.join(
+		packageDirpaths.cliSingleExecutableApplication,
+		`targets/${target}`,
+	);
+	const targetDistDirpath = path.join(targetDirpath, '.build');
+	await makeEmptyDir(targetDistDirpath, { recursive: true });
+
+	const tunnelBinFilename = target.startsWith('win32-') ?
+		'tunnel.exe' :
+		'tunnel';
+
+	const packageJson = destr(
+		await fs.promises.readFile(
+			path.join(targetDirpath, 'package.json'),
+			'utf8',
+		),
+	) as PackageJson;
+
+	packageJson.files = [tunnelBinFilename, 'package.json'];
+	packageJson.bin = { tunnel: tunnelBinFilename };
+	packageJson.version = version;
+
+	// Copy the target's package.json into the `.build/` folder
+	await fs.promises.writeFile(
+		path.join(targetDistDirpath, 'package.json'),
+		JSON.stringify(packageJson, null, '\t'),
+	);
+
+	// Create a `.build-sea/` folder to store Node.js SEA artifcats
+	const distSeaDirpath = path.join(targetDirpath, '.build-sea');
+	await makeEmptyDir(distSeaDirpath, { recursive: true });
+
+	// The generated `sea-prep.blob` file is the same across all platforms
+	const { stdout: nodeVersion } = await cli.node('--version', {
+		stdio: 'pipe',
+	});
+	logger.info(`Using node version ${nodeVersion}`);
+	await cli.node(['--experimental-sea-config', 'sea-config.json'], {
+		cwd: targetDirpath,
+		stdio: 'inherit',
+	});
+
+	// Download the Node.js binary
+	const nodeConfigJson = z
+		.object({
+			tarballSuffix: z.string(),
+		})
+		.parse(
+			destr(
+				await fs.promises.readFile(
+					path.join(targetDirpath, 'node-config.json'),
+					'utf8',
+				),
+			),
+		);
+
+	const tarballUrl =
+		`https://nodejs.org/dist/v20.10.0/node-v20.10.0-${nodeConfigJson.tarballSuffix}`;
+	const tunnelBinFilepath = path.join(targetDistDirpath, tunnelBinFilename);
+
+	await download(tarballUrl, targetDistDirpath, {
+		extract: {
+			plugins: [decompressTarxz(), decompressUnzip()],
+			strip: 1,
+			filter: (file) => file.path === 'bin/node' || file.path === 'node.exe',
+			map(file) {
+				file.path = tunnelBinFilename;
+				return file;
+			},
+		},
+	});
+
+	// Removing the signature (since it was originally generated by Node.js)
+	if (target.startsWith('darwin-')) {
+		// postject automatically removes the signature: https://github.com/nodejs/postject/blob/main/postject.cpp#L135
+	} else if (target.startsWith('win32-')) {
+		await execa(
+			'osslsigncode',
+			[
+				'remove-signature',
+				'-in',
+				tunnelBinFilepath,
+				'-out',
+				path.join(targetDistDirpath, 'unsigned-' + tunnelBinFilename),
+			],
+			{ stdio: 'inherit' },
+		);
+
+		await fs.promises.rename(
+			path.join(targetDistDirpath, 'unsigned-' + tunnelBinFilename),
+			tunnelBinFilepath,
+		);
+	}
+
+	const seaPrepBlobFileContents = await fs.promises.readFile(
+		path.join(distSeaDirpath, 'sea-prep.blob'),
+	);
+	await inject(tunnelBinFilepath, 'NODE_SEA_BLOB', seaPrepBlobFileContents, {
+		sentinelFuse: 'NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2',
+		machoSegmentName: 'NODE_SEA',
+	});
+
+	// Adding the signature now that the binary has been updated
+	if (target.startsWith('darwin-')) {
+		await execa('rcodesign', ['sign', tunnelBinFilepath], { stdio: 'inherit' });
+	} else if (target.startsWith('win32-')) {
+		// TODO: we need a code signing certificate
+		// await execa(signtoolBinFilepath, [
+		// 	'sign',
+		// 	'/fd',
+		// 	'SHA256',
+		// 	tunnelSeaBinFilepath
+		// ]);
+	}
+}

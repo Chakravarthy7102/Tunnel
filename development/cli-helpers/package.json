@@ -1,0 +1,40 @@
+{
+	"name": "@-/cli-helpers",
+	"type": "module",
+	"description": "Helpers for CLI utilities used by Tunnel.",
+	"imports": {
+		"#cli/*": "./cli/*",
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/pkgx": "workspace:*",
+		"@tunnel/release": "1.1.0",
+		"cli-specs": "1.1.0",
+		"downl": "0.1.2",
+		"execa": "8.0.1",
+		"extract-zip": "2.0.1",
+		"is-ci": "3.0.1",
+		"is-docker": "3.0.0",
+		"onetime": "7.0.0",
+		"outdent": "0.8.0",
+		"p-timeout": "6.1.2",
+		"pathe": "1.1.2",
+		"tslib": "2.6.2",
+		"which": "4.0.0"
+	},
+	"devDependencies": {
+		"@types/command-exists": "1.2.0",
+		"@types/is-ci": "3.0.0",
+		"@types/shell-quote": "1.7.1",
+		"@types/which": "3.0.3",
+		"type-fest": "4.15.0"
+	},
+	"publishable": false
+}

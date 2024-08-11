@@ -1,0 +1,17 @@
+{
+	"name": "@-/packages-config",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.js",
+	"dependencies": {
+		"dyrname": "1.0.3",
+		"get-monorepo-root": "1.2.1",
+		"monorepo-packages": "1.1.3",
+		"pathe": "1.1.2"
+	},
+	"publishable": true
+}

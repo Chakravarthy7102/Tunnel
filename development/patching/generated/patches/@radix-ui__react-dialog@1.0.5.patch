@@ -1,0 +1,153 @@
+diff --git a/dist/index.js b/dist/index.js
+index 8540377df7bf83d80e8588981745d2c717fafb77..ba0f4e9538c8b5a41b9a0a00e3faecbda53411d0 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -64,6 +64,7 @@ const [$f4833395aa1bca1a$var$DialogProvider, $f4833395aa1bca1a$var$useDialogCont
+ const $f4833395aa1bca1a$export$3ddf2d174ce01153 = (props)=>{
+     const { __scopeDialog: __scopeDialog , children: children , open: openProp , defaultOpen: defaultOpen , onOpenChange: onOpenChange , modal: modal = true  } = props;
+     const triggerRef = $aJCrN$react.useRef(null);
++const overlayRef = $aJCrN$react.useRef(null);
+     const contentRef = $aJCrN$react.useRef(null);
+     const [open = false, setOpen] = $aJCrN$radixuireactusecontrollablestate.useControllableState({
+         prop: openProp,
+@@ -73,6 +74,7 @@ const $f4833395aa1bca1a$export$3ddf2d174ce01153 = (props)=>{
+     return /*#__PURE__*/ $aJCrN$react.createElement($f4833395aa1bca1a$var$DialogProvider, {
+         scope: __scopeDialog,
+         triggerRef: triggerRef,
++overlayRef: overlayRef,
+         contentRef: contentRef,
+         contentId: $aJCrN$radixuireactid.useId(),
+         titleId: $aJCrN$radixuireactid.useId(),
+@@ -153,18 +155,19 @@ const $f4833395aa1bca1a$export$bd1d06c79be19e17 = /*#__PURE__*/ $aJCrN$react.for
+ const $f4833395aa1bca1a$var$DialogOverlayImpl = /*#__PURE__*/ $aJCrN$react.forwardRef((props, forwardedRef)=>{
+     const { __scopeDialog: __scopeDialog , ...overlayProps } = props;
+     const context = $f4833395aa1bca1a$var$useDialogContext($f4833395aa1bca1a$var$OVERLAY_NAME, __scopeDialog);
++const overlayRef = $aJCrN$react.useRef(null);
++const composedRefs = $aJCrN$radixuireactcomposerefs.useComposedRefs(forwardedRef, context.overlayRef, overlayRef);
++const isContentInside = overlayRef.current?.contains(context.contentRef.current);
+     return(/*#__PURE__*/ // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
+     // ie. when `Overlay` and `Content` are siblings
+     $aJCrN$react.createElement($aJCrN$reactremovescroll.RemoveScroll, {
+         as: $aJCrN$radixuireactslot.Slot,
+         allowPinchZoom: true,
+-        shards: [
+-            context.contentRef
+-        ]
++        enabled: isContentInside
+     }, /*#__PURE__*/ $aJCrN$react.createElement($aJCrN$radixuireactprimitive.Primitive.div, ($parcel$interopDefault($aJCrN$babelruntimehelpersextends))({
+         "data-state": $f4833395aa1bca1a$var$getState(context.open)
+     }, overlayProps, {
+-        ref: forwardedRef // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
++        ref: composedRefs // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+         ,
+         style: {
+             pointerEvents: 'auto',
+@@ -193,12 +196,13 @@ const $f4833395aa1bca1a$export$b6d9565de1e068cf = /*#__PURE__*/ $aJCrN$react.for
+ /* -----------------------------------------------------------------------------------------------*/ const $f4833395aa1bca1a$var$DialogContentModal = /*#__PURE__*/ $aJCrN$react.forwardRef((props, forwardedRef)=>{
+     const context = $f4833395aa1bca1a$var$useDialogContext($f4833395aa1bca1a$var$CONTENT_NAME, props.__scopeDialog);
+     const contentRef = $aJCrN$react.useRef(null);
+-    const composedRefs = $aJCrN$radixuireactcomposerefs.useComposedRefs(forwardedRef, context.contentRef, contentRef); // aria-hide everything except the content (better supported equivalent to setting aria-modal)
++    const composedRefs = $aJCrN$radixuireactcomposerefs.useComposedRefs(forwardedRef, context.contentRef, contentRef);
++const isInsideOverlay = context.overlayRef.current?.contains(contentRef.current); // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+     $aJCrN$react.useEffect(()=>{
+         const content = contentRef.current;
+         if (content) return $aJCrN$ariahidden.hideOthers(content);
+     }, []);
+-    return /*#__PURE__*/ $aJCrN$react.createElement($f4833395aa1bca1a$var$DialogContentImpl, ($parcel$interopDefault($aJCrN$babelruntimehelpersextends))({}, props, {
++    const dialogContentImpl =  /*#__PURE__*/ $aJCrN$react.createElement($f4833395aa1bca1a$var$DialogContentImpl, ($parcel$interopDefault($aJCrN$babelruntimehelpersextends))({}, props, {
+         ref: composedRefs // we make sure focus isn't trapped once `DialogContent` has been closed
+         ,
+         trapFocus: context.open,
+@@ -219,6 +223,15 @@ const $f4833395aa1bca1a$export$b6d9565de1e068cf = /*#__PURE__*/ $aJCrN$react.for
+         onFocusOutside: $aJCrN$radixuiprimitive.composeEventHandlers(props.onFocusOutside, (event)=>event.preventDefault()
+         )
+     }));
++return $aJCrN$react.createElement(
++	$aJCrN$reactremovescroll.RemoveScroll,
++	{
++		as: $aJCrN$radixuireactslot.Slot,
++		allowPinchZoom: true,
++		enabled: !isInsideOverlay
++	},
++	dialogContentImpl
++);
+ });
+ /* -----------------------------------------------------------------------------------------------*/ const $f4833395aa1bca1a$var$DialogContentNonModal = /*#__PURE__*/ $aJCrN$react.forwardRef((props, forwardedRef)=>{
+     const context = $f4833395aa1bca1a$var$useDialogContext($f4833395aa1bca1a$var$CONTENT_NAME, props.__scopeDialog);
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 4a1240b9f37ac7f5daefe38128da8061de73540a..9fde27f9f3b076aedc619db09e83dd1f6e0afcbc 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -39,6 +39,7 @@ const [$5d3850c4d0b4e6c7$var$DialogProvider, $5d3850c4d0b4e6c7$var$useDialogCont
+ const $5d3850c4d0b4e6c7$export$3ddf2d174ce01153 = (props)=>{
+     const { __scopeDialog: __scopeDialog , children: children , open: openProp , defaultOpen: defaultOpen , onOpenChange: onOpenChange , modal: modal = true  } = props;
+     const triggerRef = $67UHm$useRef(null);
++const overlayRef = $67UHm$useRef(null);
+     const contentRef = $67UHm$useRef(null);
+     const [open = false, setOpen] = $67UHm$useControllableState({
+         prop: openProp,
+@@ -48,6 +49,7 @@ const $5d3850c4d0b4e6c7$export$3ddf2d174ce01153 = (props)=>{
+     return /*#__PURE__*/ $67UHm$createElement($5d3850c4d0b4e6c7$var$DialogProvider, {
+         scope: __scopeDialog,
+         triggerRef: triggerRef,
++overlayRef: overlayRef,
+         contentRef: contentRef,
+         contentId: $67UHm$useId(),
+         titleId: $67UHm$useId(),
+@@ -128,18 +130,20 @@ const $5d3850c4d0b4e6c7$export$bd1d06c79be19e17 = /*#__PURE__*/ $67UHm$forwardRe
+ const $5d3850c4d0b4e6c7$var$DialogOverlayImpl = /*#__PURE__*/ $67UHm$forwardRef((props, forwardedRef)=>{
+     const { __scopeDialog: __scopeDialog , ...overlayProps } = props;
+     const context = $5d3850c4d0b4e6c7$var$useDialogContext($5d3850c4d0b4e6c7$var$OVERLAY_NAME, __scopeDialog);
++const overlayRef = $67UHm$useRef(null);
++const composedRefs = $67UHm$useComposedRefs(forwardedRef, context.overlayRef, overlayRef);
++const isContentInside = overlayRef.current?.contains(context.contentRef.current);
++console.log('is content inside', isContentInside)
+     return(/*#__PURE__*/ // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
+     // ie. when `Overlay` and `Content` are siblings
+     $67UHm$createElement($67UHm$RemoveScroll, {
+         as: $67UHm$Slot,
+         allowPinchZoom: true,
+-        shards: [
+-            context.contentRef
+-        ]
++        enabled: isContentInside
+     }, /*#__PURE__*/ $67UHm$createElement($67UHm$Primitive.div, $67UHm$babelruntimehelpersesmextends({
+         "data-state": $5d3850c4d0b4e6c7$var$getState(context.open)
+     }, overlayProps, {
+-        ref: forwardedRef // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
++        ref: composedRefs // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+         ,
+         style: {
+             pointerEvents: 'auto',
+@@ -168,12 +172,13 @@ const $5d3850c4d0b4e6c7$export$b6d9565de1e068cf = /*#__PURE__*/ $67UHm$forwardRe
+ /* -----------------------------------------------------------------------------------------------*/ const $5d3850c4d0b4e6c7$var$DialogContentModal = /*#__PURE__*/ $67UHm$forwardRef((props, forwardedRef)=>{
+     const context = $5d3850c4d0b4e6c7$var$useDialogContext($5d3850c4d0b4e6c7$var$CONTENT_NAME, props.__scopeDialog);
+     const contentRef = $67UHm$useRef(null);
+-    const composedRefs = $67UHm$useComposedRefs(forwardedRef, context.contentRef, contentRef); // aria-hide everything except the content (better supported equivalent to setting aria-modal)
++    const composedRefs = $67UHm$useComposedRefs(forwardedRef, context.contentRef, contentRef);
++const isInsideOverlay = context.overlayRef.current?.contains(contentRef.current); // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+     $67UHm$useEffect(()=>{
+         const content = contentRef.current;
+         if (content) return $67UHm$hideOthers(content);
+     }, []);
+-    return /*#__PURE__*/ $67UHm$createElement($5d3850c4d0b4e6c7$var$DialogContentImpl, $67UHm$babelruntimehelpersesmextends({}, props, {
++    const dialogContentImpl =  /*#__PURE__*/ $67UHm$createElement($5d3850c4d0b4e6c7$var$DialogContentImpl, $67UHm$babelruntimehelpersesmextends({}, props, {
+         ref: composedRefs // we make sure focus isn't trapped once `DialogContent` has been closed
+         ,
+         trapFocus: context.open,
+@@ -194,6 +199,15 @@ const $5d3850c4d0b4e6c7$export$b6d9565de1e068cf = /*#__PURE__*/ $67UHm$forwardRe
+         onFocusOutside: $67UHm$composeEventHandlers(props.onFocusOutside, (event)=>event.preventDefault()
+         )
+     }));
++return $67UHm$createElement(
++	$67UHm$RemoveScroll,
++	{
++		as: $67UHm$Slot,
++		allowPinchZoom: true,
++		enabled: !isInsideOverlay
++	},
++	dialogContentImpl
++);
+ });
+ /* -----------------------------------------------------------------------------------------------*/ const $5d3850c4d0b4e6c7$var$DialogContentNonModal = /*#__PURE__*/ $67UHm$forwardRef((props, forwardedRef)=>{
+     const context = $5d3850c4d0b4e6c7$var$useDialogContext($5d3850c4d0b4e6c7$var$CONTENT_NAME, props.__scopeDialog);

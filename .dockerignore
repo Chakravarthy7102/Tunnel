@@ -1,0 +1,32 @@
+**/node_modules
+**/Dockerfile
+**/readme.md
+**/cypress
+**/public/build
+**/build
+**/.build
+**/.cache
+**/tsconfig.tsbuildinfo
+**/.eslintcache
+**/.next
+**/target
+**/.DS_Store
+
+# We don't want to include environment variables in our Docker image
+products/webapp/.env.local
+
+# Our generated `/pages` directory is gitignored (and thus not guaranteed
+# to exist on the filesystem) and uses absolute paths so we don't want to copy
+# it into our Docker image
+products/webapp/pages
+
+.gitignore
+.git
+.github
+.dockerignore
+
+.env*
+!.env.project
+!.env.vault
+
+.flaskenv*

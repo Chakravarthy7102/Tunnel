@@ -1,0 +1,9 @@
+diff --git a/index.d.ts b/index.d.ts
+index e13fed5cbe3d2f61ba6337bfbec4140b00925153..e5a100af1ee598564a59715abe5715e5328a40eb 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -2,3 +2,4 @@ export declare type Options = {
+     ignoreId: boolean;
+ };
+ export default function getXPath(el: any, customOptions?: Partial<Options>): string;
++export = getXPath;

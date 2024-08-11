@@ -1,0 +1,10 @@
+{
+	"name": "@-/services-config",
+	"type": "module",
+	"imports": {
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"publishable": true
+}

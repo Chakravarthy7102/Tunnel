@@ -1,0 +1,39 @@
+{
+	"name": "@-/organization-invitation",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#functions/*": "./functions/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/auth": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/emails": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/organization": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/user": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"uniqbye": "1.0.0"
+	},
+	"publishable": {
+		".": true,
+		"./api": false,
+		"./functions": false,
+		"./selections": true,
+		"./tables": true
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "@-/mask-secrets",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"imports": {
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"data-guardian": "1.1.2"
+	},
+	"publishable": true
+}

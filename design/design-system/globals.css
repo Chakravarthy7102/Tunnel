@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:host,
+	:root {
+		--background: 0 0% 5%;
+		--foreground: 0 0% 95%;
+
+		--muted: 0 0% 11%;
+		--muted-foreground: 0 0% 64%;
+
+		--accent: 0 0% 17%;
+		--accent-foreground: 0 0% 98%;
+
+		--popover: 0 0% 13.5%;
+		--popover-foreground: 0 0% 92%;
+
+		--border: 0 0% 13%;
+		--input: 0 0% 20%;
+
+		--card: 0 0% 4%;
+		--card-foreground: 0 0% 91%;
+
+		--primary: 0 0% 98%;
+		--primary-foreground: 0 0% 1.2%;
+
+		--secondary: 0 0% 11.2%;
+		--secondary-foreground: 0% 98%;
+
+		--tertiary: 0 0% 13%;
+		--tertiary-border: 0 0% 22%;
+
+		--destructive: 0 100% 50%;
+		--destructive-foreground: 210 40% 98%;
+
+		--dropdown: 0 0% 29.4%;
+
+		--ring: 0 0% 20%;
+		--radius: 0.5rem;
+
+		--outline-button-background: 0 0% 21%;
+		--outline-button-border: 0 0% 24%;
+
+		--brand-foreground: 246 68% 68%;
+		--brand-orange: 33 100% 68%;
+		--brand-salmon: 7, 95%, 71%;
+		--brand-green: 81 66% 63%;
+		--brand-blue: 212 95% 71%;
+		--brand-red: 2.5, 68.1%, 58.2%;
+
+		--v2-background: 240, 6%, 10%;
+	}
+
+	.light {
+		--background: 0 0% 100%;
+		--foreground: 222.2 47.4% 11.2%;
+
+		--muted: 210 40% 96.1%;
+		--muted-foreground: 215.4 16.3% 46.9%;
+
+		--popover: 0 0% 100%;
+		--popover-foreground: 222.2 47.4% 11.2%;
+
+		--border: 214.3 31.8% 91.4%;
+		--input: 214.3 31.8% 91.4%;
+
+		--card: 0 0% 100%;
+		--card-foreground: 222.2 47.4% 11.2%;
+
+		--primary: 222.2 47.4% 11.2%;
+		--primary-foreground: 210 40% 98%;
+
+		--secondary: 210 40% 96.1%;
+		--secondary-foreground: 222.2 47.4% 11.2%;
+
+		--accent: 210 40% 96.1%;
+		--accent-foreground: 222.2 47.4% 11.2%;
+
+		--destructive: 0 100% 50%;
+		--destructive-foreground: 210 40% 98%;
+
+		--ring: 215 20.2% 65.1%;
+
+		--radius: 0.5rem;
+
+		--brand-foreground: 246 68% 68%;
+		--brand-orange: 33 100% 68%;
+		--brand-salmon: 7, 95%, 71%;
+		--brand-green: 81 66% 63%;
+		--brand-blue: 212 95% 71%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+		font-feature-settings:
+			'rlig' 1,
+			'calt' 1;
+	}
+}

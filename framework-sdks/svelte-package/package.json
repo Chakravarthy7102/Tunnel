@@ -1,0 +1,45 @@
+{
+	"name": "@-/svelte-package",
+	"type": "module",
+	"imports": {
+		"#components/*": "./components/*",
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": {
+			"svelte": "./components/toolbar.svelte",
+			"default": "./exports/main.ts"
+		}
+	},
+	"peerDependencies": {
+		"svelte": "^4"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/octokit": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/tunnel-public-packages-metadata": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@rollup/plugin-node-resolve": "15.2.3",
+		"@sveltejs/kit": "2.5.0",
+		"@sveltejs/package": "2.2.6",
+		"@sveltejs/vite-plugin-svelte": "3.0.2",
+		"@tsconfig/svelte": "5.0.2",
+		"@tunnel/dayjs": "1.0.3",
+		"@tunnel/release": "1.1.0",
+		"commander": "11.1.0",
+		"destru": "2.0.3",
+		"es-main": "1.3.0",
+		"execa": "8.0.1",
+		"pathe": "1.1.2",
+		"rollup": "4.10.0",
+		"rollup-plugin-svelte": "7.1.6",
+		"svelte": "4.2.10",
+		"svelte-tsc": "0.10.0"
+	}
+}

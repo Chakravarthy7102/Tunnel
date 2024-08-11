@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "tunnel"
+client_id = "5e1109bf1399e8b8c0a9b7960dcf24e6"
+application_url = "https://smtp-attach-trademark-definition.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://smtp-attach-trademark-definition.trycloudflare.com/auth/callback",
+  "https://smtp-attach-trademark-definition.trycloudflare.com/auth/shopify/callback",
+  "https://smtp-attach-trademark-definition.trycloudflare.com/api/auth/callback",
+  "https://smtp-attach-trademark-definition.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "tunnel-labs.myshopify.com"

@@ -1,0 +1,740 @@
+diff --git a/dist/cjs/bundler/index.js b/dist/cjs/bundler/index.js
+index ed69cf0026d5288bab4a7168967d77c5b78bdbab..323148656256e0e3d7a3ae9eeb57cdf3d038d870 100644
+--- a/dist/cjs/bundler/index.js
++++ b/dist/cjs/bundler/index.js
+@@ -61,7 +61,7 @@ function* walkDir(fs, dirPath) {
+     }
+   }
+ }
+-async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder, externalPackages) {
++async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder, externalPackages, _remoteConfig) {
+   const external = (0, import_external.createExternalPlugin)(ctx, externalPackages);
+   try {
+     const result = await import_esbuild.default.build({
+@@ -84,7 +84,169 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, c
+       keepNames: true,
+       metafile: true
+     });
+-    for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
++    try {
++	const convexJson = JSON.parse(ctx.fs.readUtf8File('convex.json'));
++	if (convexJson.version !== undefined && _remoteConfig !== undefined) {
++		const getHash = (contents) => {
++			globalThis.XXHash ??= ((module) => {"use strict";var M=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function X(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var I={},B={exports:{}};(function(i){(function(o){r(Math.pow(36,5)),r(Math.pow(16,7)),r(Math.pow(10,9)),r(Math.pow(2,30)),r(36),r(16),r(10),r(2);function r(t,a){if(!(this instanceof r))return new r(t,a);if(this._low=0,this._high=0,this.remainder=null,typeof a>"u")return e.call(this,t);if(typeof t=="string")return _.call(this,t,a);s.call(this,t,a)}function s(t,a){return this._low=t|0,this._high=a|0,this}r.prototype.fromBits=s;function e(t){return this._low=t&65535,this._high=t>>>16,this}r.prototype.fromNumber=e;function _(t,a){var h=parseInt(t,a||10);return this._low=h&65535,this._high=h>>>16,this}r.prototype.fromString=_,r.prototype.toNumber=function(){return this._high*65536+this._low},r.prototype.toString=function(t){return this.toNumber().toString(t||10)},r.prototype.add=function(t){var a=this._low+t._low,h=a>>>16;return h+=this._high+t._high,this._low=a&65535,this._high=h&65535,this},r.prototype.subtract=function(t){return this.add(t.clone().negate())},r.prototype.multiply=function(t){var a=this._high,h=this._low,m=t._high,l=t._low,f,n;return n=h*l,f=n>>>16,f+=a*l,f&=65535,f+=h*m,this._low=n&65535,this._high=f&65535,this},r.prototype.div=function(t){if(t._low==0&&t._high==0)throw Error("division by zero");if(t._high==0&&t._low==1)return this.remainder=new r(0),this;if(t.gt(this))return this.remainder=this.clone(),this._low=0,this._high=0,this;if(this.eq(t))return this.remainder=new r(0),this._low=1,this._high=0,this;for(var a=t.clone(),h=-1;!this.lt(a);)a.shiftLeft(1,!0),h++;for(this.remainder=this.clone(),this._low=0,this._high=0;h>=0;h--)a.shiftRight(1),this.remainder.lt(a)||(this.remainder.subtract(a),h>=16?this._high|=1<<h-16:this._low|=1<<h);return this},r.prototype.negate=function(){var t=(~this._low&65535)+1;return this._low=t&65535,this._high=~this._high+(t>>>16)&65535,this},r.prototype.equals=r.prototype.eq=function(t){return this._low==t._low&&this._high==t._high},r.prototype.greaterThan=r.prototype.gt=function(t){return this._high>t._high?!0:this._high<t._high?!1:this._low>t._low},r.prototype.lessThan=r.prototype.lt=function(t){return this._high<t._high?!0:this._high>t._high?!1:this._low<t._low},r.prototype.or=function(t){return this._low|=t._low,this._high|=t._high,this},r.prototype.and=function(t){return this._low&=t._low,this._high&=t._high,this},r.prototype.not=function(){return this._low=~this._low&65535,this._high=~this._high&65535,this},r.prototype.xor=function(t){return this._low^=t._low,this._high^=t._high,this},r.prototype.shiftRight=r.prototype.shiftr=function(t){return t>16?(this._low=this._high>>t-16,this._high=0):t==16?(this._low=this._high,this._high=0):(this._low=this._low>>t|this._high<<16-t&65535,this._high>>=t),this},r.prototype.shiftLeft=r.prototype.shiftl=function(t,a){return t>16?(this._high=this._low<<t-16,this._low=0,a||(this._high&=65535)):t==16?(this._high=this._low,this._low=0):(this._high=this._high<<t|this._low>>16-t,this._low=this._low<<t&65535,a||(this._high&=65535)),this},r.prototype.rotateLeft=r.prototype.rotl=function(t){var a=this._high<<16|this._low;return a=a<<t|a>>>32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.rotateRight=r.prototype.rotr=function(t){var a=this._high<<16|this._low;return a=a>>>t|a<<32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.clone=function(){return new r(this._low,this._high)},i.exports?i.exports=r:o.UINT32=r})(M)})(B);var $=B.exports,U={exports:{}};(function(i){(function(o){var r={16:e(Math.pow(16,5)),10:e(Math.pow(10,5)),2:e(Math.pow(2,5))},s={16:e(16),10:e(10),2:e(2)};function e(h,m,l,f){if(!(this instanceof e))return new e(h,m,l,f);if(this.remainder=null,typeof h=="string")return a.call(this,h,m);if(typeof m>"u")return t.call(this,h);_.apply(this,arguments)}function _(h,m,l,f){return typeof l>"u"?(this._a00=h&65535,this._a16=h>>>16,this._a32=m&65535,this._a48=m>>>16,this):(this._a00=h|0,this._a16=m|0,this._a32=l|0,this._a48=f|0,this)}e.prototype.fromBits=_;function t(h){return this._a00=h&65535,this._a16=h>>>16,this._a32=0,this._a48=0,this}e.prototype.fromNumber=t;function a(h,m){m=m||10,this._a00=0,this._a16=0,this._a32=0,this._a48=0;for(var l=r[m]||new e(Math.pow(m,5)),f=0,n=h.length;f<n;f+=5){var u=Math.min(5,n-f),w=parseInt(h.slice(f,f+u),m);this.multiply(u<5?new e(Math.pow(m,u)):l).add(new e(w))}return this}e.prototype.fromString=a,e.prototype.toNumber=function(){return this._a16*65536+this._a00},e.prototype.toString=function(h){h=h||10;var m=s[h]||new e(h);if(!this.gt(m))return this.toNumber().toString(h);for(var l=this.clone(),f=new Array(64),n=63;n>=0&&(l.div(m),f[n]=l.remainder.toNumber().toString(h),!!l.gt(m));n--);return f[n-1]=l.toNumber().toString(h),f.join("")},e.prototype.add=function(h){var m=this._a00+h._a00,l=m>>>16;l+=this._a16+h._a16;var f=l>>>16;f+=this._a32+h._a32;var n=f>>>16;return n+=this._a48+h._a48,this._a00=m&65535,this._a16=l&65535,this._a32=f&65535,this._a48=n&65535,this},e.prototype.subtract=function(h){return this.add(h.clone().negate())},e.prototype.multiply=function(h){var m=this._a00,l=this._a16,f=this._a32,n=this._a48,u=h._a00,w=h._a16,N=h._a32,L=h._a48,R=m*u,C=R>>>16;C+=m*w;var c=C>>>16;C&=65535,C+=l*u,c+=C>>>16,c+=m*N;var x=c>>>16;return c&=65535,c+=l*w,x+=c>>>16,c&=65535,c+=f*u,x+=c>>>16,x+=m*L,x&=65535,x+=l*N,x&=65535,x+=f*w,x&=65535,x+=n*u,this._a00=R&65535,this._a16=C&65535,this._a32=c&65535,this._a48=x&65535,this},e.prototype.div=function(h){if(h._a16==0&&h._a32==0&&h._a48==0){if(h._a00==0)throw Error("division by zero");if(h._a00==1)return this.remainder=new e(0),this}if(h.gt(this))return this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0,this;if(this.eq(h))return this.remainder=new e(0),this._a00=1,this._a16=0,this._a32=0,this._a48=0,this;for(var m=h.clone(),l=-1;!this.lt(m);)m.shiftLeft(1,!0),l++;for(this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0;l>=0;l--)m.shiftRight(1),this.remainder.lt(m)||(this.remainder.subtract(m),l>=48?this._a48|=1<<l-48:l>=32?this._a32|=1<<l-32:l>=16?this._a16|=1<<l-16:this._a00|=1<<l);return this},e.prototype.negate=function(){var h=(~this._a00&65535)+1;return this._a00=h&65535,h=(~this._a16&65535)+(h>>>16),this._a16=h&65535,h=(~this._a32&65535)+(h>>>16),this._a32=h&65535,this._a48=~this._a48+(h>>>16)&65535,this},e.prototype.equals=e.prototype.eq=function(h){return this._a48==h._a48&&this._a00==h._a00&&this._a32==h._a32&&this._a16==h._a16},e.prototype.greaterThan=e.prototype.gt=function(h){return this._a48>h._a48?!0:this._a48<h._a48?!1:this._a32>h._a32?!0:this._a32<h._a32?!1:this._a16>h._a16?!0:this._a16<h._a16?!1:this._a00>h._a00},e.prototype.lessThan=e.prototype.lt=function(h){return this._a48<h._a48?!0:this._a48>h._a48?!1:this._a32<h._a32?!0:this._a32>h._a32?!1:this._a16<h._a16?!0:this._a16>h._a16?!1:this._a00<h._a00},e.prototype.or=function(h){return this._a00|=h._a00,this._a16|=h._a16,this._a32|=h._a32,this._a48|=h._a48,this},e.prototype.and=function(h){return this._a00&=h._a00,this._a16&=h._a16,this._a32&=h._a32,this._a48&=h._a48,this},e.prototype.xor=function(h){return this._a00^=h._a00,this._a16^=h._a16,this._a32^=h._a32,this._a48^=h._a48,this},e.prototype.not=function(){return this._a00=~this._a00&65535,this._a16=~this._a16&65535,this._a32=~this._a32&65535,this._a48=~this._a48&65535,this},e.prototype.shiftRight=e.prototype.shiftr=function(h){return h%=64,h>=48?(this._a00=this._a48>>h-48,this._a16=0,this._a32=0,this._a48=0):h>=32?(h-=32,this._a00=(this._a32>>h|this._a48<<16-h)&65535,this._a16=this._a48>>h&65535,this._a32=0,this._a48=0):h>=16?(h-=16,this._a00=(this._a16>>h|this._a32<<16-h)&65535,this._a16=(this._a32>>h|this._a48<<16-h)&65535,this._a32=this._a48>>h&65535,this._a48=0):(this._a00=(this._a00>>h|this._a16<<16-h)&65535,this._a16=(this._a16>>h|this._a32<<16-h)&65535,this._a32=(this._a32>>h|this._a48<<16-h)&65535,this._a48=this._a48>>h&65535),this},e.prototype.shiftLeft=e.prototype.shiftl=function(h,m){return h%=64,h>=48?(this._a48=this._a00<<h-48,this._a32=0,this._a16=0,this._a00=0):h>=32?(h-=32,this._a48=this._a16<<h|this._a00>>16-h,this._a32=this._a00<<h&65535,this._a16=0,this._a00=0):h>=16?(h-=16,this._a48=this._a32<<h|this._a16>>16-h,this._a32=(this._a16<<h|this._a00>>16-h)&65535,this._a16=this._a00<<h&65535,this._a00=0):(this._a48=this._a48<<h|this._a32>>16-h,this._a32=(this._a32<<h|this._a16>>16-h)&65535,this._a16=(this._a16<<h|this._a00>>16-h)&65535,this._a00=this._a00<<h&65535),m||(this._a48&=65535),this},e.prototype.rotateLeft=e.prototype.rotl=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l<<h|f>>>32-h,u=f<<h|l>>>32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.rotateRight=e.prototype.rotr=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l>>>h|f<<32-h,u=f>>>h|l<<32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.clone=function(){return new e(this._a00,this._a16,this._a32,this._a48)},i.exports?i.exports=e:o.UINT64=e})(M)})(U);var H=U.exports;I.UINT32=$,I.UINT64=H;var v=I.UINT32;v.prototype.xxh_update=function(i,o){var r=p._low,s=p._high,e,_;_=i*r,e=_>>>16,e+=o*r,e&=65535,e+=i*s;var t=this._low+(_&65535),a=t>>>16;a+=this._high+(e&65535);var h=a<<16|t&65535;h=h<<13|h>>>19,t=h&65535,a=h>>>16,r=b._low,s=b._high,_=t*r,e=_>>>16,e+=a*r,e&=65535,e+=t*s,this._low=_&65535,this._high=e&65535};var b=v("2654435761"),p=v("2246822519"),E=v("3266489917"),k=v("668265263"),T=v("374761393");function D(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function g(){if(arguments.length==2)return new g(arguments[1]).update(arguments[0]).digest();if(!(this instanceof g))return new g(arguments[0]);S.call(this,arguments[0])}function S(i){return this.seed=i instanceof v?i.clone():v(i),this.v1=this.seed.clone().add(b).add(p),this.v2=this.seed.clone().add(p),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(b),this.total_len=0,this.memsize=0,this.memory=null,this}g.prototype.init=S,g.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=D(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(16):this.memory=new Buffer(16)),this.memsize+e<16)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,16-this.memsize):r?this.memory.set(i.subarray(0,16-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,16-this.memsize);var t=0;o?(this.v1.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v2.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v3.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v4.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2))):(this.v1.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v2.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v3.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v4.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2])),s+=16-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-16){var a=_-16;do o?(this.v1.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v2.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v3.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v4.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2))):(this.v1.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v2.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v3.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v4.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2])),s+=4;while(s<=a)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},g.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new v;for(this.total_len>=16?e=this.v1.rotl(1).add(this.v2.rotl(7).add(this.v3.rotl(12).add(this.v4.rotl(18)))):e=this.seed.clone().add(T),e.add(t.fromNumber(this.total_len));r<=s-4;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2]),e.add(t.multiply(E)).rotl(17).multiply(k),r+=4;for(;r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0),e.add(t.multiply(T)).rotl(11).multiply(b);return _=e.clone().shiftRight(15),e.xor(_).multiply(p),_=e.clone().shiftRight(13),e.xor(_).multiply(E),_=e.clone().shiftRight(16),e.xor(_),this.init(this.seed),e};var G=g,d=I.UINT64,y=d("11400714785074694791"),F=d("14029467366897019727"),P=d("1609587929392839161"),z=d("9650029242287828579"),j=d("2870177450012600261");function O(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function A(){if(arguments.length==2)return new A(arguments[1]).update(arguments[0]).digest();if(!(this instanceof A))return new A(arguments[0]);q.call(this,arguments[0])}function q(i){return this.seed=i instanceof d?i.clone():d(i),this.v1=this.seed.clone().add(y).add(F),this.v2=this.seed.clone().add(F),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(y),this.total_len=0,this.memsize=0,this.memory=null,this}A.prototype.init=q,A.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=O(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(32):this.memory=new Buffer(32)),this.memsize+e<32)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,32-this.memsize):r?this.memory.set(i.subarray(0,32-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,32-this.memsize);var t=0;if(o){var a;a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=32-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-32){var h=_-32;do{if(o){var a;a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=8}while(s<=h)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},A.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new d;for(this.total_len>=32?(e=this.v1.clone().rotl(1),e.add(this.v2.clone().rotl(7)),e.add(this.v3.clone().rotl(12)),e.add(this.v4.clone().rotl(18)),e.xor(this.v1.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v2.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v3.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v4.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z)):e=this.seed.clone().add(j),e.add(t.fromNumber(this.total_len));r<=s-8;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),i.charCodeAt(r+5)<<8|i.charCodeAt(r+4),i.charCodeAt(r+7)<<8|i.charCodeAt(r+6)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],i[r+5]<<8|i[r+4],i[r+7]<<8|i[r+6]),t.multiply(F).rotl(31).multiply(y),e.xor(t).rotl(27).multiply(y).add(z),r+=8;for(r+4<=s&&(o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),0,0):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],0,0),e.xor(t.multiply(y)).rotl(23).multiply(F).add(P),r+=4);r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0,0,0),e.xor(t.multiply(j)).rotl(11).multiply(y);return _=e.clone().shiftRight(33),e.xor(_).multiply(F),_=e.clone().shiftRight(29),e.xor(_).multiply(P),_=e.clone().shiftRight(32),e.xor(_),this.init(this.seed),e};var J=A,K={h32:G,h64:J},Q=K,V=X(Q);module.exports=V;
++;return module.exports})({});
++			const hashBytes = Buffer.from(BigInt(globalThis.XXHash.h64(contents, 0x0).toString()).toString(16), 'hex').toString('base64');
++			const hash = hashBytes.toString('base64').replace(/=/g, '');
++			return hash;
++		};
++		const productionVersionNumber = Number((await (await fetch('https://tunnel.dev/api/cli-metadata')).json())['@-/database'].version);
++
++		if (Number.isNaN(productionVersionNumber)) {
++			throw new Error('Version in production should not be NaN');
++		}
++
++		let stagingVersionNumber;
++		try {
++			stagingVersionNumber = (await (await fetch('https://staging.tunnel.dev/api/cli-metadata')).json())['@-/database'].version;
++		} catch (error) {
++			console.error('Failed to fetch staging version number:', error);
++			stagingVersionNumber = productionVersionNumber;
++		}
++
++		const newVersion = convexJson.version;
++		const { resolve } = await import('node:path');
++		const outputFilepaths = new Set(
++			result.outputFiles.flatMap((outputFile) => [
++				outputFile.path,
++				outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++			])
++		);
++
++		const lowestFunctionsVersion = _remoteConfig.modules
++			.filter((module) =>
++				/^v\d+\.js$/.test(module.path) ||
++				(
++					module.path.startsWith('v') &&
++					!module.path.startsWith('v/')
++				)
++			)
++			.map((module) => {
++				if (/^v\d+\.js$/.test(module.path)) {
++					return Number(
++						module.path
++							.replace(/^v/, '')
++							.replace(/\.js$/, '')
++					)
++				} else {
++					return Number(module.path.split('/')[0]);
++				}
++			})
++			.sort()[0];
++
++		const remoteModulesToKeep =
++			_remoteConfig.modules.filter((module) => {
++				// We need to include the `_deps` folder (unless we explicitly purge it)
++				if (module.path.startsWith('_deps/')) {
++					return true;
++				}
++
++				// The 'v/' folder is only used during development
++				if (module.path.startsWith('v/') || module.path === 'v.js') {
++					return false;
++				}
++
++				// Omit any filepaths that we want to update
++				if (outputFilepaths.has(resolve(process.cwd(), 'out', module.path))) {
++					return false;
++				}
++
++				if (module.path.startsWith('v')) {
++					const functionsVersionString =
++						/^v\d+\.js$/.test(module.path)
++							? module.path.replace(/\.js$/, '')
++							: module.path.split('/')[0];
++
++					const functionsVersionNumber = Number(functionsVersionString.slice(1));
++
++					if (Number.isNaN(functionsVersionNumber)) {
++						throw new Error('Function version should not be NaN');
++					}
++
++					// Include the versions currently on production and staging
++					if (
++						functionsVersionNumber === productionVersionNumber ||
++						functionsVersionNumber === stagingVersionNumber
++					) {
++						return true;
++					}
++
++					// Include versions that are up to 3 versions higher than the one in staging or production (these might be in-progress deployments that haven't yet been deployed to staging, but we still want to keep them so they don't break staging when they are deployed)
++					if (
++						(
++							functionsVersionNumber > productionVersionNumber &&
++							functionsVersionNumber <= productionVersionNumber + 3
++						) ||
++						(
++							functionsVersionNumber > stagingVersionNumber &&
++							functionsVersionNumber <= stagingVersionNumber + 3
++						)
++					) {
++						return true;
++					}
++
++					// Exclude all versions below the version in production except for the lowest version (since this version might be from a recent swap and is currently on staging)
++					if (
++						functionsVersionNumber < productionVersionNumber &&
++						functionsVersionNumber !== lowestFunctionsVersion
++					) {
++						return false;
++					}
++				}
++
++				// Exclude all other remote files (we only care about keeping the versioned functions and their dependencies)
++				return false;
++			});
++
++		result.outputFiles = [
++			...(
++				process.env.PURGE_OLD_FUNCTIONS ?
++					[] :
++				remoteModulesToKeep.flatMap((module) => {
++					const files = [
++						{
++							path: resolve(process.cwd(), 'out', module.path),
++							contents: new TextEncoder().encode(module.source),
++							hash: getHash(module.source),
++							text: module.source
++						}
++					];
++
++					// if (module.sourceMap !== undefined) {
++					// 	files.push({
++					// 		path: resolve(process.cwd(), 'out', module.path + '.map'),
++					// 		contents: new TextEncoder().encode(module.sourceMap),
++					// 		hash: getHash(module.sourceMap),
++					// 		text: module.sourceMap
++					// 	})
++					// }
++
++					return files;
++				})
++			),
++			// Filter out original 'v/' functions in production as they are meant only for development
++			...result.outputFiles.filter(
++				(outputFile) => !outputFile.path.endsWith('/v.js')
++			),
++			...result.outputFiles
++				.filter(
++					(outputFile) => outputFile.path.endsWith('/v.js')
++				)
++				.map((outputFile) => ({
++					...outputFile,
++					path: outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++				})),
++		];
++	}
++} catch(error) {
++	console.error('Error in custom build:', error)
++}
++
++for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
+       if (relPath.indexOf("(disabled):") !== -1 || relPath.startsWith("wasm-binary:") || relPath.startsWith("wasm-stub:")) {
+         continue;
+       }
+@@ -108,7 +270,7 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, c
+     return await ctx.crash(1, "invalid filesystem data");
+   }
+ }
+-async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder = "_deps", externalPackagesAllowList = []) {
++async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder = "_deps", externalPackagesAllowList = [], _remoteConfig) {
+   const availableExternalPackages = await (0, import_external.computeExternalPackages)(
+     ctx,
+     externalPackagesAllowList
+@@ -121,7 +283,7 @@ async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform, chun
+     platform,
+     chunksFolder,
+     availableExternalPackages
+-  );
++  , _remoteConfig);
+   if (result.errors.length) {
+     for (const error of result.errors) {
+       console.log(import_chalk.default.red(`esbuild error: ${error.text}`));
+diff --git a/dist/cjs/cli/codegen_templates/api.js b/dist/cjs/cli/codegen_templates/api.js
+index b58201b65f03b56868ddb7ed7bf4d4c78a6082b2..865d566ac031ae232b1f70b3cc56b5d8c6b1e89f 100644
+--- a/dist/cjs/cli/codegen_templates/api.js
++++ b/dist/cjs/cli/codegen_templates/api.js
+@@ -58,7 +58,7 @@ function apiCodegen(modulePaths) {
+     (modulePath) => `"${importPath(modulePath)}": typeof ${moduleIdentifier(modulePath)},`
+   ).join("\n")}
+   }>;
+-  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, "public">>;
++  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, any>>;
+   export declare const internal: FilterApi<typeof fullApi, FunctionReference<any, "internal">>;
+   `;
+   const apiJS = `${(0, import_common.header)("Generated `api` utility.")}
+diff --git a/dist/cjs/cli/lib/config.js b/dist/cjs/cli/lib/config.js
+index 116a8907e998e4029d2c9fd7386727d61038c7a8..ba0b6fa6b40a7d4e2dbae92afa6ba3b270731507 100644
+--- a/dist/cjs/cli/lib/config.js
++++ b/dist/cjs/cli/lib/config.js
+@@ -212,7 +212,7 @@ async function enforceDeprecatedConfigField(ctx, config, field) {
+   (0, import_context.logMessage)(ctx, import_chalk.default.gray(err.toString()));
+   return await ctx.crash(1, "invalid filesystem data", err);
+ }
+-async function configFromProjectConfig(ctx, projectConfig, configPath, verbose) {
++async function configFromProjectConfig(ctx, projectConfig, configPath, verbose, _remoteConfig) {
+   const baseDir = (0, import_utils.functionsDir)(configPath, projectConfig);
+   const entryPoints = await (0, import_bundler.entryPointsByEnvironment)(ctx, baseDir, verbose);
+   if (verbose) {
+diff --git a/dist/cjs/react/use_paginated_query.js b/dist/cjs/react/use_paginated_query.js
+index 6528de0ba04aa8f5d46ed35d1dfc211b5a0a8b03..08a4edb8885191c1a94a22e297d92e4bd5b1de55 100644
+--- a/dist/cjs/react/use_paginated_query.js
++++ b/dist/cjs/react/use_paginated_query.js
+@@ -112,7 +112,7 @@ function usePaginatedQuery(query, args, options) {
+               ...argsObject,
+               paginationOpts: {
+                 numItems: options.initialNumItems,
+-                cursor: null,
++                cursor: options?.initialCursor ?? null,
+                 id
+               }
+             }
+diff --git a/dist/cli.bundle.cjs b/dist/cli.bundle.cjs
+index 50aae34c32a49e87b6e0f6a42cc434cb93257a4a..63914bdb355975790d5b237ce9bd98a50b0dadda 100644
+--- a/dist/cli.bundle.cjs
++++ b/dist/cli.bundle.cjs
+@@ -270948,7 +270948,7 @@ function* walkDir(fs3, dirPath) {
+     }
+   }
+ }
+-async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform2, chunksFolder, externalPackages) {
++async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform2, chunksFolder, externalPackages, _remoteConfig) {
+   const external = createExternalPlugin(ctx, externalPackages);
+   try {
+     const result = await import_esbuild.default.build({
+@@ -270971,7 +270971,169 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform2,
+       keepNames: true,
+       metafile: true
+     });
+-    for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
++    try {
++	const convexJson = JSON.parse(ctx.fs.readUtf8File('convex.json'));
++	if (convexJson.version !== undefined && _remoteConfig !== undefined) {
++		const getHash = (contents) => {
++			globalThis.XXHash ??= ((module) => {"use strict";var M=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function X(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var I={},B={exports:{}};(function(i){(function(o){r(Math.pow(36,5)),r(Math.pow(16,7)),r(Math.pow(10,9)),r(Math.pow(2,30)),r(36),r(16),r(10),r(2);function r(t,a){if(!(this instanceof r))return new r(t,a);if(this._low=0,this._high=0,this.remainder=null,typeof a>"u")return e.call(this,t);if(typeof t=="string")return _.call(this,t,a);s.call(this,t,a)}function s(t,a){return this._low=t|0,this._high=a|0,this}r.prototype.fromBits=s;function e(t){return this._low=t&65535,this._high=t>>>16,this}r.prototype.fromNumber=e;function _(t,a){var h=parseInt(t,a||10);return this._low=h&65535,this._high=h>>>16,this}r.prototype.fromString=_,r.prototype.toNumber=function(){return this._high*65536+this._low},r.prototype.toString=function(t){return this.toNumber().toString(t||10)},r.prototype.add=function(t){var a=this._low+t._low,h=a>>>16;return h+=this._high+t._high,this._low=a&65535,this._high=h&65535,this},r.prototype.subtract=function(t){return this.add(t.clone().negate())},r.prototype.multiply=function(t){var a=this._high,h=this._low,m=t._high,l=t._low,f,n;return n=h*l,f=n>>>16,f+=a*l,f&=65535,f+=h*m,this._low=n&65535,this._high=f&65535,this},r.prototype.div=function(t){if(t._low==0&&t._high==0)throw Error("division by zero");if(t._high==0&&t._low==1)return this.remainder=new r(0),this;if(t.gt(this))return this.remainder=this.clone(),this._low=0,this._high=0,this;if(this.eq(t))return this.remainder=new r(0),this._low=1,this._high=0,this;for(var a=t.clone(),h=-1;!this.lt(a);)a.shiftLeft(1,!0),h++;for(this.remainder=this.clone(),this._low=0,this._high=0;h>=0;h--)a.shiftRight(1),this.remainder.lt(a)||(this.remainder.subtract(a),h>=16?this._high|=1<<h-16:this._low|=1<<h);return this},r.prototype.negate=function(){var t=(~this._low&65535)+1;return this._low=t&65535,this._high=~this._high+(t>>>16)&65535,this},r.prototype.equals=r.prototype.eq=function(t){return this._low==t._low&&this._high==t._high},r.prototype.greaterThan=r.prototype.gt=function(t){return this._high>t._high?!0:this._high<t._high?!1:this._low>t._low},r.prototype.lessThan=r.prototype.lt=function(t){return this._high<t._high?!0:this._high>t._high?!1:this._low<t._low},r.prototype.or=function(t){return this._low|=t._low,this._high|=t._high,this},r.prototype.and=function(t){return this._low&=t._low,this._high&=t._high,this},r.prototype.not=function(){return this._low=~this._low&65535,this._high=~this._high&65535,this},r.prototype.xor=function(t){return this._low^=t._low,this._high^=t._high,this},r.prototype.shiftRight=r.prototype.shiftr=function(t){return t>16?(this._low=this._high>>t-16,this._high=0):t==16?(this._low=this._high,this._high=0):(this._low=this._low>>t|this._high<<16-t&65535,this._high>>=t),this},r.prototype.shiftLeft=r.prototype.shiftl=function(t,a){return t>16?(this._high=this._low<<t-16,this._low=0,a||(this._high&=65535)):t==16?(this._high=this._low,this._low=0):(this._high=this._high<<t|this._low>>16-t,this._low=this._low<<t&65535,a||(this._high&=65535)),this},r.prototype.rotateLeft=r.prototype.rotl=function(t){var a=this._high<<16|this._low;return a=a<<t|a>>>32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.rotateRight=r.prototype.rotr=function(t){var a=this._high<<16|this._low;return a=a>>>t|a<<32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.clone=function(){return new r(this._low,this._high)},i.exports?i.exports=r:o.UINT32=r})(M)})(B);var $=B.exports,U={exports:{}};(function(i){(function(o){var r={16:e(Math.pow(16,5)),10:e(Math.pow(10,5)),2:e(Math.pow(2,5))},s={16:e(16),10:e(10),2:e(2)};function e(h,m,l,f){if(!(this instanceof e))return new e(h,m,l,f);if(this.remainder=null,typeof h=="string")return a.call(this,h,m);if(typeof m>"u")return t.call(this,h);_.apply(this,arguments)}function _(h,m,l,f){return typeof l>"u"?(this._a00=h&65535,this._a16=h>>>16,this._a32=m&65535,this._a48=m>>>16,this):(this._a00=h|0,this._a16=m|0,this._a32=l|0,this._a48=f|0,this)}e.prototype.fromBits=_;function t(h){return this._a00=h&65535,this._a16=h>>>16,this._a32=0,this._a48=0,this}e.prototype.fromNumber=t;function a(h,m){m=m||10,this._a00=0,this._a16=0,this._a32=0,this._a48=0;for(var l=r[m]||new e(Math.pow(m,5)),f=0,n=h.length;f<n;f+=5){var u=Math.min(5,n-f),w=parseInt(h.slice(f,f+u),m);this.multiply(u<5?new e(Math.pow(m,u)):l).add(new e(w))}return this}e.prototype.fromString=a,e.prototype.toNumber=function(){return this._a16*65536+this._a00},e.prototype.toString=function(h){h=h||10;var m=s[h]||new e(h);if(!this.gt(m))return this.toNumber().toString(h);for(var l=this.clone(),f=new Array(64),n=63;n>=0&&(l.div(m),f[n]=l.remainder.toNumber().toString(h),!!l.gt(m));n--);return f[n-1]=l.toNumber().toString(h),f.join("")},e.prototype.add=function(h){var m=this._a00+h._a00,l=m>>>16;l+=this._a16+h._a16;var f=l>>>16;f+=this._a32+h._a32;var n=f>>>16;return n+=this._a48+h._a48,this._a00=m&65535,this._a16=l&65535,this._a32=f&65535,this._a48=n&65535,this},e.prototype.subtract=function(h){return this.add(h.clone().negate())},e.prototype.multiply=function(h){var m=this._a00,l=this._a16,f=this._a32,n=this._a48,u=h._a00,w=h._a16,N=h._a32,L=h._a48,R=m*u,C=R>>>16;C+=m*w;var c=C>>>16;C&=65535,C+=l*u,c+=C>>>16,c+=m*N;var x=c>>>16;return c&=65535,c+=l*w,x+=c>>>16,c&=65535,c+=f*u,x+=c>>>16,x+=m*L,x&=65535,x+=l*N,x&=65535,x+=f*w,x&=65535,x+=n*u,this._a00=R&65535,this._a16=C&65535,this._a32=c&65535,this._a48=x&65535,this},e.prototype.div=function(h){if(h._a16==0&&h._a32==0&&h._a48==0){if(h._a00==0)throw Error("division by zero");if(h._a00==1)return this.remainder=new e(0),this}if(h.gt(this))return this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0,this;if(this.eq(h))return this.remainder=new e(0),this._a00=1,this._a16=0,this._a32=0,this._a48=0,this;for(var m=h.clone(),l=-1;!this.lt(m);)m.shiftLeft(1,!0),l++;for(this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0;l>=0;l--)m.shiftRight(1),this.remainder.lt(m)||(this.remainder.subtract(m),l>=48?this._a48|=1<<l-48:l>=32?this._a32|=1<<l-32:l>=16?this._a16|=1<<l-16:this._a00|=1<<l);return this},e.prototype.negate=function(){var h=(~this._a00&65535)+1;return this._a00=h&65535,h=(~this._a16&65535)+(h>>>16),this._a16=h&65535,h=(~this._a32&65535)+(h>>>16),this._a32=h&65535,this._a48=~this._a48+(h>>>16)&65535,this},e.prototype.equals=e.prototype.eq=function(h){return this._a48==h._a48&&this._a00==h._a00&&this._a32==h._a32&&this._a16==h._a16},e.prototype.greaterThan=e.prototype.gt=function(h){return this._a48>h._a48?!0:this._a48<h._a48?!1:this._a32>h._a32?!0:this._a32<h._a32?!1:this._a16>h._a16?!0:this._a16<h._a16?!1:this._a00>h._a00},e.prototype.lessThan=e.prototype.lt=function(h){return this._a48<h._a48?!0:this._a48>h._a48?!1:this._a32<h._a32?!0:this._a32>h._a32?!1:this._a16<h._a16?!0:this._a16>h._a16?!1:this._a00<h._a00},e.prototype.or=function(h){return this._a00|=h._a00,this._a16|=h._a16,this._a32|=h._a32,this._a48|=h._a48,this},e.prototype.and=function(h){return this._a00&=h._a00,this._a16&=h._a16,this._a32&=h._a32,this._a48&=h._a48,this},e.prototype.xor=function(h){return this._a00^=h._a00,this._a16^=h._a16,this._a32^=h._a32,this._a48^=h._a48,this},e.prototype.not=function(){return this._a00=~this._a00&65535,this._a16=~this._a16&65535,this._a32=~this._a32&65535,this._a48=~this._a48&65535,this},e.prototype.shiftRight=e.prototype.shiftr=function(h){return h%=64,h>=48?(this._a00=this._a48>>h-48,this._a16=0,this._a32=0,this._a48=0):h>=32?(h-=32,this._a00=(this._a32>>h|this._a48<<16-h)&65535,this._a16=this._a48>>h&65535,this._a32=0,this._a48=0):h>=16?(h-=16,this._a00=(this._a16>>h|this._a32<<16-h)&65535,this._a16=(this._a32>>h|this._a48<<16-h)&65535,this._a32=this._a48>>h&65535,this._a48=0):(this._a00=(this._a00>>h|this._a16<<16-h)&65535,this._a16=(this._a16>>h|this._a32<<16-h)&65535,this._a32=(this._a32>>h|this._a48<<16-h)&65535,this._a48=this._a48>>h&65535),this},e.prototype.shiftLeft=e.prototype.shiftl=function(h,m){return h%=64,h>=48?(this._a48=this._a00<<h-48,this._a32=0,this._a16=0,this._a00=0):h>=32?(h-=32,this._a48=this._a16<<h|this._a00>>16-h,this._a32=this._a00<<h&65535,this._a16=0,this._a00=0):h>=16?(h-=16,this._a48=this._a32<<h|this._a16>>16-h,this._a32=(this._a16<<h|this._a00>>16-h)&65535,this._a16=this._a00<<h&65535,this._a00=0):(this._a48=this._a48<<h|this._a32>>16-h,this._a32=(this._a32<<h|this._a16>>16-h)&65535,this._a16=(this._a16<<h|this._a00>>16-h)&65535,this._a00=this._a00<<h&65535),m||(this._a48&=65535),this},e.prototype.rotateLeft=e.prototype.rotl=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l<<h|f>>>32-h,u=f<<h|l>>>32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.rotateRight=e.prototype.rotr=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l>>>h|f<<32-h,u=f>>>h|l<<32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.clone=function(){return new e(this._a00,this._a16,this._a32,this._a48)},i.exports?i.exports=e:o.UINT64=e})(M)})(U);var H=U.exports;I.UINT32=$,I.UINT64=H;var v=I.UINT32;v.prototype.xxh_update=function(i,o){var r=p._low,s=p._high,e,_;_=i*r,e=_>>>16,e+=o*r,e&=65535,e+=i*s;var t=this._low+(_&65535),a=t>>>16;a+=this._high+(e&65535);var h=a<<16|t&65535;h=h<<13|h>>>19,t=h&65535,a=h>>>16,r=b._low,s=b._high,_=t*r,e=_>>>16,e+=a*r,e&=65535,e+=t*s,this._low=_&65535,this._high=e&65535};var b=v("2654435761"),p=v("2246822519"),E=v("3266489917"),k=v("668265263"),T=v("374761393");function D(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function g(){if(arguments.length==2)return new g(arguments[1]).update(arguments[0]).digest();if(!(this instanceof g))return new g(arguments[0]);S.call(this,arguments[0])}function S(i){return this.seed=i instanceof v?i.clone():v(i),this.v1=this.seed.clone().add(b).add(p),this.v2=this.seed.clone().add(p),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(b),this.total_len=0,this.memsize=0,this.memory=null,this}g.prototype.init=S,g.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=D(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(16):this.memory=new Buffer(16)),this.memsize+e<16)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,16-this.memsize):r?this.memory.set(i.subarray(0,16-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,16-this.memsize);var t=0;o?(this.v1.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v2.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v3.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v4.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2))):(this.v1.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v2.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v3.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v4.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2])),s+=16-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-16){var a=_-16;do o?(this.v1.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v2.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v3.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v4.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2))):(this.v1.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v2.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v3.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v4.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2])),s+=4;while(s<=a)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},g.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new v;for(this.total_len>=16?e=this.v1.rotl(1).add(this.v2.rotl(7).add(this.v3.rotl(12).add(this.v4.rotl(18)))):e=this.seed.clone().add(T),e.add(t.fromNumber(this.total_len));r<=s-4;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2]),e.add(t.multiply(E)).rotl(17).multiply(k),r+=4;for(;r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0),e.add(t.multiply(T)).rotl(11).multiply(b);return _=e.clone().shiftRight(15),e.xor(_).multiply(p),_=e.clone().shiftRight(13),e.xor(_).multiply(E),_=e.clone().shiftRight(16),e.xor(_),this.init(this.seed),e};var G=g,d=I.UINT64,y=d("11400714785074694791"),F=d("14029467366897019727"),P=d("1609587929392839161"),z=d("9650029242287828579"),j=d("2870177450012600261");function O(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function A(){if(arguments.length==2)return new A(arguments[1]).update(arguments[0]).digest();if(!(this instanceof A))return new A(arguments[0]);q.call(this,arguments[0])}function q(i){return this.seed=i instanceof d?i.clone():d(i),this.v1=this.seed.clone().add(y).add(F),this.v2=this.seed.clone().add(F),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(y),this.total_len=0,this.memsize=0,this.memory=null,this}A.prototype.init=q,A.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=O(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(32):this.memory=new Buffer(32)),this.memsize+e<32)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,32-this.memsize):r?this.memory.set(i.subarray(0,32-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,32-this.memsize);var t=0;if(o){var a;a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=32-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-32){var h=_-32;do{if(o){var a;a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=8}while(s<=h)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},A.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new d;for(this.total_len>=32?(e=this.v1.clone().rotl(1),e.add(this.v2.clone().rotl(7)),e.add(this.v3.clone().rotl(12)),e.add(this.v4.clone().rotl(18)),e.xor(this.v1.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v2.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v3.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v4.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z)):e=this.seed.clone().add(j),e.add(t.fromNumber(this.total_len));r<=s-8;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),i.charCodeAt(r+5)<<8|i.charCodeAt(r+4),i.charCodeAt(r+7)<<8|i.charCodeAt(r+6)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],i[r+5]<<8|i[r+4],i[r+7]<<8|i[r+6]),t.multiply(F).rotl(31).multiply(y),e.xor(t).rotl(27).multiply(y).add(z),r+=8;for(r+4<=s&&(o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),0,0):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],0,0),e.xor(t.multiply(y)).rotl(23).multiply(F).add(P),r+=4);r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0,0,0),e.xor(t.multiply(j)).rotl(11).multiply(y);return _=e.clone().shiftRight(33),e.xor(_).multiply(F),_=e.clone().shiftRight(29),e.xor(_).multiply(P),_=e.clone().shiftRight(32),e.xor(_),this.init(this.seed),e};var J=A,K={h32:G,h64:J},Q=K,V=X(Q);module.exports=V;
++;return module.exports})({});
++			const hashBytes = Buffer.from(BigInt(globalThis.XXHash.h64(contents, 0x0).toString()).toString(16), 'hex').toString('base64');
++			const hash = hashBytes.toString('base64').replace(/=/g, '');
++			return hash;
++		};
++		const productionVersionNumber = Number((await (await fetch('https://tunnel.dev/api/cli-metadata')).json())['@-/database'].version);
++
++		if (Number.isNaN(productionVersionNumber)) {
++			throw new Error('Version in production should not be NaN');
++		}
++
++		let stagingVersionNumber;
++		try {
++			stagingVersionNumber = (await (await fetch('https://staging.tunnel.dev/api/cli-metadata')).json())['@-/database'].version;
++		} catch (error) {
++			console.error('Failed to fetch staging version number:', error);
++			stagingVersionNumber = productionVersionNumber;
++		}
++
++		const newVersion = convexJson.version;
++		const { resolve } = await import('node:path');
++		const outputFilepaths = new Set(
++			result.outputFiles.flatMap((outputFile) => [
++				outputFile.path,
++				outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++			])
++		);
++
++		const lowestFunctionsVersion = _remoteConfig.modules
++			.filter((module) =>
++				/^v\d+\.js$/.test(module.path) ||
++				(
++					module.path.startsWith('v') &&
++					!module.path.startsWith('v/')
++				)
++			)
++			.map((module) => {
++				if (/^v\d+\.js$/.test(module.path)) {
++					return Number(
++						module.path
++							.replace(/^v/, '')
++							.replace(/\.js$/, '')
++					)
++				} else {
++					return Number(module.path.split('/')[0]);
++				}
++			})
++			.sort()[0];
++
++		const remoteModulesToKeep =
++			_remoteConfig.modules.filter((module) => {
++				// We need to include the `_deps` folder (unless we explicitly purge it)
++				if (module.path.startsWith('_deps/')) {
++					return true;
++				}
++
++				// The 'v/' folder is only used during development
++				if (module.path.startsWith('v/') || module.path === 'v.js') {
++					return false;
++				}
++
++				// Omit any filepaths that we want to update
++				if (outputFilepaths.has(resolve(process.cwd(), 'out', module.path))) {
++					return false;
++				}
++
++				if (module.path.startsWith('v')) {
++					const functionsVersionString =
++						/^v\d+\.js$/.test(module.path)
++							? module.path.replace(/\.js$/, '')
++							: module.path.split('/')[0];
++
++					const functionsVersionNumber = Number(functionsVersionString.slice(1));
++
++					if (Number.isNaN(functionsVersionNumber)) {
++						throw new Error('Function version should not be NaN');
++					}
++
++					// Include the versions currently on production and staging
++					if (
++						functionsVersionNumber === productionVersionNumber ||
++						functionsVersionNumber === stagingVersionNumber
++					) {
++						return true;
++					}
++
++					// Include versions that are up to 3 versions higher than the one in staging or production (these might be in-progress deployments that haven't yet been deployed to staging, but we still want to keep them so they don't break staging when they are deployed)
++					if (
++						(
++							functionsVersionNumber > productionVersionNumber &&
++							functionsVersionNumber <= productionVersionNumber + 3
++						) ||
++						(
++							functionsVersionNumber > stagingVersionNumber &&
++							functionsVersionNumber <= stagingVersionNumber + 3
++						)
++					) {
++						return true;
++					}
++
++					// Exclude all versions below the version in production except for the lowest version (since this version might be from a recent swap and is currently on staging)
++					if (
++						functionsVersionNumber < productionVersionNumber &&
++						functionsVersionNumber !== lowestFunctionsVersion
++					) {
++						return false;
++					}
++				}
++
++				// Exclude all other remote files (we only care about keeping the versioned functions and their dependencies)
++				return false;
++			});
++
++		result.outputFiles = [
++			...(
++				process.env.PURGE_OLD_FUNCTIONS ?
++					[] :
++				remoteModulesToKeep.flatMap((module) => {
++					const files = [
++						{
++							path: resolve(process.cwd(), 'out', module.path),
++							contents: new TextEncoder().encode(module.source),
++							hash: getHash(module.source),
++							text: module.source
++						}
++					];
++
++					// if (module.sourceMap !== undefined) {
++					// 	files.push({
++					// 		path: resolve(process.cwd(), 'out', module.path + '.map'),
++					// 		contents: new TextEncoder().encode(module.sourceMap),
++					// 		hash: getHash(module.sourceMap),
++					// 		text: module.sourceMap
++					// 	})
++					// }
++
++					return files;
++				})
++			),
++			// Filter out original 'v/' functions in production as they are meant only for development
++			...result.outputFiles.filter(
++				(outputFile) => !outputFile.path.endsWith('/v.js')
++			),
++			...result.outputFiles
++				.filter(
++					(outputFile) => outputFile.path.endsWith('/v.js')
++				)
++				.map((outputFile) => ({
++					...outputFile,
++					path: outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++				})),
++		];
++	}
++} catch(error) {
++	console.error('Error in custom build:', error)
++}
++
++for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
+       if (relPath.indexOf("(disabled):") !== -1 || relPath.startsWith("wasm-binary:") || relPath.startsWith("wasm-stub:")) {
+         continue;
+       }
+@@ -270995,7 +271157,7 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform2,
+     return await ctx.crash(1, "invalid filesystem data");
+   }
+ }
+-async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform2, chunksFolder = "_deps", externalPackagesAllowList = []) {
++async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform2, chunksFolder = "_deps", externalPackagesAllowList = [], _remoteConfig) {
+   const availableExternalPackages = await computeExternalPackages(
+     ctx,
+     externalPackagesAllowList
+@@ -271008,7 +271170,7 @@ async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform2, chu
+     platform2,
+     chunksFolder,
+     availableExternalPackages
+-  );
++  , _remoteConfig);
+   if (result.errors.length) {
+     for (const error of result.errors) {
+       console.log(import_chalk18.default.red(`esbuild error: ${error.text}`));
+@@ -271840,7 +272002,7 @@ async function enforceDeprecatedConfigField(ctx, config2, field) {
+   logMessage(ctx, import_chalk21.default.gray(err.toString()));
+   return await ctx.crash(1, "invalid filesystem data", err);
+ }
+-async function configFromProjectConfig(ctx, projectConfig, configPath, verbose) {
++async function configFromProjectConfig(ctx, projectConfig, configPath, verbose, _remoteConfig) {
+   const baseDir = functionsDir(configPath, projectConfig);
+   const entryPoints2 = await entryPointsByEnvironment(ctx, baseDir, verbose);
+   if (verbose) {
+@@ -271852,7 +272014,7 @@ async function configFromProjectConfig(ctx, projectConfig, configPath, verbose)
+     entryPoints2.isolate,
+     true,
+     "browser"
+-  );
++  , "_deps", [], _remoteConfig);
+   if (verbose) {
+     logMessage(
+       ctx,
+@@ -272602,7 +272764,7 @@ function apiCodegen(modulePaths) {
+     (modulePath) => `"${importPath(modulePath)}": typeof ${moduleIdentifier(modulePath)},`
+   ).join("\n")}
+   }>;
+-  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, "public">>;
++  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, any>>;
+   export declare const internal: FilterApi<typeof fullApi, FunctionReference<any, "internal">>;
+   `;
+   const apiJS = `${header("Generated `api` utility.")}
+@@ -274140,7 +274302,14 @@ async function runPush(ctx, options) {
+     }
+   }
+   const timeBundleStarts = performance.now();
+-  const { config: localConfig, bundledModuleInfos } = await configFromProjectConfig(ctx, projectConfig, configPath, verbose);
++  const _remoteConfig = await pullConfig(
++	ctx,
++	void 0,
++	void 0,
++	origin,
++	options.adminKey
++);
++const { config: localConfig, bundledModuleInfos } = await configFromProjectConfig(ctx, projectConfig, configPath, verbose, _remoteConfig);
+   if (options.debugBundlePath) {
+     const config2 = configJSON(localConfig, options.adminKey);
+     ctx.fs.writeUtf8File(options.debugBundlePath, JSON.stringify(config2));
+diff --git a/dist/esm/bundler/index.js b/dist/esm/bundler/index.js
+index 6acd44bcfcdfc22f5436accf9429306d230f998d..5d579b2a5d2ce31b0cef6965a3c62e429552ffca 100644
+--- a/dist/esm/bundler/index.js
++++ b/dist/esm/bundler/index.js
+@@ -23,7 +23,7 @@ export function* walkDir(fs, dirPath) {
+     }
+   }
+ }
+-async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder, externalPackages) {
++async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder, externalPackages, _remoteConfig) {
+   const external = createExternalPlugin(ctx, externalPackages);
+   try {
+     const result = await esbuild.build({
+@@ -46,7 +46,169 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, c
+       keepNames: true,
+       metafile: true
+     });
+-    for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
++    try {
++	const convexJson = JSON.parse(ctx.fs.readUtf8File('convex.json'));
++	if (convexJson.version !== undefined && _remoteConfig !== undefined) {
++		const getHash = (contents) => {
++			globalThis.XXHash ??= ((module) => {"use strict";var M=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function X(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var I={},B={exports:{}};(function(i){(function(o){r(Math.pow(36,5)),r(Math.pow(16,7)),r(Math.pow(10,9)),r(Math.pow(2,30)),r(36),r(16),r(10),r(2);function r(t,a){if(!(this instanceof r))return new r(t,a);if(this._low=0,this._high=0,this.remainder=null,typeof a>"u")return e.call(this,t);if(typeof t=="string")return _.call(this,t,a);s.call(this,t,a)}function s(t,a){return this._low=t|0,this._high=a|0,this}r.prototype.fromBits=s;function e(t){return this._low=t&65535,this._high=t>>>16,this}r.prototype.fromNumber=e;function _(t,a){var h=parseInt(t,a||10);return this._low=h&65535,this._high=h>>>16,this}r.prototype.fromString=_,r.prototype.toNumber=function(){return this._high*65536+this._low},r.prototype.toString=function(t){return this.toNumber().toString(t||10)},r.prototype.add=function(t){var a=this._low+t._low,h=a>>>16;return h+=this._high+t._high,this._low=a&65535,this._high=h&65535,this},r.prototype.subtract=function(t){return this.add(t.clone().negate())},r.prototype.multiply=function(t){var a=this._high,h=this._low,m=t._high,l=t._low,f,n;return n=h*l,f=n>>>16,f+=a*l,f&=65535,f+=h*m,this._low=n&65535,this._high=f&65535,this},r.prototype.div=function(t){if(t._low==0&&t._high==0)throw Error("division by zero");if(t._high==0&&t._low==1)return this.remainder=new r(0),this;if(t.gt(this))return this.remainder=this.clone(),this._low=0,this._high=0,this;if(this.eq(t))return this.remainder=new r(0),this._low=1,this._high=0,this;for(var a=t.clone(),h=-1;!this.lt(a);)a.shiftLeft(1,!0),h++;for(this.remainder=this.clone(),this._low=0,this._high=0;h>=0;h--)a.shiftRight(1),this.remainder.lt(a)||(this.remainder.subtract(a),h>=16?this._high|=1<<h-16:this._low|=1<<h);return this},r.prototype.negate=function(){var t=(~this._low&65535)+1;return this._low=t&65535,this._high=~this._high+(t>>>16)&65535,this},r.prototype.equals=r.prototype.eq=function(t){return this._low==t._low&&this._high==t._high},r.prototype.greaterThan=r.prototype.gt=function(t){return this._high>t._high?!0:this._high<t._high?!1:this._low>t._low},r.prototype.lessThan=r.prototype.lt=function(t){return this._high<t._high?!0:this._high>t._high?!1:this._low<t._low},r.prototype.or=function(t){return this._low|=t._low,this._high|=t._high,this},r.prototype.and=function(t){return this._low&=t._low,this._high&=t._high,this},r.prototype.not=function(){return this._low=~this._low&65535,this._high=~this._high&65535,this},r.prototype.xor=function(t){return this._low^=t._low,this._high^=t._high,this},r.prototype.shiftRight=r.prototype.shiftr=function(t){return t>16?(this._low=this._high>>t-16,this._high=0):t==16?(this._low=this._high,this._high=0):(this._low=this._low>>t|this._high<<16-t&65535,this._high>>=t),this},r.prototype.shiftLeft=r.prototype.shiftl=function(t,a){return t>16?(this._high=this._low<<t-16,this._low=0,a||(this._high&=65535)):t==16?(this._high=this._low,this._low=0):(this._high=this._high<<t|this._low>>16-t,this._low=this._low<<t&65535,a||(this._high&=65535)),this},r.prototype.rotateLeft=r.prototype.rotl=function(t){var a=this._high<<16|this._low;return a=a<<t|a>>>32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.rotateRight=r.prototype.rotr=function(t){var a=this._high<<16|this._low;return a=a>>>t|a<<32-t,this._low=a&65535,this._high=a>>>16,this},r.prototype.clone=function(){return new r(this._low,this._high)},i.exports?i.exports=r:o.UINT32=r})(M)})(B);var $=B.exports,U={exports:{}};(function(i){(function(o){var r={16:e(Math.pow(16,5)),10:e(Math.pow(10,5)),2:e(Math.pow(2,5))},s={16:e(16),10:e(10),2:e(2)};function e(h,m,l,f){if(!(this instanceof e))return new e(h,m,l,f);if(this.remainder=null,typeof h=="string")return a.call(this,h,m);if(typeof m>"u")return t.call(this,h);_.apply(this,arguments)}function _(h,m,l,f){return typeof l>"u"?(this._a00=h&65535,this._a16=h>>>16,this._a32=m&65535,this._a48=m>>>16,this):(this._a00=h|0,this._a16=m|0,this._a32=l|0,this._a48=f|0,this)}e.prototype.fromBits=_;function t(h){return this._a00=h&65535,this._a16=h>>>16,this._a32=0,this._a48=0,this}e.prototype.fromNumber=t;function a(h,m){m=m||10,this._a00=0,this._a16=0,this._a32=0,this._a48=0;for(var l=r[m]||new e(Math.pow(m,5)),f=0,n=h.length;f<n;f+=5){var u=Math.min(5,n-f),w=parseInt(h.slice(f,f+u),m);this.multiply(u<5?new e(Math.pow(m,u)):l).add(new e(w))}return this}e.prototype.fromString=a,e.prototype.toNumber=function(){return this._a16*65536+this._a00},e.prototype.toString=function(h){h=h||10;var m=s[h]||new e(h);if(!this.gt(m))return this.toNumber().toString(h);for(var l=this.clone(),f=new Array(64),n=63;n>=0&&(l.div(m),f[n]=l.remainder.toNumber().toString(h),!!l.gt(m));n--);return f[n-1]=l.toNumber().toString(h),f.join("")},e.prototype.add=function(h){var m=this._a00+h._a00,l=m>>>16;l+=this._a16+h._a16;var f=l>>>16;f+=this._a32+h._a32;var n=f>>>16;return n+=this._a48+h._a48,this._a00=m&65535,this._a16=l&65535,this._a32=f&65535,this._a48=n&65535,this},e.prototype.subtract=function(h){return this.add(h.clone().negate())},e.prototype.multiply=function(h){var m=this._a00,l=this._a16,f=this._a32,n=this._a48,u=h._a00,w=h._a16,N=h._a32,L=h._a48,R=m*u,C=R>>>16;C+=m*w;var c=C>>>16;C&=65535,C+=l*u,c+=C>>>16,c+=m*N;var x=c>>>16;return c&=65535,c+=l*w,x+=c>>>16,c&=65535,c+=f*u,x+=c>>>16,x+=m*L,x&=65535,x+=l*N,x&=65535,x+=f*w,x&=65535,x+=n*u,this._a00=R&65535,this._a16=C&65535,this._a32=c&65535,this._a48=x&65535,this},e.prototype.div=function(h){if(h._a16==0&&h._a32==0&&h._a48==0){if(h._a00==0)throw Error("division by zero");if(h._a00==1)return this.remainder=new e(0),this}if(h.gt(this))return this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0,this;if(this.eq(h))return this.remainder=new e(0),this._a00=1,this._a16=0,this._a32=0,this._a48=0,this;for(var m=h.clone(),l=-1;!this.lt(m);)m.shiftLeft(1,!0),l++;for(this.remainder=this.clone(),this._a00=0,this._a16=0,this._a32=0,this._a48=0;l>=0;l--)m.shiftRight(1),this.remainder.lt(m)||(this.remainder.subtract(m),l>=48?this._a48|=1<<l-48:l>=32?this._a32|=1<<l-32:l>=16?this._a16|=1<<l-16:this._a00|=1<<l);return this},e.prototype.negate=function(){var h=(~this._a00&65535)+1;return this._a00=h&65535,h=(~this._a16&65535)+(h>>>16),this._a16=h&65535,h=(~this._a32&65535)+(h>>>16),this._a32=h&65535,this._a48=~this._a48+(h>>>16)&65535,this},e.prototype.equals=e.prototype.eq=function(h){return this._a48==h._a48&&this._a00==h._a00&&this._a32==h._a32&&this._a16==h._a16},e.prototype.greaterThan=e.prototype.gt=function(h){return this._a48>h._a48?!0:this._a48<h._a48?!1:this._a32>h._a32?!0:this._a32<h._a32?!1:this._a16>h._a16?!0:this._a16<h._a16?!1:this._a00>h._a00},e.prototype.lessThan=e.prototype.lt=function(h){return this._a48<h._a48?!0:this._a48>h._a48?!1:this._a32<h._a32?!0:this._a32>h._a32?!1:this._a16<h._a16?!0:this._a16>h._a16?!1:this._a00<h._a00},e.prototype.or=function(h){return this._a00|=h._a00,this._a16|=h._a16,this._a32|=h._a32,this._a48|=h._a48,this},e.prototype.and=function(h){return this._a00&=h._a00,this._a16&=h._a16,this._a32&=h._a32,this._a48&=h._a48,this},e.prototype.xor=function(h){return this._a00^=h._a00,this._a16^=h._a16,this._a32^=h._a32,this._a48^=h._a48,this},e.prototype.not=function(){return this._a00=~this._a00&65535,this._a16=~this._a16&65535,this._a32=~this._a32&65535,this._a48=~this._a48&65535,this},e.prototype.shiftRight=e.prototype.shiftr=function(h){return h%=64,h>=48?(this._a00=this._a48>>h-48,this._a16=0,this._a32=0,this._a48=0):h>=32?(h-=32,this._a00=(this._a32>>h|this._a48<<16-h)&65535,this._a16=this._a48>>h&65535,this._a32=0,this._a48=0):h>=16?(h-=16,this._a00=(this._a16>>h|this._a32<<16-h)&65535,this._a16=(this._a32>>h|this._a48<<16-h)&65535,this._a32=this._a48>>h&65535,this._a48=0):(this._a00=(this._a00>>h|this._a16<<16-h)&65535,this._a16=(this._a16>>h|this._a32<<16-h)&65535,this._a32=(this._a32>>h|this._a48<<16-h)&65535,this._a48=this._a48>>h&65535),this},e.prototype.shiftLeft=e.prototype.shiftl=function(h,m){return h%=64,h>=48?(this._a48=this._a00<<h-48,this._a32=0,this._a16=0,this._a00=0):h>=32?(h-=32,this._a48=this._a16<<h|this._a00>>16-h,this._a32=this._a00<<h&65535,this._a16=0,this._a00=0):h>=16?(h-=16,this._a48=this._a32<<h|this._a16>>16-h,this._a32=(this._a16<<h|this._a00>>16-h)&65535,this._a16=this._a00<<h&65535,this._a00=0):(this._a48=this._a48<<h|this._a32>>16-h,this._a32=(this._a32<<h|this._a16>>16-h)&65535,this._a16=(this._a16<<h|this._a00>>16-h)&65535,this._a00=this._a00<<h&65535),m||(this._a48&=65535),this},e.prototype.rotateLeft=e.prototype.rotl=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l<<h|f>>>32-h,u=f<<h|l>>>32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.rotateRight=e.prototype.rotr=function(h){if(h%=64,h==0)return this;if(h>=32){var m=this._a00;if(this._a00=this._a32,this._a32=m,m=this._a48,this._a48=this._a16,this._a16=m,h==32)return this;h-=32}var l=this._a48<<16|this._a32,f=this._a16<<16|this._a00,n=l>>>h|f<<32-h,u=f>>>h|l<<32-h;return this._a00=u&65535,this._a16=u>>>16,this._a32=n&65535,this._a48=n>>>16,this},e.prototype.clone=function(){return new e(this._a00,this._a16,this._a32,this._a48)},i.exports?i.exports=e:o.UINT64=e})(M)})(U);var H=U.exports;I.UINT32=$,I.UINT64=H;var v=I.UINT32;v.prototype.xxh_update=function(i,o){var r=p._low,s=p._high,e,_;_=i*r,e=_>>>16,e+=o*r,e&=65535,e+=i*s;var t=this._low+(_&65535),a=t>>>16;a+=this._high+(e&65535);var h=a<<16|t&65535;h=h<<13|h>>>19,t=h&65535,a=h>>>16,r=b._low,s=b._high,_=t*r,e=_>>>16,e+=a*r,e&=65535,e+=t*s,this._low=_&65535,this._high=e&65535};var b=v("2654435761"),p=v("2246822519"),E=v("3266489917"),k=v("668265263"),T=v("374761393");function D(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function g(){if(arguments.length==2)return new g(arguments[1]).update(arguments[0]).digest();if(!(this instanceof g))return new g(arguments[0]);S.call(this,arguments[0])}function S(i){return this.seed=i instanceof v?i.clone():v(i),this.v1=this.seed.clone().add(b).add(p),this.v2=this.seed.clone().add(p),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(b),this.total_len=0,this.memsize=0,this.memory=null,this}g.prototype.init=S,g.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=D(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(16):this.memory=new Buffer(16)),this.memsize+e<16)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,16-this.memsize):r?this.memory.set(i.subarray(0,16-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,16-this.memsize);var t=0;o?(this.v1.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v2.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v3.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2)),t+=4,this.v4.xxh_update(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2))):(this.v1.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v2.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v3.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2]),t+=4,this.v4.xxh_update(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2])),s+=16-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-16){var a=_-16;do o?(this.v1.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v2.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v3.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2)),s+=4,this.v4.xxh_update(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2))):(this.v1.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v2.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v3.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2]),s+=4,this.v4.xxh_update(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2])),s+=4;while(s<=a)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},g.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new v;for(this.total_len>=16?e=this.v1.rotl(1).add(this.v2.rotl(7).add(this.v3.rotl(12).add(this.v4.rotl(18)))):e=this.seed.clone().add(T),e.add(t.fromNumber(this.total_len));r<=s-4;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2]),e.add(t.multiply(E)).rotl(17).multiply(k),r+=4;for(;r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0),e.add(t.multiply(T)).rotl(11).multiply(b);return _=e.clone().shiftRight(15),e.xor(_).multiply(p),_=e.clone().shiftRight(13),e.xor(_).multiply(E),_=e.clone().shiftRight(16),e.xor(_),this.init(this.seed),e};var G=g,d=I.UINT64,y=d("11400714785074694791"),F=d("14029467366897019727"),P=d("1609587929392839161"),z=d("9650029242287828579"),j=d("2870177450012600261");function O(i){for(var o=[],r=0,s=i.length;r<s;r++){var e=i.charCodeAt(r);e<128?o.push(e):e<2048?o.push(192|e>>6,128|e&63):e<55296||e>=57344?o.push(224|e>>12,128|e>>6&63,128|e&63):(r++,e=65536+((e&1023)<<10|i.charCodeAt(r)&1023),o.push(240|e>>18,128|e>>12&63,128|e>>6&63,128|e&63))}return new Uint8Array(o)}function A(){if(arguments.length==2)return new A(arguments[1]).update(arguments[0]).digest();if(!(this instanceof A))return new A(arguments[0]);q.call(this,arguments[0])}function q(i){return this.seed=i instanceof d?i.clone():d(i),this.v1=this.seed.clone().add(y).add(F),this.v2=this.seed.clone().add(F),this.v3=this.seed.clone(),this.v4=this.seed.clone().subtract(y),this.total_len=0,this.memsize=0,this.memory=null,this}A.prototype.init=q,A.prototype.update=function(i){var o=typeof i=="string",r;o&&(i=O(i),o=!1,r=!0),typeof ArrayBuffer<"u"&&i instanceof ArrayBuffer&&(r=!0,i=new Uint8Array(i));var s=0,e=i.length,_=s+e;if(e==0)return this;if(this.total_len+=e,this.memsize==0&&(o?this.memory="":r?this.memory=new Uint8Array(32):this.memory=new Buffer(32)),this.memsize+e<32)return o?this.memory+=i:r?this.memory.set(i.subarray(0,e),this.memsize):i.copy(this.memory,this.memsize,0,e),this.memsize+=e,this;if(this.memsize>0){o?this.memory+=i.slice(0,32-this.memsize):r?this.memory.set(i.subarray(0,32-this.memsize),this.memsize):i.copy(this.memory,this.memsize,0,32-this.memsize);var t=0;if(o){var a;a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory.charCodeAt(t+1)<<8|this.memory.charCodeAt(t),this.memory.charCodeAt(t+3)<<8|this.memory.charCodeAt(t+2),this.memory.charCodeAt(t+5)<<8|this.memory.charCodeAt(t+4),this.memory.charCodeAt(t+7)<<8|this.memory.charCodeAt(t+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),t+=8,a=d(this.memory[t+1]<<8|this.memory[t],this.memory[t+3]<<8|this.memory[t+2],this.memory[t+5]<<8|this.memory[t+4],this.memory[t+7]<<8|this.memory[t+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=32-this.memsize,this.memsize=0,o&&(this.memory="")}if(s<=_-32){var h=_-32;do{if(o){var a;a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i.charCodeAt(s+1)<<8|i.charCodeAt(s),i.charCodeAt(s+3)<<8|i.charCodeAt(s+2),i.charCodeAt(s+5)<<8|i.charCodeAt(s+4),i.charCodeAt(s+7)<<8|i.charCodeAt(s+6)),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}else{var a;a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v1.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v2.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v3.add(a.multiply(F)).rotl(31).multiply(y),s+=8,a=d(i[s+1]<<8|i[s],i[s+3]<<8|i[s+2],i[s+5]<<8|i[s+4],i[s+7]<<8|i[s+6]),this.v4.add(a.multiply(F)).rotl(31).multiply(y)}s+=8}while(s<=h)}return s<_&&(o?this.memory+=i.slice(s):r?this.memory.set(i.subarray(s,_),this.memsize):i.copy(this.memory,this.memsize,s,_),this.memsize=_-s),this},A.prototype.digest=function(){var i=this.memory,o=typeof i=="string",r=0,s=this.memsize,e,_,t=new d;for(this.total_len>=32?(e=this.v1.clone().rotl(1),e.add(this.v2.clone().rotl(7)),e.add(this.v3.clone().rotl(12)),e.add(this.v4.clone().rotl(18)),e.xor(this.v1.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v2.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v3.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z),e.xor(this.v4.multiply(F).rotl(31).multiply(y)),e.multiply(y).add(z)):e=this.seed.clone().add(j),e.add(t.fromNumber(this.total_len));r<=s-8;)o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),i.charCodeAt(r+5)<<8|i.charCodeAt(r+4),i.charCodeAt(r+7)<<8|i.charCodeAt(r+6)):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],i[r+5]<<8|i[r+4],i[r+7]<<8|i[r+6]),t.multiply(F).rotl(31).multiply(y),e.xor(t).rotl(27).multiply(y).add(z),r+=8;for(r+4<=s&&(o?t.fromBits(i.charCodeAt(r+1)<<8|i.charCodeAt(r),i.charCodeAt(r+3)<<8|i.charCodeAt(r+2),0,0):t.fromBits(i[r+1]<<8|i[r],i[r+3]<<8|i[r+2],0,0),e.xor(t.multiply(y)).rotl(23).multiply(F).add(P),r+=4);r<s;)t.fromBits(o?i.charCodeAt(r++):i[r++],0,0,0),e.xor(t.multiply(j)).rotl(11).multiply(y);return _=e.clone().shiftRight(33),e.xor(_).multiply(F),_=e.clone().shiftRight(29),e.xor(_).multiply(P),_=e.clone().shiftRight(32),e.xor(_),this.init(this.seed),e};var J=A,K={h32:G,h64:J},Q=K,V=X(Q);module.exports=V;
++;return module.exports})({});
++			const hashBytes = Buffer.from(BigInt(globalThis.XXHash.h64(contents, 0x0).toString()).toString(16), 'hex').toString('base64');
++			const hash = hashBytes.toString('base64').replace(/=/g, '');
++			return hash;
++		};
++		const productionVersionNumber = Number((await (await fetch('https://tunnel.dev/api/cli-metadata')).json())['@-/database'].version);
++
++		if (Number.isNaN(productionVersionNumber)) {
++			throw new Error('Version in production should not be NaN');
++		}
++
++		let stagingVersionNumber;
++		try {
++			stagingVersionNumber = (await (await fetch('https://staging.tunnel.dev/api/cli-metadata')).json())['@-/database'].version;
++		} catch (error) {
++			console.error('Failed to fetch staging version number:', error);
++			stagingVersionNumber = productionVersionNumber;
++		}
++
++		const newVersion = convexJson.version;
++		const { resolve } = await import('node:path');
++		const outputFilepaths = new Set(
++			result.outputFiles.flatMap((outputFile) => [
++				outputFile.path,
++				outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++			])
++		);
++
++		const lowestFunctionsVersion = _remoteConfig.modules
++			.filter((module) =>
++				/^v\d+\.js$/.test(module.path) ||
++				(
++					module.path.startsWith('v') &&
++					!module.path.startsWith('v/')
++				)
++			)
++			.map((module) => {
++				if (/^v\d+\.js$/.test(module.path)) {
++					return Number(
++						module.path
++							.replace(/^v/, '')
++							.replace(/\.js$/, '')
++					)
++				} else {
++					return Number(module.path.split('/')[0]);
++				}
++			})
++			.sort()[0];
++
++		const remoteModulesToKeep =
++			_remoteConfig.modules.filter((module) => {
++				// We need to include the `_deps` folder (unless we explicitly purge it)
++				if (module.path.startsWith('_deps/')) {
++					return true;
++				}
++
++				// The 'v/' folder is only used during development
++				if (module.path.startsWith('v/') || module.path === 'v.js') {
++					return false;
++				}
++
++				// Omit any filepaths that we want to update
++				if (outputFilepaths.has(resolve(process.cwd(), 'out', module.path))) {
++					return false;
++				}
++
++				if (module.path.startsWith('v')) {
++					const functionsVersionString =
++						/^v\d+\.js$/.test(module.path)
++							? module.path.replace(/\.js$/, '')
++							: module.path.split('/')[0];
++
++					const functionsVersionNumber = Number(functionsVersionString.slice(1));
++
++					if (Number.isNaN(functionsVersionNumber)) {
++						throw new Error('Function version should not be NaN');
++					}
++
++					// Include the versions currently on production and staging
++					if (
++						functionsVersionNumber === productionVersionNumber ||
++						functionsVersionNumber === stagingVersionNumber
++					) {
++						return true;
++					}
++
++					// Include versions that are up to 3 versions higher than the one in staging or production (these might be in-progress deployments that haven't yet been deployed to staging, but we still want to keep them so they don't break staging when they are deployed)
++					if (
++						(
++							functionsVersionNumber > productionVersionNumber &&
++							functionsVersionNumber <= productionVersionNumber + 3
++						) ||
++						(
++							functionsVersionNumber > stagingVersionNumber &&
++							functionsVersionNumber <= stagingVersionNumber + 3
++						)
++					) {
++						return true;
++					}
++
++					// Exclude all versions below the version in production except for the lowest version (since this version might be from a recent swap and is currently on staging)
++					if (
++						functionsVersionNumber < productionVersionNumber &&
++						functionsVersionNumber !== lowestFunctionsVersion
++					) {
++						return false;
++					}
++				}
++
++				// Exclude all other remote files (we only care about keeping the versioned functions and their dependencies)
++				return false;
++			});
++
++		result.outputFiles = [
++			...(
++				process.env.PURGE_OLD_FUNCTIONS ?
++					[] :
++				remoteModulesToKeep.flatMap((module) => {
++					const files = [
++						{
++							path: resolve(process.cwd(), 'out', module.path),
++							contents: new TextEncoder().encode(module.source),
++							hash: getHash(module.source),
++							text: module.source
++						}
++					];
++
++					// if (module.sourceMap !== undefined) {
++					// 	files.push({
++					// 		path: resolve(process.cwd(), 'out', module.path + '.map'),
++					// 		contents: new TextEncoder().encode(module.sourceMap),
++					// 		hash: getHash(module.sourceMap),
++					// 		text: module.sourceMap
++					// 	})
++					// }
++
++					return files;
++				})
++			),
++			// Filter out original 'v/' functions in production as they are meant only for development
++			...result.outputFiles.filter(
++				(outputFile) => !outputFile.path.endsWith('/v.js')
++			),
++			...result.outputFiles
++				.filter(
++					(outputFile) => outputFile.path.endsWith('/v.js')
++				)
++				.map((outputFile) => ({
++					...outputFile,
++					path: outputFile.path.replace(/\/v\.js/g, '/v' + newVersion + '.js')
++				})),
++		];
++	}
++} catch(error) {
++	console.error('Error in custom build:', error)
++}
++
++for (const [relPath, input] of Object.entries(result.metafile.inputs)) {
+       if (relPath.indexOf("(disabled):") !== -1 || relPath.startsWith("wasm-binary:") || relPath.startsWith("wasm-stub:")) {
+         continue;
+       }
+@@ -70,7 +232,7 @@ async function doEsbuild(ctx, dir, entryPoints2, generateSourceMaps, platform, c
+     return await ctx.crash(1, "invalid filesystem data");
+   }
+ }
+-export async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder = "_deps", externalPackagesAllowList = []) {
++export async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platform, chunksFolder = "_deps", externalPackagesAllowList = [], _remoteConfig) {
+   const availableExternalPackages = await computeExternalPackages(
+     ctx,
+     externalPackagesAllowList
+@@ -83,7 +245,7 @@ export async function bundle(ctx, dir, entryPoints2, generateSourceMaps, platfor
+     platform,
+     chunksFolder,
+     availableExternalPackages
+-  );
++  , _remoteConfig);
+   if (result.errors.length) {
+     for (const error of result.errors) {
+       console.log(chalk.red(`esbuild error: ${error.text}`));
+diff --git a/dist/esm/cli/codegen_templates/api.js b/dist/esm/cli/codegen_templates/api.js
+index 7fd266cb6d592289ecacefc24d1257a1f30bcd2b..3d4e60556990540c649cdb5007928dab21bb6576 100644
+--- a/dist/esm/cli/codegen_templates/api.js
++++ b/dist/esm/cli/codegen_templates/api.js
+@@ -34,7 +34,7 @@ export function apiCodegen(modulePaths) {
+     (modulePath) => `"${importPath(modulePath)}": typeof ${moduleIdentifier(modulePath)},`
+   ).join("\n")}
+   }>;
+-  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, "public">>;
++  export declare const api: FilterApi<typeof fullApi, FunctionReference<any, any>>;
+   export declare const internal: FilterApi<typeof fullApi, FunctionReference<any, "internal">>;
+   `;
+   const apiJS = `${header("Generated `api` utility.")}
+diff --git a/dist/esm/cli/lib/config.js b/dist/esm/cli/lib/config.js
+index badfb48a508183c88ddf6921ba0d9461a5ee369a..48f4fedcfcc9d753ec3feb302777590e86f6661e 100644
+--- a/dist/esm/cli/lib/config.js
++++ b/dist/esm/cli/lib/config.js
+@@ -183,7 +183,7 @@ export async function enforceDeprecatedConfigField(ctx, config, field) {
+   logMessage(ctx, chalk.gray(err.toString()));
+   return await ctx.crash(1, "invalid filesystem data", err);
+ }
+-export async function configFromProjectConfig(ctx, projectConfig, configPath, verbose) {
++export async function configFromProjectConfig(ctx, projectConfig, configPath, verbose, _remoteConfig) {
+   const baseDir = functionsDir(configPath, projectConfig);
+   const entryPoints = await entryPointsByEnvironment(ctx, baseDir, verbose);
+   if (verbose) {
+diff --git a/dist/esm/react/use_paginated_query.js b/dist/esm/react/use_paginated_query.js
+index d0970e0d08d94ec73f754f8e2009cac0597fc5ac..e1caf8b6f882657f94f3061f54c01869bd6de463 100644
+--- a/dist/esm/react/use_paginated_query.js
++++ b/dist/esm/react/use_paginated_query.js
+@@ -90,7 +90,7 @@ export function usePaginatedQuery(query, args, options) {
+               ...argsObject,
+               paginationOpts: {
+                 numItems: options.initialNumItems,
+-                cursor: null,
++                cursor: options?.initialCursor ?? null,
+                 id
+               }
+             }
+diff --git a/dist/esm-types/server/data_model.d.ts b/dist/esm-types/server/data_model.d.ts
+index b08687df2e8c46d69f923656a176a80b838017c6..c3ec6c410db7adbdeca91b961c7a895f4dd8ea04 100644
+--- a/dist/esm-types/server/data_model.d.ts
++++ b/dist/esm-types/server/data_model.d.ts
+@@ -77,7 +77,7 @@ type ValueFromUnion<T, Key, Default> = T extends T ? Key extends keyof T ? T[Key
+  *
+  * @public
+  */
+-export type FieldTypeFromFieldPath<Document extends GenericDocument, FieldPath extends string> = FieldPath extends `${infer First}.${infer Second}` ? ValueFromUnion<Document, First, Record<never, never>> extends GenericDocument ? FieldTypeFromFieldPath<ValueFromUnion<Document, First, Record<never, never>>, Second> : undefined : ValueFromUnion<Document, FieldPath, undefined>;
++export type FieldTypeFromFieldPath<Document extends GenericDocument, FieldPath extends string> = FieldPath extends `${infer First}.${infer Second}` ? NonNullable<ValueFromUnion<Document, First, Record<never, never>>> extends GenericDocument ? FieldTypeFromFieldPath<NonNullable<ValueFromUnion<Document, First, Record<never, never>>, Second>> : undefined : ValueFromUnion<Document, FieldPath, undefined>;
+ /**
+  * A type describing the document type and indexes in a table.
+  * @public

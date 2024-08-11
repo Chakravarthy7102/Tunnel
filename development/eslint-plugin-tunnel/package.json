@@ -1,0 +1,18 @@
+{
+	"name": "@-/eslint-plugin-tunnel",
+	"type": "commonjs",
+	"exports": "./exports/main.js",
+	"dependencies": {
+		"@-/packages-config": "workspace:*",
+		"@typescript-eslint/utils": "6.18.1",
+		"eslint": "8.56.0",
+		"fast-deep-equal": "3.1.3",
+		"is-subset": "0.1.1",
+		"outdent": "0.8.0",
+		"trim-extension": "1.1.0"
+	},
+	"devDependencies": {
+		"@types/eslint": "8.44.9",
+		"jsonc-eslint-parser": "2.3.0"
+	}
+}

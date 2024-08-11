@@ -1,0 +1,33 @@
+{
+	"name": "@-/tunnel-instance-proxy-preview",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#functions/*": "./functions/*",
+		"#tables/*": "./tables/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"plaindeepmerge": "1.0.0"
+	},
+	"publishable": {
+		"./api": false,
+		"./functions": false,
+		"./schemas": true,
+		"./selections": true,
+		"./tables": true,
+		"./validators": true
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "@-/unbuild",
+	"type": "module",
+	"imports": {
+		"#plugins/*": "./plugins/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@jgoz/esbuild-plugin-livereload": "2.0.4",
+		"@tunnel/release": "1.1.0",
+		"chokidar": "3.6.0",
+		"dotenv": "16.4.5",
+		"just-debounce": "1.1.0",
+		"outdent": "0.8.0",
+		"pathe": "1.1.2",
+		"pid-port": "1.0.0",
+		"resolve.exports": "2.0.2"
+	},
+	"devDependencies": {
+		"esbuild": "0.20.0",
+		"unbuild": "2.0.0"
+	}
+}

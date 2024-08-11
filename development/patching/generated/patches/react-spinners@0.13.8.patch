@@ -1,0 +1,10 @@
+diff --git a/ScaleLoader.d.ts b/ScaleLoader.d.ts
+index 23f0854798f3360df30ce9dbce0916ad615ebd7e..76e9a4da55317ae62b3a9839ea7cdf3661825b56 100644
+--- a/ScaleLoader.d.ts
++++ b/ScaleLoader.d.ts
+@@ -1,4 +1,4 @@
+ /// <reference types="react" />
+ import { LoaderHeightWidthRadiusProps } from "./helpers/props";
+ declare function ScaleLoader({ loading, color, speedMultiplier, cssOverride, height, width, radius, margin, ...additionalprops }: LoaderHeightWidthRadiusProps): JSX.Element | null;
+-export default ScaleLoader;
++export = ScaleLoader;

@@ -1,0 +1,47 @@
+{
+	"name": "@-/github-integration",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/assets": "workspace:*",
+		"@-/client-doc": "workspace:*",
+		"@-/comments": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/github-app": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/trpc": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"@vvo/tzdb": "6.125.0",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"lucide-react": "0.268.0",
+		"outdent": "0.8.0",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"publishable": {
+		"./components": true
+	}
+}

@@ -1,0 +1,112 @@
+.ph-rrweb-player {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  .rr-player {
+    float: left;
+    position: relative;
+  }
+
+  .replayer-wrapper {
+    transform-origin: top left;
+    clear: none;
+    float: left;
+  }
+
+  iframe {
+    border: 0px;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    z-index: 10;
+  }
+}
+
+.ph-rrweb-bottom {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px;
+
+  background-color: #333;
+  color: white;
+  align-self: flex-end;
+}
+
+.ph-rrweb-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 10;
+
+  .ph-rrweb-skipping {
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: #333;
+    opacity: 0.7;
+
+    font-size: 40px;
+    color: white;
+  }
+}
+
+.replayer-mouse {
+  z-index: 20;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  transition: 0.05s linear;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE4LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAyOCAyOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjggMjgiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cG9seWdvbiBmaWxsPSIjRkZGRkZGIiBwb2ludHM9IjguMiwyMC45IDguMiw0LjkgMTkuOCwxNi41IDEzLDE2LjUgMTIuNiwxNi42ICIvPgo8cG9seWdvbiBmaWxsPSIjRkZGRkZGIiBwb2ludHM9IjE3LjMsMjEuNiAxMy43LDIzLjEgOSwxMiAxMi43LDEwLjUgIi8+CjxyZWN0IHg9IjEyLjUiIHk9IjEzLjYiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTIyMSAtMC4zODcxIDAuMzg3MSAwLjkyMjEgLTUuNzYwNSA2LjU5MDkpIiB3aWR0aD0iMiIgaGVpZ2h0PSI4Ii8+Cjxwb2x5Z29uIHBvaW50cz0iOS4yLDcuMyA5LjIsMTguNSAxMi4yLDE1LjYgMTIuNiwxNS41IDE3LjQsMTUuNSAiLz4KPC9zdmc+Cg==");
+}
+
+.replayer-mouse:after {
+  content: "";
+  display: inline-block;
+  width: 60%;
+  height: 60%;
+  border-radius: 100000000px;
+  background: #3b82f6;
+  opacity: 0.3;
+}
+
+.replayer-mouse.active:after {
+  animation: click 0.2s ease-in-out 1;
+}
+.replayer-mouse-tail {
+  position: absolute;
+  pointer-events: none;
+}
+@keyframes click {
+  0% {
+    opacity: 0.1;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    transform: translate(-10px, -10px);
+  }
+  50% {
+    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    transform: translate(-5px, -5px);
+  }
+}

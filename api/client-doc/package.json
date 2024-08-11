@@ -1,0 +1,26 @@
+{
+	"name": "@-/client-doc",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"@-/logger": "workspace:*",
+		"corvex": "0.0.42",
+		"just-extend": "6.2.0",
+		"map-obj": "5.0.2",
+		"plaindeepmerge": "1.0.0",
+		"react": "*"
+	},
+	"publishable": {
+		".": true,
+		"./react": false
+	}
+}

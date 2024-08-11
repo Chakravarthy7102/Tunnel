@@ -1,0 +1,4 @@
+pnpm-lock.yaml
+**/generated
+**/fixture
+testing/javascript-framework-instrumentation-compatibility-tests/css

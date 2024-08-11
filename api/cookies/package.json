@@ -1,0 +1,23 @@
+{
+	"name": "@-/cookies",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#data/*": "./data/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"cookie-es": "1.0.0",
+		"map-obj": "5.0.2"
+	},
+	"publishable": true
+}

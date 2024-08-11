@@ -1,0 +1,17 @@
+{
+	"name": "@-/with-errors",
+	"type": "module",
+	"imports": {
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts",
+		"./schemas": "./exports/schemas.ts"
+	},
+	"dependencies": {
+		"@-/zod": "workspace:*"
+	},
+	"publishable": true
+}

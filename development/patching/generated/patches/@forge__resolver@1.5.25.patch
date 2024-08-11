@@ -1,0 +1,11 @@
+diff --git a/out/index.d.ts b/out/index.d.ts
+index c46164cd66d033c6bd98b11622ba8c9f8888ef1b..a0a74da7cab783ff20338a6be04b8fb1d2267f79 100644
+--- a/out/index.d.ts
++++ b/out/index.d.ts
+@@ -30,5 +30,5 @@ export default class Resolver {
+     private sanitizeObject;
+     getDefinitions(): DefinitionsHandler;
+ }
+-export {};
++export = Resolver;
+ //# sourceMappingURL=index.d.ts.map

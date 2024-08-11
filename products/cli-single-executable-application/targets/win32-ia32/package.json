@@ -1,0 +1,5 @@
+{
+	"name": "@tunnel/cli-single-executable-application-win32-ia32",
+	"version": "0.4.8",
+	"bin": "./tunnel"
+}

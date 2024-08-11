@@ -1,0 +1,7 @@
+{
+	"name": "@-/pnpmfile",
+	"type": "commonjs",
+	"devDependencies": {
+		"type-fest": "4.15.0"
+	}
+}

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Create the ~/.tunnel directory if it doesn't exist
+mkdir -p ~/.tunnel
+
+# Function to prompt for user input and save it
+prompt_and_save() {
+  echo "Please input the folder where the Tunnel monorepo is located:"
+  read user_input
+
+  # Save the input to the file in the specified format
+  echo "TUNNEL_MONOREPO_DIRPATH=$user_input" > ~/.tunnel/env.development
+}
+
+# Check if the environment variable file exists
+if [ -f ~/.tunnel/env.development ]; then
+  # Read the TUNNEL_MONOREPO_DIRPATH from the file
+  TUNNEL_MONOREPO_DIRPATH=$(grep '^TUNNEL_MONOREPO_DIRPATH=' ~/.tunnel/env.development | cut -d '=' -f2)
+
+  # Check if TUNNEL_MONOREPO_DIRPATH is set and points to an existing path
+  if [ -z "$TUNNEL_MONOREPO_DIRPATH" ] || [ ! -d "$TUNNEL_MONOREPO_DIRPATH" ]; then
+    prompt_and_save
+    TUNNEL_MONOREPO_DIRPATH=$(grep '^TUNNEL_MONOREPO_DIRPATH=' ~/.tunnel/env.development | cut -d '=' -f2)
+  fi
+else
+  prompt_and_save
+  TUNNEL_MONOREPO_DIRPATH=$(grep '^TUNNEL_MONOREPO_DIRPATH=' ~/.tunnel/env.development | cut -d '=' -f2)
+fi
+
+TUNNEL_RELEASE=development TUNNEL_MONOREPO_DIRPATH=$TUNNEL_MONOREPO_DIRPATH DEBUG=${DEBUG:-0} $TUNNEL_MONOREPO_DIRPATH/node_modules/.bin/tsx -- $TUNNEL_MONOREPO_DIRPATH/products/cli-source/entry/tunnel.ts $@

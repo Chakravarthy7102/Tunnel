@@ -1,0 +1,19 @@
+{
+	"name": "@-/tunnel-yaml-config",
+	"type": "module",
+	"imports": {
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts",
+		"./schemas": "./exports/schemas.ts"
+	},
+	"dependencies": {
+		"@-/logger": "workspace:*",
+		"@-/zod": "workspace:*",
+		"pathe": "1.1.2"
+	},
+	"publishable": true
+}

@@ -1,0 +1,17 @@
+{
+	"name": "@-/octokit",
+	"type": "module",
+	"imports": {
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@octokit/plugin-create-or-update-text-file": "4.0.1",
+		"@octokit/rest": "20.0.2",
+		"octokit-commit-multiple-files": "5.0.0",
+		"onetime": "7.0.0"
+	}
+}

@@ -1,0 +1,54 @@
+{
+	"name": "@-/gitlab-integration",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*",
+		"#validators/*": "./validators/*",
+		"#procedures/*": "./procedures/*",
+		"#functions/*": "./functions/*"
+	},
+	"dependencies": {
+		"@-/assets": "workspace:*",
+		"@-/client-doc": "workspace:*",
+		"@-/comments": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/github-app": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/project-comment-thread": "workspace:*",
+		"@-/trpc": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@gitbeaker/rest": "39.34.3",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"@vvo/tzdb": "6.125.0",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"lucide-react": "0.268.0",
+		"luxon": "3.4.4",
+		"outdent": "0.8.0",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"devDependencies": {
+		"@types/luxon": "3.4.2"
+	},
+	"publishable": {
+		"./components": true
+	}
+}

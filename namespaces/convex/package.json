@@ -1,0 +1,39 @@
+{
+	"name": "@-/convex",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#types": "./types/_.ts",
+		"#library/*": "./library/*",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/auth": "workspace:*",
+		"@-/cli-storage": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@xixixao/uploadstuff": "0.0.5",
+		"convex": "1.10.0",
+		"dotenv": "16.4.5",
+		"errok": "0.1.2",
+		"js-sha256": "0.11.0",
+		"onetime": "7.0.0",
+		"pathe": "1.1.2",
+		"react": "*",
+		"react-dom": "*",
+		"sort-keys": "5.0.0",
+		"ts-retry-promise": "0.8.0",
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		".": true,
+		"./cli": true,
+		"./react": true,
+		"./values": true
+	}
+}

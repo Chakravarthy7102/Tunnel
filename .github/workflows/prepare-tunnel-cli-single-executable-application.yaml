@@ -1,0 +1,49 @@
+name: Prepare new release of `@tunnel/cli-single-executable-application`
+
+on: workflow_dispatch
+
+env:
+  TUNNEL_MONOREPO_DIRPATH: ${{ github.workspace }}
+
+jobs:
+  build-and-publish-tunnel-cli-single-executable-application:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - name: Set TUNNEL_DATABASE_API_VERSION
+        run: echo "TUNNEL_DATABASE_API_VERSION=$(jq .version ${{ github.workspace }}/api/database/convex.json)" >> $GITHUB_ENV
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - uses: pkgxdev/setup@v1
+        with:
+          +: pnpm.io=8.15.7 nodejs.org=20.10.0
+      - run: rm -f /usr/local/bin/node && pkgx install pnpm node
+      - run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+
+      - id: pnpm-config
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - id: cache-rotation
+        run: echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      - id: pnpm-lock-hash
+        run: echo "HASH=${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+      - run: pnpm install --no-frozen-lockfile --ignore-scripts --filter=@-/ci-cd...
+
+      - name: Bump @tunnel/cli-single-executable-application version
+        run: pnpm ci-cd/bump-package-version @tunnel/cli-single-executable-application
+
+      - uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ steps.pnpm-lock-hash.outputs.HASH }}

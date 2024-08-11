@@ -1,0 +1,18 @@
+{
+	"name": "@-/assets",
+	"type": "module",
+	"description": "Tunnel assets",
+	"sideEffects": false,
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*"
+	},
+	"publishable": {
+		"./utils": true
+	}
+}

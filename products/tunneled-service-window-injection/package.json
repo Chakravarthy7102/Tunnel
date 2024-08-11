@@ -1,0 +1,64 @@
+{
+	"name": "@-/tunneled-service-window-injection",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#scripts/*": "./scripts/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/client-doc": "workspace:*",
+		"@-/cookies": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/logs": "workspace:*",
+		"@-/mask-secrets": "workspace:*",
+		"@-/superjson": "workspace:*",
+		"@-/tunnel-instance-page-secret-storage": "workspace:*",
+		"@-/tunnel-instance-page-toolbar": "workspace:*",
+		"@-/tunneled-service-environment": "workspace:*",
+		"@-/tunneled-service-globals": "workspace:*",
+		"@-/url": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"acorn": "8.10.0",
+		"acorn-walk": "8.2.0",
+		"blob-to-buffer": "1.2.9",
+		"buffer": "6.0.3",
+		"commander": "11.1.0",
+		"console-feed": "3.5.0",
+		"emittery": "1.0.1",
+		"es-cookie": "1.4.0",
+		"filter-obj": "6.0.0",
+		"history-events": "1.0.4",
+		"is-array-buffer": "3.0.4",
+		"is-local-ip": "1.1.0",
+		"isutf8": "4.0.0",
+		"map-obj": "5.0.2",
+		"mimic-function": "5.0.0",
+		"outdent": "0.8.0",
+		"query-string": "9.0.0",
+		"safer-url": "1.0.1",
+		"tiny-invariant": "1.3.1"
+	},
+	"devDependencies": {
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@swc/core": "1.4.2",
+		"@tunnel/release": "1.1.0",
+		"@types/blob-to-buffer": "1.2.2",
+		"@types/history-events": "1.0.2",
+		"desm": "1.3.0",
+		"pathe": "1.1.2",
+		"pify": "6.1.0"
+	},
+	"publishable": {
+		"./patch": true,
+		"./url": true
+	}
+}

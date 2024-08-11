@@ -1,0 +1,13 @@
+diff --git a/src/index.js b/src/index.js
+index 7d631fa7b79f0c8d1a6e48bda50687424f3fdccd..1e9a1dd181300ca3bc7756b06dbf16d570c02c4c 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -2,7 +2,7 @@ const SentryCli = require('@sentry/cli');
+ const fs = require('fs');
+ const path = require('path');
+ const util = require('util');
+-const { RawSource } = require('webpack-sources');
++const RawSource = require('webpack-sources/lib/RawSource');
+ const pjson = require('../package.json');
+ 
+ const SENTRY_LOADER = path.resolve(__dirname, 'sentry.loader.js');

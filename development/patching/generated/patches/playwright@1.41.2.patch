@@ -1,0 +1,20 @@
+diff --git a/lib/transform/transform.js b/lib/transform/transform.js
+index 8b30f783d2b461dd4e55fc85e7ed9ebad91b8b3b..44de2cce609f0ababddfce795163ef62ccb5bf37 100644
+--- a/lib/transform/transform.js
++++ b/lib/transform/transform.js
+@@ -162,10 +162,11 @@ function transformHook(originalCode, filename, moduleUrl) {
+     babelTransform
+   } = require('./babelBundle');
+   transformData = new Map();
+-  const {
+-    code,
+-    map
+-  } = babelTransform(originalCode, filename, isTypeScript, !!moduleUrl, pluginsPrologue, pluginsEpilogue);
++  const esbuild = require('esbuild')
++const {
++	code,
++	map
++} = esbuild.transformSync(originalCode, { loader: 'ts' });
+   if (code) addToCache(code, map, transformData);
+   return code || '';
+ }

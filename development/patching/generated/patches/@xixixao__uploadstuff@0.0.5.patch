@@ -1,0 +1,68 @@
+diff --git a/lib/UploadButton.tsx b/lib/UploadButton.tsx
+index ab3a2ae632708627ebb1aa5d67db36d499fd6e68..4d164169724b1e4a19ebb1f742cadbdb284bfb3e 100644
+--- a/lib/UploadButton.tsx
++++ b/lib/UploadButton.tsx
+@@ -1,8 +1,8 @@
+ import { useRef, useState } from "react";
+ import { twMerge } from "tailwind-merge";
+-import { UploadSpinner } from "./UploadSpinner";
+-import { UploadFileResponse } from "./uploadFiles";
+-import { useUploadFiles } from "./useUploadFiles";
++import { UploadSpinner } from './UploadSpinner.jsx';
++import { UploadFileResponse } from './uploadFiles.js';
++import { useUploadFiles } from './useUploadFiles.js';
+ 
+ export function UploadButton(props: {
+   /// Required props
+diff --git a/lib/UploadDropzone.tsx b/lib/UploadDropzone.tsx
+index f3eb03050ef8537235e0b73f3369be891a20e796..e0bd588dc6209fe08e3c9f499e754f6a16770a07 100644
+--- a/lib/UploadDropzone.tsx
++++ b/lib/UploadDropzone.tsx
+@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
+ import type { Accept, FileWithPath } from "react-dropzone";
+ import { useDropzone } from "react-dropzone";
+ import { twMerge } from "tailwind-merge";
+-import { UploadFileResponse } from ".";
+-import { useUploadFiles } from "./useUploadFiles";
+-import { UploadSpinner } from "./UploadSpinner";
++import { UploadFileResponse } from './index.js';
++import { useUploadFiles } from './useUploadFiles.js';
++import { UploadSpinner } from './UploadSpinner.jsx';
+ 
+ type UploadDropzoneState = {
+   progress: number | null;
+diff --git a/lib/index.ts b/lib/index.ts
+index 53679781cd7973c3f44860c2ecfe2c67d2bd53dd..976c7572df9ff21255d8c723658a4d6ff2b8d8e1 100644
+--- a/lib/index.ts
++++ b/lib/index.ts
+@@ -1 +1 @@
+-export * from "./uploadFiles";
++export * from './uploadFiles.js';
+diff --git a/lib/react.ts b/lib/react.ts
+index df404558023bafa18ae83a292de955b261edd4c0..d357f070df88fd304c84cccaf6ba76540487b316 100644
+--- a/lib/react.ts
++++ b/lib/react.ts
+@@ -1,5 +1,5 @@
+-export * from "./UploadButton";
+-export * from "./UploadDropzone";
+-export * from "./UploadSpinner";
+-export * from "./useUploadFiles";
+-export type { UploadFileResponse } from "./uploadFiles";
++export * from './UploadButton.jsx';
++export * from './UploadDropzone.jsx';
++export * from './UploadSpinner.jsx';
++export * from './useUploadFiles.js';
++export type { UploadFileResponse } from './uploadFiles.js';
+diff --git a/lib/useUploadFiles.ts b/lib/useUploadFiles.ts
+index ad826a6c3d05a2a70de01e7b57b06d8311c97bfd..6c47495432c9721b71cc80f3ebaabe211c7c922c 100644
+--- a/lib/useUploadFiles.ts
++++ b/lib/useUploadFiles.ts
+@@ -1,6 +1,6 @@
+ import { useRef, useState } from "react";
+-import { useEvent } from "./useEvent";
+-import { UploadFileResponse, uploadFiles } from "./uploadFiles";
++import { useEvent } from './useEvent.js';
++import { UploadFileResponse, uploadFiles } from './uploadFiles.js';
+ 
+ export const useUploadFiles = (
+   uploadUrl: string | (() => Promise<string>),

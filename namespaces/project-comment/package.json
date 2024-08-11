@@ -1,0 +1,51 @@
+{
+	"name": "@-/project-comment",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#functions/*": "./functions/*",
+		"#library/*": "./library/*",
+		"#procedures/*": "./procedures/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/comments": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/git-metadata": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/project-comment-thread": "workspace:*",
+		"@-/slack-integration": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/window-metadata": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"plaindeepmerge": "1.0.0"
+	},
+	"devDependencies": {
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		".": true,
+		"./functions": false,
+		"./procedures": false,
+		"./schemas": true,
+		"./selections": true,
+		"./tables": true
+	}
+}

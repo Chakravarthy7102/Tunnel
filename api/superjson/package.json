@@ -1,0 +1,15 @@
+{
+	"name": "@-/superjson",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"errok": "0.1.2",
+		"superjson": "2.2.1"
+	},
+	"publishable": true
+}

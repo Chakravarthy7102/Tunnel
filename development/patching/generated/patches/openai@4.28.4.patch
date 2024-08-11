@@ -1,0 +1,50 @@
+diff --git a/_shims/node-runtime.js b/_shims/node-runtime.js
+index 9bd175b6458acae94349b11d8a5304ead858ae8d..30e97836dc989a422dcc8a3d43bc7e99448ad387 100644
+--- a/_shims/node-runtime.js
++++ b/_shims/node-runtime.js
+@@ -39,7 +39,7 @@ const form_data_encoder_1 = require("form-data-encoder");
+ const node_stream_1 = require("node:stream");
+ const MultipartBody_1 = require("./MultipartBody.js");
+ // @ts-ignore (this package does not have proper export maps for this export)
+-const ponyfill_es2018_js_1 = require("web-streams-polyfill/dist/ponyfill.es2018.js");
++
+ let fileFromPathWarned = false;
+ async function fileFromPath(path, ...args) {
+     // this import fails in environments that don't handle export maps correctly, like old versions of Jest
+@@ -79,7 +79,7 @@ function getRuntime() {
+         FormData: fd.FormData,
+         Blob: fd.Blob,
+         File: fd.File,
+-        ReadableStream: ponyfill_es2018_js_1.ReadableStream,
++        ReadableStream,
+         getMultipartRequestOptions,
+         getDefaultAgent: (url) => (url.startsWith('https') ? defaultHttpsAgent : defaultHttpAgent),
+         fileFromPath,
+diff --git a/_shims/node-runtime.mjs b/_shims/node-runtime.mjs
+index e6635d29c80552f16e5e2e6a874c134253d83f65..bbf0f056a92860a9fc9765bdc0760f030462b680 100644
+--- a/_shims/node-runtime.mjs
++++ b/_shims/node-runtime.mjs
+@@ -6,7 +6,7 @@ import { ReadStream as FsReadStream } from 'node:fs';
+ import { FormDataEncoder } from 'form-data-encoder';
+ import { Readable } from 'node:stream';
+ import { MultipartBody } from "./MultipartBody.mjs";
+-import { ReadableStream } from 'web-streams-polyfill/dist/ponyfill.es2018.js';
++
+ let fileFromPathWarned = false;
+ async function fileFromPath(path, ...args) {
+     // this import fails in environments that don't handle export maps correctly, like old versions of Jest
+diff --git a/package.json b/package.json
+index 338134697d79832c37a97c3a985dc1fc13101130..51dff204a8486ff9933244a53eb5da346d0274d9 100644
+--- a/package.json
++++ b/package.json
+@@ -28,9 +28,7 @@
+     "agentkeepalive": "^4.2.1",
+     "digest-fetch": "^1.3.0",
+     "form-data-encoder": "1.7.2",
+-    "formdata-node": "^4.3.2",
+-    "node-fetch": "^2.6.7",
+-    "web-streams-polyfill": "^3.2.1"
++    "node-fetch": "^2.6.7"
+   },
+   "sideEffects": [
+     "./_shims/index.js",

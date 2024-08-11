@@ -1,0 +1,40 @@
+{
+	"name": "@-/trpc",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/actor": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/superjson": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tanstack/react-query": "5.28.6",
+		"@trpc/client": "11.0.0-next-beta.318",
+		"@trpc/next": "11.0.0-next-beta.318",
+		"@trpc/react-query": "11.0.0-next-beta.318",
+		"@trpc/server": "11.0.0-next-beta.318",
+		"http-status": "1.6.2",
+		"next": "14.2.1",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"devDependencies": {
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		"./client": true,
+		"./next": false,
+		"./msw": false,
+		"./server": false,
+		"./local-server": true,
+		"./schemas": true
+	}
+}

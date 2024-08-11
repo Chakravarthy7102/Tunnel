@@ -1,0 +1,24 @@
+{
+	"name": "@-/next-query-handlers",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#handlers/*": "./handlers/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/actor": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/user-login-request": "workspace:*",
+		"@-/zod": "workspace:*",
+		"destru": "2.0.3",
+		"errok": "0.1.2",
+		"map-obj": "5.0.2",
+		"query-string": "9.0.0"
+	},
+	"publishable": true
+}

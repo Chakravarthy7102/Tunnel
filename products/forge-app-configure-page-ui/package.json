@@ -1,0 +1,29 @@
+{
+	"name": "@-/forge-app-configure-page-ui",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#scripts/*": "./scripts/*",
+		"#styles/*": "./styles/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@forge/api": "3.2.0",
+		"@forge/bridge": "3.2.0",
+		"@vitejs/plugin-react": "4.2.1",
+		"lucide-react": "0.268.0",
+		"react": "*",
+		"react-dom": "*",
+		"vite-plugin-replace": "0.1.1"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"vite": "5.0.11"
+	}
+}

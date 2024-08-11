@@ -1,0 +1,162 @@
+diff --git a/dist/middleware.js b/dist/middleware.js
+index 76f3e878c9a9275d1730d631d30b15112dbb2ea6..f1e303ba5b1caecfafc907e2ea1e31fdeff38e9d 100644
+--- a/dist/middleware.js
++++ b/dist/middleware.js
+@@ -42,7 +42,13 @@ var utils = require('./utils.js');
+         let parsedInput;
+         const rawInput = await opts.getRawInput();
+         try {
+-            parsedInput = await parse(rawInput);
++            parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+         } catch (cause) {
+             throw new TRPCError.TRPCError({
+                 code: 'BAD_REQUEST',
+diff --git a/dist/middleware.mjs b/dist/middleware.mjs
+index b02e05b2fd2e7f25e27e582ee67562a01598e632..635538a624ad7117c438c248365b9365186a801b 100644
+--- a/dist/middleware.mjs
++++ b/dist/middleware.mjs
+@@ -40,7 +40,13 @@ import { isObject } from './utils.mjs';
+         let parsedInput;
+         const rawInput = await opts.getRawInput();
+         try {
+-            parsedInput = await parse(rawInput);
++            parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+         } catch (cause) {
+             throw new TRPCError({
+                 code: 'BAD_REQUEST',
+diff --git a/dist/parser.d.ts b/dist/parser.d.ts
+index 50fa5c6b26242c19f531e0a9a98d4cdc6f313df0..55d2e3ad98bb59870e06c5d74f303bdc4d4eca94 100644
+--- a/dist/parser.d.ts
++++ b/dist/parser.d.ts
+@@ -17,14 +17,21 @@ export type ParserScaleEsque<TInput> = {
+ };
+ export type ParserWithoutInput<TInput> = ParserCustomValidatorEsque<TInput> | ParserMyZodEsque<TInput> | ParserScaleEsque<TInput> | ParserSuperstructEsque<TInput> | ParserYupEsque<TInput>;
+ export type ParserWithInputOutput<TInput, TParsedInput> = ParserZodEsque<TInput, TParsedInput>;
+-export type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any>;
+-export type inferParser<TParser extends Parser> = TParser extends ParserWithInputOutput<infer $TIn, infer $TOut> ? {
+-    in: $TIn;
+-    out: $TOut;
+-} : TParser extends ParserWithoutInput<infer $InOut> ? {
+-    in: $InOut;
+-    out: $InOut;
+-} : never;
+-export type ParseFn<TType> = (value: unknown) => Promise<TType> | TType;
++type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any> | ((input: unknown, ctx: any) => ParserWithInputOutput<any, any> | ParserWithoutInput<any> );
++export type inferParser<TParser extends Parser> =
++	TParser extends (input: unknown, ctx: any) => infer $Parser
++		? inferParser<$Parser>
++		: TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
++			? {
++					in: $TIn;
++					out: $TOut;
++				}
++			: TParser extends ParserWithoutInput<infer $InOut>
++			? {
++					in: $InOut;
++					out: $InOut;
++				}
++			: never;
++export type ParseFn<TType> = (value: unknown, ctx: any) => Promise<TType> | TType;
+ export declare function getParseFn<TType>(procedureParser: Parser): ParseFn<TType>;
+ //# sourceMappingURL=parser.d.ts.map
+\ No newline at end of file
+diff --git a/dist/procedureBuilder.d.ts b/dist/procedureBuilder.d.ts
+index eb61a2c777c10e230a34a2e678bdb810a00a2f86..9cc6fe01d96e22248a3829ccf7524932f9f83c7d 100644
+--- a/dist/procedureBuilder.d.ts
++++ b/dist/procedureBuilder.d.ts
+@@ -24,7 +24,7 @@ type AnyProcedureBuilderDef = ProcedureBuilderDef<any>;
+  * Procedure resolver options
+  * @internal
+  */
+-interface ResolverOptions<TContext, _TMeta, TContextOverridesIn, TInputOut> {
++export interface ResolverOptions<TContext, _TMeta, TContextOverridesIn, TInputOut> {
+     ctx: Simplify<Overwrite<TContext, TContextOverridesIn>>;
+     input: TInputOut extends UnsetMarker ? undefined : TInputOut;
+ }
+diff --git a/src/middleware.ts b/src/middleware.ts
+index b575f6542be0efe655e27635298fe31cfc93b162..e90fae5b104917c8bc2086c7d2de75251a181451 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -180,7 +180,13 @@ export function createInputMiddleware<TInput>(parse: ParseFn<TInput>) {
+ 
+       const rawInput = await opts.getRawInput();
+       try {
+-        parsedInput = await parse(rawInput);
++        parsedInput = await parse(rawInput, opts.ctx);
++// In case our parse function returns a Zod schema
++if (typeof parsedInput.parseAsync === 'function') {
++	parsedInput = await parsedInput.parseAsync(rawInput, opts.ctx);
++} else if (typeof parsedInput.parse === 'function') {
++	parsedInput = await parsedInput.parse(rawInput, opts.ctx);
++}
+       } catch (cause) {
+         throw new TRPCError({
+           code: 'BAD_REQUEST',
+diff --git a/src/parser.ts b/src/parser.ts
+index 56b263ce9997171fca42cc8caeb1ae1589a6ba8f..e6bde38e1e8c6f64bdd60ea8995ece762abb7c52 100644
+--- a/src/parser.ts
++++ b/src/parser.ts
+@@ -36,22 +36,24 @@ export type ParserWithInputOutput<TInput, TParsedInput> = ParserZodEsque<
+   TParsedInput
+ >;
+ 
+-export type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any>;
++type Parser = ParserWithInputOutput<any, any> | ParserWithoutInput<any> | ((input: unknown, ctx: any) => ParserWithInputOutput<any, any> | ParserWithoutInput<any> );
+ 
+ export type inferParser<TParser extends Parser> =
+-  TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
+-    ? {
+-        in: $TIn;
+-        out: $TOut;
+-      }
+-    : TParser extends ParserWithoutInput<infer $InOut>
+-    ? {
+-        in: $InOut;
+-        out: $InOut;
+-      }
+-    : never;
+-
+-export type ParseFn<TType> = (value: unknown) => Promise<TType> | TType;
++	TParser extends (input: unknown, ctx: any) => infer $Parser
++		? inferParser<$Parser>
++		: TParser extends ParserWithInputOutput<infer $TIn, infer $TOut>
++			? {
++					in: $TIn;
++					out: $TOut;
++				}
++			: TParser extends ParserWithoutInput<infer $InOut>
++			? {
++					in: $InOut;
++					out: $InOut;
++				}
++			: never;
++
++export type ParseFn<TType> = (value: unknown, ctx: any) => Promise<TType> | TType;
+ 
+ export function getParseFn<TType>(procedureParser: Parser): ParseFn<TType> {
+   const parser = procedureParser as any;
+diff --git a/src/procedureBuilder.ts b/src/procedureBuilder.ts
+index eb4478e3e55b911d4eafbb3d7d247e2bf97831c3..2e4d37def21181664d8bf06f64e3f03845f8f7af 100644
+--- a/src/procedureBuilder.ts
++++ b/src/procedureBuilder.ts
+@@ -56,7 +56,7 @@ type AnyProcedureBuilderDef = ProcedureBuilderDef<any>;
+  * Procedure resolver options
+  * @internal
+  */
+-interface ResolverOptions<TContext, _TMeta, TContextOverridesIn, TInputOut> {
++export interface ResolverOptions<TContext, _TMeta, TContextOverridesIn, TInputOut> {
+   ctx: Simplify<Overwrite<TContext, TContextOverridesIn>>;
+   input: TInputOut extends UnsetMarker ? undefined : TInputOut;
+ }

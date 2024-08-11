@@ -1,0 +1,26 @@
+{
+	"name": "@-/git-metadata",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/github-integration": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/with-errors": "workspace:*",
+		"@-/zod": "workspace:*"
+	},
+	"publishable": {
+		".": true,
+		"./schemas": true,
+		"./server": false
+	}
+}

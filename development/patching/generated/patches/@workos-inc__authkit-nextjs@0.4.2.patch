@@ -1,0 +1,18 @@
+diff --git a/dist/cjs/env-variables.js b/dist/cjs/env-variables.js
+index f1836502d21f9923c07ce5a771a7f9f698703f90..b29d762905483e3d5374c2115fda7f3ef499ff0d 100644
+--- a/dist/cjs/env-variables.js
++++ b/dist/cjs/env-variables.js
+@@ -8,11 +8,11 @@ function getEnvVariable(name) {
+     }
+     return envVariable;
+ }
+-const WORKOS_CLIENT_ID = getEnvVariable('WORKOS_CLIENT_ID');
++const WORKOS_CLIENT_ID = getEnvVariable('NEXT_PUBLIC_WORKOS_CLIENT_ID');
+ exports.WORKOS_CLIENT_ID = WORKOS_CLIENT_ID;
+ const WORKOS_API_KEY = getEnvVariable('WORKOS_API_KEY');
+ exports.WORKOS_API_KEY = WORKOS_API_KEY;
+-const WORKOS_REDIRECT_URI = getEnvVariable('WORKOS_REDIRECT_URI');
++const WORKOS_REDIRECT_URI = 'https://example.com/the-redirect-uri-should-not-be-hardcoded';
+ exports.WORKOS_REDIRECT_URI = WORKOS_REDIRECT_URI;
+ const WORKOS_COOKIE_PASSWORD = getEnvVariable('WORKOS_COOKIE_PASSWORD');
+ exports.WORKOS_COOKIE_PASSWORD = WORKOS_COOKIE_PASSWORD;

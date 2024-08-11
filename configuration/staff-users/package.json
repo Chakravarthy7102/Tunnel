@@ -1,0 +1,8 @@
+{
+	"name": "@-/staff-users",
+	"type": "module",
+	"imports": {
+		"#data/*": "./data/*"
+	},
+	"exports": "./exports/main.ts"
+}

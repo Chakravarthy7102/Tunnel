@@ -1,0 +1,36 @@
+{
+	"name": "@-/load-testing",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#tests/*": "./tests/*"
+	},
+	"dependencies": {
+		"@-/cli-storage": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/demo-projects": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/organization": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/project-live-preview": "workspace:*",
+		"@-/tunnel-instance-proxy-preview": "workspace:*",
+		"@-/user": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"convert-hrtime": "5.0.0",
+		"execa": "8.0.1",
+		"p-wait-for": "5.0.2",
+		"pathe": "1.1.2",
+		"playwright": "1.41.2",
+		"trim-extension": "1.1.0",
+		"yaml": "2.3.4"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@types/artillery": "1.7.4",
+		"artillery": "2.0.5",
+		"artillery-plugin-apdex": "1.0.1",
+		"esbuild": "0.20.1"
+	}
+}

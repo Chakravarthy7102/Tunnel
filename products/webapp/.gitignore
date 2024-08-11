@@ -1,0 +1,11 @@
+next-env.d.ts
+
+# .env.local is a symlink
+!.env.local
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+
+generated/globals.css

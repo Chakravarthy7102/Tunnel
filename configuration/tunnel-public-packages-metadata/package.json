@@ -1,0 +1,24 @@
+{
+	"name": "@-/tunnel-public-packages-metadata",
+	"type": "module",
+	"imports": {
+		"#data/*": "./data/*",
+		"#scripts/*": "./scripts/*"
+	},
+	"exports": {
+		".": "./exports/main.ts",
+		"./scripts": "./exports/scripts.ts"
+	},
+	"devDependencies": {
+		"@-/packages-config": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@types/semver": "7.5.0",
+		"destru": "2.0.3",
+		"pathe": "1.1.2",
+		"semver": "7.5.3"
+	},
+	"publishable": {
+		".": true,
+		"./scripts": false
+	}
+}

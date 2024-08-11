@@ -1,0 +1,36 @@
+{
+	"name": "@-/tunnel-instance-page-service-worker",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#scripts/*": "./scripts/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"devDependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/services-config": "workspace:*",
+		"@-/superjson": "workspace:*",
+		"@-/tunnel-instance-page-toolbar": "workspace:*",
+		"@-/tunneled-service-environment": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@swc/core": "1.4.2",
+		"@tunnel/release": "1.1.0",
+		"commander": "11.1.0",
+		"desm": "1.3.0",
+		"destru": "2.0.3",
+		"memoize": "10.0.0",
+		"outdent": "0.8.0",
+		"pathe": "1.1.2",
+		"pify": "6.1.0",
+		"safer-url": "1.0.1",
+		"tiny-invariant": "1.3.1",
+		"tslib": "2.6.2"
+	},
+	"publishable": true
+}

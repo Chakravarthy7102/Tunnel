@@ -1,0 +1,30 @@
+{
+	"name": "@-/tunneled-service-environment",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#typeguards/*": "./typeguards/*",
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./exports/main.ts",
+		"./server": "./exports/server.ts"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/host-environment": "workspace:*",
+		"@-/logger": "workspace:*",
+		"plaindeepmerge": "1.0.0",
+		"tiny-invariant": "1.3.1"
+	},
+	"devDependencies": {
+		"@tunnel/release": "1.1.0"
+	},
+	"publishable": {
+		".": true,
+		"./schemas": true,
+		"./server": false
+	}
+}

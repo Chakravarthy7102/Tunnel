@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"tsBuildInfoFile": null,
+		"incremental": false,
+		"rootDir": "./components",
+		"outDir": "./.build",
+		"module": "Node16",
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"noEmit": false,
+		"moduleResolution": "Node16"
+	},
+	"include": ["./components/toolbar.vue"]
+}

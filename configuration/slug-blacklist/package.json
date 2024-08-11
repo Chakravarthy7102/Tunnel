@@ -1,0 +1,8 @@
+{
+	"name": "@-/slug-blacklist",
+	"type": "module",
+	"imports": {
+		"#data/*": "./data/*"
+	},
+	"exports": "./exports/main.ts"
+}

@@ -1,0 +1,14 @@
+{
+	"name": "@-/logs",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"imports": {
+		"#types": "./types/_.ts",
+		"#schemas/*": "./schemas/*"
+	},
+	"dependencies": {
+		"@-/zod": "workspace:*"
+	}
+}

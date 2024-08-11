@@ -1,0 +1,24 @@
+{
+	"name": "@-/next-config",
+	"type": "commonjs",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.js",
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"deepmerge-ts": "5.1.0",
+		"destru": "2.0.3",
+		"get-monorepo-root": "1.2.1",
+		"next": "14.2.1",
+		"pathe": "1.1.2",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"devDependencies": {
+		"@next/bundle-analyzer": "14.1.4",
+		"webpack-filter-warnings-plugin": "1.2.1"
+	}
+}

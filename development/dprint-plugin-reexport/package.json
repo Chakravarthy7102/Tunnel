@@ -1,0 +1,11 @@
+{
+	"name": "@-/dprint-plugin-reexport",
+	"type": "module",
+	"dependencies": {
+		"get-monorepo-root": "^1.2.1",
+		"get-stdin": "^9.0.0",
+		"glob-imports": "^3.0.3",
+		"globby": "^14.0.1",
+		"pathe": "^1.1.2"
+	}
+}

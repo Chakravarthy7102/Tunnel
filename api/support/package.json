@@ -1,0 +1,21 @@
+{
+	"name": "@-/support",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#components/*": "./components/*",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@team-plain/typescript-sdk": "3.9.0",
+		"next": "14.2.1",
+		"onetime": "7.0.0",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"publishable": true
+}

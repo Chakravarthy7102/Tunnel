@@ -1,0 +1,32 @@
+config:
+  target: https://staging.tunnel.dev
+  engines:
+    playwright:
+      launchOptions:
+        headless: true
+
+  processor: './functions.cjs'
+  phases:
+    # 5 new users every second for 5 seconds (25 users)
+    - duration: 5
+      arrivalRate: 5
+      name: 5 users join every second
+
+    # 3 new users every second for 5 seconds (15 users)
+    - duration: 5
+      arrivalRate: 3
+      name: 3 users join every second
+
+    # 2 new users every second for 5 seconds (10 users)
+    - duration: 5
+      arrivalRate: 2
+      name: 2 users join every second
+
+    # 1 new user every second for 5 seconds (5 users)
+    - duration: 5
+      arrivalRate: 1
+      name: 1 users join every second
+
+scenarios:
+  - engine: playwright
+    testFunction: 'createTunnelViewer'

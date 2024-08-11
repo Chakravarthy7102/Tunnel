@@ -1,0 +1,18 @@
+{
+	"name": "@-/cli-port-hijacking-tests",
+	"type": "module",
+	"imports": {
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/demo-projects": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"is-port-reachable": "4.0.0",
+		"p-wait-for": "5.0.2",
+		"pathe": "1.1.2",
+		"playwright": "1.41.2",
+		"tslib": "2.6.2",
+		"wait-port": "1.0.4"
+	}
+}

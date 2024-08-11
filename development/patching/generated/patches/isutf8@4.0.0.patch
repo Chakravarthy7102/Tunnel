@@ -1,0 +1,11 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 327bbc14ab6d9fae5fc5e0fbd102fe3c315e8bf8..1cec06d8086d05ed6f1a6110a36f75c645227a54 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -2,4 +2,5 @@
+ /**
+  * Check if a Node.js Buffer or Uint8Array is UTF-8.
+  */
+-export default function isUtf8(buf?: Buffer | Uint8Array): boolean;
++export default function isUtf8(buf?: Buffer | Uint8Array | ArrayBuffer): boolean;
++export = isUtf8;

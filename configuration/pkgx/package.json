@@ -1,0 +1,13 @@
+{
+	"name": "@-/pkgx",
+	"type": "module",
+	"imports": {
+		"#data/*": "./data/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"pathe": "1.1.2"
+	}
+}

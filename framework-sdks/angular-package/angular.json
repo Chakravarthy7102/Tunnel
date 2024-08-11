@@ -1,0 +1,30 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"tunnel-toolbar": {
+			"projectType": "library",
+			"root": "projects/tunnel-toolbar",
+			"sourceRoot": "projects/tunnel-toolbar/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"options": {
+						"project": "projects/tunnel-toolbar/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/tunnel-toolbar/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "projects/tunnel-toolbar/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "production"
+				}
+			}
+		}
+	}
+}

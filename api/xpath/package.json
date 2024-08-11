@@ -1,0 +1,18 @@
+{
+	"name": "@-/xpath",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"imports": {
+		"#classes/*": "./classes/*",
+		"#constants/*": "./constants/*",
+		"#library/*": "./library/*",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/robula-plus": "workspace:*",
+		"leven": "4.0.0"
+	},
+	"publishable": true
+}

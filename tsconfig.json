@@ -1,0 +1,71 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": [
+			"ES2022",
+			"DOM",
+			"DOM.Iterable"
+		],
+		"composite": false,
+		"disableSizeLimit": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"declaration": false,
+		"pretty": true,
+		"newLine": "lf",
+		"stripInternal": true,
+		"strict": true,
+		"allowJs": true,
+		"strictPropertyInitialization": true,
+		"noUncheckedIndexedAccess": true,
+		"noPropertyAccessFromIndexSignature": false,
+		"useDefineForClassFields": true,
+		"allowArbitraryExtensions": true,
+		"allowImportingTsExtensions": true,
+		"incremental": true,
+		"useUnknownInCatchVariables": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"tsBuildInfoFile": "tsconfig.tsbuildinfo",
+		"jsx": "preserve",
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"emitDeclarationOnly": false,
+		"types": [
+			"vite/client",
+			"vitest/importMeta",
+			"typescript/lib/lib.es2022.error.d.ts",
+			"typescript/lib/lib.es2022.d.ts"
+		],
+		"moduleResolution": "Node16",
+		"module": "NodeNext",
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"exclude": [
+		"**/node_modules",
+		"**/framework-builds",
+		"**/fixture",
+		"**/fixture-*",
+		"./framework-sdks/angular-package/projects"
+	],
+	"include": [
+		"./api",
+		"./configuration",
+		"./design",
+		"./development",
+		"./devops",
+		"./integrations",
+		"./namespaces",
+		"./products",
+		"./testing",
+		"./configuration/tunnel-public-packages-metadata/data/metadata.json",
+		"./framework-sdks",
+		"./framework-sdks/vue-package/**/*.vue"
+	]
+}

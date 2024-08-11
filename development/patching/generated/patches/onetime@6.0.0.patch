@@ -1,0 +1,20 @@
+diff --git a/index.d.ts b/index.d.ts
+index 3c80803f9960c7c60eca4b6cb46b35e70a1e30ba..474d5a2a33fa196f9208f3b84962290a1e8956a8 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -29,6 +29,10 @@ declare const onetime: {
+ 	onetime.callCount(foo); //=> 3
+ 	```
+ 	*/
++	<This, ArgumentsType extends unknown[], ReturnType>(
++		fn: (this: This, ...arguments: ArgumentsType) => ReturnType,
++		options?: Options
++	): (this: This, ...arguments: ArgumentsType) => ReturnType;
+ 	<ArgumentsType extends unknown[], ReturnType>(
+ 		fn: (...arguments: ArgumentsType) => ReturnType,
+ 		options?: Options
+@@ -57,3 +61,4 @@ declare const onetime: {
+ };
+ 
+ export default onetime;
++

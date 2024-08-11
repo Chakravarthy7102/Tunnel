@@ -1,0 +1,146 @@
+{
+	"javascript.preferences.importModuleSpecifierEnding": "auto",
+	"typescript.preferences.importModuleSpecifierEnding": "auto",
+	"cSpell.allowCompoundWords": true,
+	"cSpell.words": [
+		"kubernetes",
+		"pnpm",
+		"dotenv",
+		"pkey",
+		"fkey",
+		"minikube",
+		"clipboardy",
+		"tsbuildinfo",
+		"execa",
+		"buildx",
+		"kubecfg",
+		"mkcert",
+		"caroot",
+		"kubectl",
+		"xpack",
+		"nocerts",
+		"clcerts",
+		"nokeys",
+		"tunnel",
+		"cid",
+		"cids",
+		"trpc",
+		"lucide",
+		"jwt",
+		"jwts",
+		"pathe",
+		"openai",
+		"unresolve",
+		"destr",
+		"destru",
+		"emittery",
+		"uniqbye",
+		"nextjs",
+		"uniqolor",
+		"uncapitalize",
+		"bunx",
+		"dprint",
+		"minby",
+		"deepmerge",
+		"asana",
+		"pkgx",
+		"desm",
+		"promisable",
+		"kubectx",
+		"svix",
+		"onboarded",
+		"errok",
+		"unstorage",
+		"pify",
+		"luxon",
+		"unminified",
+		"robula",
+		"dyrname",
+		"corejs",
+		"swjs",
+		"downl",
+		"nothrow",
+		"untargeted",
+		"flyctl",
+		"isutf",
+		"tzdb",
+		"xfwd",
+		"workos",
+		"kolkata",
+		"superjson",
+		"uidotdev",
+		"fkill",
+		"xixixao",
+		"apdex"
+	],
+	"markdownlint.config": {
+		"no-duplicate-header": false,
+		"no-inline-html": false,
+		"code-block-style": false,
+		"line-length": {
+			"code_block_line_length": 80,
+			// No limit to normal lines
+			"line_length": -1
+		}
+	},
+	"search.exclude": {
+		"products/webapp/.next": true,
+		"products/webapp/pages": true,
+		"**/dist": true,
+		"**/dist-*": true,
+		"pnpm-lock.yaml": true,
+		"**/Cargo.lock": true,
+		"**/generated": true,
+		"testing/javascript-framework-instrumentation-compatibility-tests": true,
+		"testing/framework-tests/css": true,
+		"testing/demo-projects/projects": true,
+		"repos": true
+	},
+	"markdownlint.ignore": ".markdownlintignore",
+	"eslint.execArgv": [
+		"--max_old_space_size=32768"
+	],
+	"files.associations": {
+		"dockerfile.ts": "typescript",
+		"dockerfile.md": "typescript"
+	},
+	"typescript.tsserver.maxTsServerMemory": 32768,
+	"workbench.colorCustomizations": {
+		"titleBar.activeBackground": "#3548f4",
+		"titleBar.activeForeground": "#ffffff",
+		"titleBar.inactiveBackground": "#0c1fd3",
+		"titleBar.inactiveForeground": "#639db2"
+	},
+	"search.followSymlinks": false,
+	"dotenv.enableAutocloaking": false,
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.expand": false,
+	"editor.defaultFormatter": "dprint.dprint",
+	"explorer.fileNesting.patterns": {
+		"package.json": ".npmrc, .pnpmfile.cjs, dprint.json, dprint.jsonc, lefthook.yaml, localdev.config.mjs, pnpm-lock.yaml, pnpm-workspace.yaml, tunnel-dev.config.cjs",
+		".gitignore": ".gitignore, .tokeignore, .dockerignore, .eslintignore",
+		".env": ".env.*",
+		".eslintrc.cjs": ".eslintcache",
+		"tsconfig.json": "tsconfig.*.json, *.tsbuildinfo"
+	},
+	"rust-analyzer.linkedProjects": [
+		"./products/tunnel-instance-evergreen-preview-server-boringtun/Cargo.toml"
+	],
+	"[typescript]": {
+		"editor.defaultFormatter": "dprint.dprint"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "dprint.dprint"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "dprint.dprint"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "dprint.dprint"
+	},
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.tabFocusMode": false,
+	"workbench.editor.showTabs": "none",
+	"files.autoSave": "afterDelay",
+	"files.autoSaveDelay": 3000
+}

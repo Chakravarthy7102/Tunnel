@@ -1,0 +1,49 @@
+{
+	"name": "@-/organization",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#constants/*": "./constants/*",
+		"#functions/*": "./functions/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/auth": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/github-integration": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/organization": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/stripe": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@sindresorhus/slugify": "2.2.1",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"random-int": "3.0.0"
+	},
+	"publishable": {
+		".": true,
+		"./api": false,
+		"./components": true,
+		"./constants": true,
+		"./functions": false,
+		"./schemas": true,
+		"./selections": true,
+		"./tables": true,
+		"./validators": true
+	}
+}

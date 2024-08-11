@@ -1,0 +1,90 @@
+{
+	"name": "@-/monorepo",
+	"type": "module",
+	"private": true,
+	"root": true,
+	"engines": {
+		"node": "^20.10.0"
+	},
+	"scripts": {
+		"postinstall": "pnpm monorepo-postinstall-script/postinstall",
+		"dev": "pnpm local-development/dev",
+		"format": "dprint fmt",
+		"proxy": "pnpm local-development/proxy",
+		"setup": "pnpm local-development/setup",
+		"typecheck": "pnpm code-qa/typecheck",
+		"lint": "pnpm code-qa/lint --fix",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"tsx": "4.7.2"
+	},
+	"optionalDependencies": {
+		"dprint": "0.45.0",
+		"eslint": "8.57.0",
+		"lefthook": "1.6.6",
+		"node": "20.10.0"
+	},
+	"devDependencies": {
+		"@-/eslint-plugin-tunnel": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/monorepo-postinstall-script": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/pnpmfile": "workspace:*",
+		"@tunnel/eslint-config": "0.0.20",
+		"@types/node": "20.10.5",
+		"@types/react": "18.2.45",
+		"@types/react-dom": "18.2.18",
+		"dotenv-cli": "7.2.1",
+		"typescript": "5.4.5",
+		"vite": "5.2.8",
+		"vitest": "1.4.0"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"tiny-invariant@1.3.1": "development/patching/generated/patches/tiny-invariant@1.3.1.patch",
+			"react-spinners@0.13.8": "development/patching/generated/patches/react-spinners@0.13.8.patch",
+			"p-memoize@7.1.1": "development/patching/generated/patches/p-memoize@7.1.1.patch",
+			"rrweb@2.0.0-alpha.11": "development/patching/generated/patches/rrweb@2.0.0-alpha.11.patch",
+			"playwright@1.41.2": "development/patching/generated/patches/playwright@1.41.2.patch",
+			"@rrweb/types@2.0.0-alpha.11": "development/patching/generated/patches/@rrweb__types@2.0.0-alpha.11.patch",
+			"sonner@1.4.0": "development/patching/generated/patches/sonner@1.4.0.patch",
+			"zustand@4.5.0": "development/patching/generated/patches/zustand@4.5.0.patch",
+			"@jgoz/esbuild-plugin-livereload@2.0.4": "development/patching/generated/patches/@jgoz__esbuild-plugin-livereload@2.0.4.patch",
+			"isutf8@4.0.0": "development/patching/generated/patches/isutf8@4.0.0.patch",
+			"get-xpath@3.1.0": "development/patching/generated/patches/get-xpath@3.1.0.patch",
+			"blob-to-buffer@1.2.9": "development/patching/generated/patches/blob-to-buffer@1.2.9.patch",
+			"@ably/spaces@0.3.0": "development/patching/generated/patches/@ably__spaces@0.3.0.patch",
+			"keyv@4.5.3": "development/patching/generated/patches/keyv@4.5.3.patch",
+			"openai@4.28.4": "development/patching/generated/patches/openai@4.28.4.patch",
+			"@xixixao/uploadstuff@0.0.5": "development/patching/generated/patches/@xixixao__uploadstuff@0.0.5.patch",
+			"basehub@3.0.3": "development/patching/generated/patches/basehub@3.0.3.patch",
+			"ably@1.2.49": "development/patching/generated/patches/ably@1.2.49.patch",
+			"@trpc/server@11.0.0-next-beta.318": "development/patching/generated/patches/@trpc__server@11.0.0-next-beta.318.patch",
+			"tsx@4.7.2": "development/patching/generated/patches/tsx@4.7.2.patch",
+			"@workos-inc/node@6.8.0": "development/patching/generated/patches/@workos-inc__node@6.8.0.patch",
+			"@workos-inc/authkit-nextjs@0.4.2": "development/patching/generated/patches/@workos-inc__authkit-nextjs@0.4.2.patch",
+			"convex@1.10.0": "development/patching/generated/patches/convex@1.10.0.patch",
+			"next@14.2.1": "development/patching/generated/patches/next@14.2.1.patch"
+		}
+	},
+	"//": {
+		"@radix-ui/react-dialog": "We need to stay on 1.0.4, as 1.0.5 breaks pointer events in nested comboboxes",
+		"convex": "We need to stay on version 1.10.0 because 1.11.0 breaks our custom function version pinning implementation as it no longer provides the function sources from the production instance",
+		"next": "We need to specify the explicit version of `next` in our packages, or Vercel deployments default to 'legacy' deployment mode."
+	},
+	"resolutions": {
+		"@babel/core": "7.22.15",
+		"@next/bundle-analyzer": "14.2.1",
+		"@radix-ui/react-dialog": "1.0.4",
+		"convex": "1.10.0",
+		"next": "14.2.1",
+		"playwright": "1.41.2",
+		"react": "18.3.0-canary-14898b6a9-20240318",
+		"react-dom": "18.3.0-canary-14898b6a9-20240318",
+		"react-remove-scroll": "2.5.7",
+		"react-toastify": "9.1.3",
+		"rollup": "4.10.0",
+		"eslint-plugin-errok": "0.0.2"
+	}
+}

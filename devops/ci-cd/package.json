@@ -1,0 +1,18 @@
+{
+	"name": "@-/ci-cd",
+	"type": "module",
+	"dependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/octokit": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/tunnel-public-packages-metadata": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/dayjs": "1.0.3",
+		"commander": "11.1.0",
+		"destru": "2.0.3",
+		"outdent": "0.8.0",
+		"pathe": "1.1.2"
+	}
+}

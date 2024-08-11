@@ -1,0 +1,40 @@
+{
+	"name": "@-/database-test-fixtures",
+	"type": "module",
+	"imports": {
+		"#constants/*": "./constants/*",
+		"#fixtures/*": "./fixtures_/*",
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"dependencies": {
+		"@-/auth": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/github-integration": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/organization": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/project-comment": "workspace:*",
+		"@-/project-comment-thread": "workspace:*",
+		"@-/user": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"enquirer": "2.4.1",
+		"errok": "0.1.2",
+		"iron-session": "8.0.1",
+		"jwt-decode": "4.0.0",
+		"map-obj": "5.0.2",
+		"onetime": "7.0.0",
+		"open": "9.1.0",
+		"p-props": "6.0.0",
+		"p-wait-for": "5.0.2",
+		"pathe": "1.1.2"
+	},
+	"devDependencies": {
+		"playwright": "1.41.2",
+		"type-fest": "4.15.0"
+	}
+}

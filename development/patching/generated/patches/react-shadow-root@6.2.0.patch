@@ -1,0 +1,8 @@
+diff --git a/lib/index.d.ts b/lib/index.d.ts
+index dae183de4019abfb7699f8cd5cdf85822c6b5ff1..dc7afeb4dcf955ae76e95dbfc679111c6cc78783 100644
+--- a/lib/index.d.ts
++++ b/lib/index.d.ts
+@@ -1,2 +1,2 @@
+-export default ReactShadowRoot;
++export = ReactShadowRoot;
+ import ReactShadowRoot from "./ReactShadowRoot.js";

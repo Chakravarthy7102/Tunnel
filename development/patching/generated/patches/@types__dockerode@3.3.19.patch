@@ -1,0 +1,23 @@
+diff --git a/index.d.ts b/index.d.ts
+index 077133043b7b6bd71f021cdf87495c8227916f7b..dc06cccef2dc33f267debc1146bbc0c56031def2 100755
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -18,6 +18,8 @@
+ import * as stream from 'stream';
+ import * as events from 'events';
+ import * as DockerModem from 'docker-modem';
++import * as net from 'net';
++import * as http from 'http'
+ 
+ declare namespace Dockerode {
+     class Container {
+@@ -1177,6 +1179,9 @@ declare namespace Dockerode {
+     }
+ 
+     interface DockerOptions {
++	createConnection?:
++	| ((options: http.ClientRequestArgs, oncreate: (err: Error, socket: net.Socket) => void) => net.Socket)
++	| undefined;
+         socketPath?: string | undefined;
+         host?: string | undefined;
+         port?: number | string | undefined;

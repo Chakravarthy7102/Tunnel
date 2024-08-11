@@ -1,0 +1,90 @@
+diff --git a/dist/cjs/react/types.d.ts b/dist/cjs/react/types.d.ts
+index 6a359b33b86b91bf4667259f02e3d23381e7c194..ca5f796f31d24b2a1686215c77b646669cdb12cd 100644
+--- a/dist/cjs/react/types.d.ts
++++ b/dist/cjs/react/types.d.ts
+@@ -1,4 +1,4 @@
+-import type { SpaceMember } from '..';
++import type { SpaceMember } from '../index.js';
+ export interface UseSpaceOptions {
+     /**
+      * Skip parameter makes the hook skip execution -
+diff --git a/dist/cjs/react/useCursors.d.ts b/dist/cjs/react/useCursors.d.ts
+index fcd8609a07c32fb82cb566a1a467bc2a0f2064c6..136310ea2ea138d32df52346455f3225f2f420ea 100644
+--- a/dist/cjs/react/useCursors.d.ts
++++ b/dist/cjs/react/useCursors.d.ts
+@@ -2,7 +2,7 @@ import type { CursorUpdate, SpaceMember } from '../types.js';
+ import type { ErrorInfo } from 'ably';
+ import type Cursors from '../Cursors.js';
+ import type { UseSpaceOptions } from './types.js';
+-import type { Space } from '..';
++import type { Space } from '../index.js';
+ interface UseCursorsOptions extends UseSpaceOptions {
+     /**
+      * Whether to return the cursors object described in UseCursorsResult, defaults to false
+diff --git a/dist/cjs/react/useMembers.d.ts b/dist/cjs/react/useMembers.d.ts
+index ba7d0c298eb8aca9bd099b5bec26820156e40cb7..76b49a0678dab65cc9dd00758c946d5269a324e5 100644
+--- a/dist/cjs/react/useMembers.d.ts
++++ b/dist/cjs/react/useMembers.d.ts
+@@ -1,5 +1,5 @@
+ import type { ErrorInfo } from 'ably';
+-import type { Space, SpaceMember } from '..';
++import type { Space, SpaceMember } from '../index.js';
+ import type { UseSpaceOptions } from './types.js';
+ import type { MembersEventMap } from '../Members.js';
+ interface UseMembersResult {
+diff --git a/dist/cjs/react/useSpace.d.ts b/dist/cjs/react/useSpace.d.ts
+index ae694c8662ac17318a77f800ba8913e75c55e585..3b3f9c27a3a360ddee8df53444ed9153d24b714c 100644
+--- a/dist/cjs/react/useSpace.d.ts
++++ b/dist/cjs/react/useSpace.d.ts
+@@ -1,5 +1,5 @@
+ import type { ErrorInfo } from 'ably';
+-import type { Space } from '..';
++import type { Space } from '../index.js';
+ import type { UseSpaceCallback, UseSpaceOptions } from './types.js';
+ export interface UseSpaceResult {
+     space?: Space;
+diff --git a/dist/mjs/react/types.d.ts b/dist/mjs/react/types.d.ts
+index 6a359b33b86b91bf4667259f02e3d23381e7c194..ca5f796f31d24b2a1686215c77b646669cdb12cd 100644
+--- a/dist/mjs/react/types.d.ts
++++ b/dist/mjs/react/types.d.ts
+@@ -1,4 +1,4 @@
+-import type { SpaceMember } from '..';
++import type { SpaceMember } from '../index.js';
+ export interface UseSpaceOptions {
+     /**
+      * Skip parameter makes the hook skip execution -
+diff --git a/dist/mjs/react/useCursors.d.ts b/dist/mjs/react/useCursors.d.ts
+index fcd8609a07c32fb82cb566a1a467bc2a0f2064c6..136310ea2ea138d32df52346455f3225f2f420ea 100644
+--- a/dist/mjs/react/useCursors.d.ts
++++ b/dist/mjs/react/useCursors.d.ts
+@@ -2,7 +2,7 @@ import type { CursorUpdate, SpaceMember } from '../types.js';
+ import type { ErrorInfo } from 'ably';
+ import type Cursors from '../Cursors.js';
+ import type { UseSpaceOptions } from './types.js';
+-import type { Space } from '..';
++import type { Space } from '../index.js';
+ interface UseCursorsOptions extends UseSpaceOptions {
+     /**
+      * Whether to return the cursors object described in UseCursorsResult, defaults to false
+diff --git a/dist/mjs/react/useMembers.d.ts b/dist/mjs/react/useMembers.d.ts
+index ba7d0c298eb8aca9bd099b5bec26820156e40cb7..76b49a0678dab65cc9dd00758c946d5269a324e5 100644
+--- a/dist/mjs/react/useMembers.d.ts
++++ b/dist/mjs/react/useMembers.d.ts
+@@ -1,5 +1,5 @@
+ import type { ErrorInfo } from 'ably';
+-import type { Space, SpaceMember } from '..';
++import type { Space, SpaceMember } from '../index.js';
+ import type { UseSpaceOptions } from './types.js';
+ import type { MembersEventMap } from '../Members.js';
+ interface UseMembersResult {
+diff --git a/dist/mjs/react/useSpace.d.ts b/dist/mjs/react/useSpace.d.ts
+index ae694c8662ac17318a77f800ba8913e75c55e585..3b3f9c27a3a360ddee8df53444ed9153d24b714c 100644
+--- a/dist/mjs/react/useSpace.d.ts
++++ b/dist/mjs/react/useSpace.d.ts
+@@ -1,5 +1,5 @@
+ import type { ErrorInfo } from 'ably';
+-import type { Space } from '..';
++import type { Space } from '../index.js';
+ import type { UseSpaceCallback, UseSpaceOptions } from './types.js';
+ export interface UseSpaceResult {
+     space?: Space;

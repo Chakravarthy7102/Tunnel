@@ -1,0 +1,11 @@
+{
+	"name": "@-/robula-plus",
+	"type": "module",
+	"imports": {
+		"#library/*": "./library/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"exports": "./exports/main.ts",
+	"publishable": true
+}

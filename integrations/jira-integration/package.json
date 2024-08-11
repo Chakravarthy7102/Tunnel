@@ -1,0 +1,55 @@
+{
+	"name": "@-/jira-integration",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#hooks/*": "./hooks/*",
+		"#procedures/*": "./procedures/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/assets": "workspace:*",
+		"@-/client-doc": "workspace:*",
+		"@-/comments": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/project-comment-thread": "workspace:*",
+		"@-/trpc": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"jira": "npm:jira.js@3.0.2",
+		"js-sdsl": "4.4.2",
+		"lucide-react": "0.268.0",
+		"luxon": "3.4.4",
+		"map-obj": "5.0.2",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"devDependencies": {
+		"@types/luxon": "3.4.2",
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		"./components": true
+	}
+}

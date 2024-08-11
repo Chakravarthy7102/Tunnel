@@ -1,0 +1,25 @@
+diff --git a/index.js b/index.js
+index 12c82d753ded02f9b208de8cbecd16b27a58ea04..74abc704780f7d74b04c84350b88599b4f861725 100644
+--- a/index.js
++++ b/index.js
+@@ -1,4 +1,4 @@
+-/*! blob-to-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
++const Buffer = require('buffer/').Buffer;/*! blob-to-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+ /* global Blob, FileReader */
+ 
+ module.exports = function blobToBuffer (blob, cb) {
+diff --git a/package.json b/package.json
+index 1c9d41c2c2e3448f8c4f7b5c29b6b2fdbf4157c1..9c1a0753d977aa2c881a96b68092ff600591d345 100644
+--- a/package.json
++++ b/package.json
+@@ -10,7 +10,9 @@
+   "bugs": {
+     "url": "https://github.com/feross/blob-to-buffer/issues"
+   },
+-  "dependencies": {},
++  "dependencies": {
++	"buffer": "^6.0.3"
++},
+   "devDependencies": {
+     "airtap": "^3.0.0",
+     "standard": "*",

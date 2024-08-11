@@ -1,0 +1,34 @@
+{
+	"name": "@-/user-local-workspace",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#functions/*": "./functions/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/project": "workspace:*",
+		"@-/tunnel-instance-proxy-preview": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"plaindeepmerge": "1.0.0"
+	},
+	"devDependencies": {
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		"./functions": false,
+		"./selections": true,
+		"./tables": true
+	}
+}

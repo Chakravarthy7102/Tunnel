@@ -1,0 +1,15 @@
+{
+	"name": "@-/window-metadata",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#types": "./types/_.ts",
+		"#schemas/*": "./schemas/*"
+	},
+	"dependencies": {
+		"@-/zod": "workspace:*"
+	}
+}

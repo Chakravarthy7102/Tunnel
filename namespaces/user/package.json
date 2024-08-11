@@ -1,0 +1,48 @@
+{
+	"name": "@-/user",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#functions/*": "./functions/*",
+		"#library/*": "./library/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/auth": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/organization-invitation": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@paralleldrive/cuid2": "2.2.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"memoize": "10.0.0",
+		"p-memoize": "7.1.1",
+		"p-wait-for": "5.0.2",
+		"random-int": "3.0.0",
+		"tiny-invariant": "1.3.3"
+	},
+	"publishable": {
+		"./api": false,
+		"./components": true,
+		"./functions": false,
+		"./schemas": true,
+		"./selections": true,
+		"./tables": true,
+		"./validators": true
+	}
+}

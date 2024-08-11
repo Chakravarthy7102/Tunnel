@@ -1,0 +1,23 @@
+{
+	"name": "@-/github-pull-request",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#functions/*": "./functions/*",
+		"#tables/*": "./tables/*"
+	},
+	"dependencies": {
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42"
+	},
+	"publishable": {
+		"./functions": false,
+		"./selections": true,
+		"./tables": true
+	}
+}

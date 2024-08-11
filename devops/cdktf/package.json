@@ -1,0 +1,23 @@
+{
+	"name": "@-/cdktf",
+	"type": "module",
+	"imports": {
+		"#stacks/*": "./stacks/*"
+	},
+	"scripts": {
+		"cdktf": "cdktf"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"@-/services-config": "workspace:*",
+		"@cdktf/provider-digitalocean": "11.0.0",
+		"cdktf": "0.20.3",
+		"clipboardy": "4.0.0",
+		"constructs": "10.3.0",
+		"escapesh": "0.0.2",
+		"outdent": "0.8.0"
+	},
+	"devDependencies": {
+		"cdktf-cli": "0.20.3"
+	}
+}

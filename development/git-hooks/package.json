@@ -1,0 +1,9 @@
+{
+	"name": "@-/git-hooks",
+	"type": "module",
+	"dependencies": {
+		"@-/cli-helpers": "workspace:*",
+		"@-/code-qa": "workspace:*",
+		"@-/packages-config": "workspace:*"
+	}
+}

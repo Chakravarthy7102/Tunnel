@@ -1,0 +1,50 @@
+{
+	"name": "@-/slack-integration",
+	"type": "module",
+	"exports": {
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#components/*": "./components/*",
+		"#exports/*": "./exports/*",
+		"#hooks/*": "./hooks/*",
+		"#procedures/*": "./procedures/*",
+		"#schemas/*": "./schemas/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*",
+		"#validators/*": "./validators/*"
+	},
+	"dependencies": {
+		"@-/analytics": "workspace:*",
+		"@-/assets": "workspace:*",
+		"@-/client-doc": "workspace:*",
+		"@-/comments": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/design-system": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/integrations": "workspace:*",
+		"@-/organization-member": "workspace:*",
+		"@-/trpc": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@slack/web-api": "7.0.2",
+		"@tunnel/namespace": "2.3.1",
+		"@tunnel/release": "1.1.0",
+		"@tunnel/ts": "0.0.2",
+		"corvex": "0.0.42",
+		"dayjs": "1.11.10",
+		"errok": "0.1.2",
+		"file-type": "19.0.0",
+		"lucide-react": "0.268.0",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"publishable": {
+		"./components": true
+	}
+}

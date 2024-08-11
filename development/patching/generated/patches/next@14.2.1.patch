@@ -1,0 +1,152 @@
+diff --git a/dist/lib/typescript/writeConfigurationDefaults.js b/dist/lib/typescript/writeConfigurationDefaults.js
+index fc8c0d7a6ade2d00415bccad23e64d4000d2bc98..60ec9a28b904e8863de5bae4a190728f3f2abd73 100644
+--- a/dist/lib/typescript/writeConfigurationDefaults.js
++++ b/dist/lib/typescript/writeConfigurationDefaults.js
+@@ -180,7 +180,7 @@ function getRequiredConfiguration(ts) {
+ }
+ async function writeConfigurationDefaults(ts, tsConfigPath, isFirstTimeSetup, hasAppDir, distDir, hasPagesDir) {
+     if (isFirstTimeSetup) {
+-        await _fs.promises.writeFile(tsConfigPath, "{}" + _os.default.EOL);
++        // await _fs.promises.writeFile(tsConfigPath, "{}" + _os.default.EOL);
+     }
+     const { options: tsOptions, raw: rawConfig } = await (0, _getTypeScriptConfiguration.getTypeScriptConfiguration)(ts, tsConfigPath, true);
+     const userTsConfigContent = await _fs.promises.readFile(tsConfigPath, {
+@@ -274,7 +274,7 @@ async function writeConfigurationDefaults(ts, tsConfigPath, isFirstTimeSetup, ha
+     if (suggestedActions.length < 1 && requiredActions.length < 1) {
+         return;
+     }
+-    await _fs.promises.writeFile(tsConfigPath, _commentjson.stringify(userTsConfig, null, 2) + _os.default.EOL);
++    // await _fs.promises.writeFile(tsConfigPath, _commentjson.stringify(userTsConfig, null, 2) + _os.default.EOL);
+     _log.info("");
+     if (isFirstTimeSetup) {
+         _log.info(`We detected TypeScript in your project and created a ${(0, _picocolors.cyan)("tsconfig.json")} file for you.`);
+diff --git a/dist/server/lib/server-ipc/utils.js b/dist/server/lib/server-ipc/utils.js
+index 0b13fcc3551c181620029f3d559a019236f7b2db..d2a2fe403a4349f906532ff6531d46a766ebbe4b 100644
+--- a/dist/server/lib/server-ipc/utils.js
++++ b/dist/server/lib/server-ipc/utils.js
+@@ -41,6 +41,9 @@ const actionsForbiddenHeaders = [
+     "set-cookie"
+ ];
+ const filterReqHeaders = (headers, forbiddenHeaders)=>{
++	if (headers['content-length'] && headers['content-length'] === '0') {
++		delete headers['content-length']
++	}
+     // Some browsers are not matching spec and sending Content-Length: 0. This causes issues in undici
+     // https://github.com/nodejs/undici/issues/2046
+     if (headers["content-length"] && headers["content-length"] === "0") {
+diff --git a/document.d.ts b/document.d.ts
+index 30a1ca701f3f1f00e7396feb45af7ae289aa36cc..c5d38f5ecfd58e4db3ff78480edb81a908d946ab 100644
+--- a/document.d.ts
++++ b/document.d.ts
+@@ -1,3 +1,3 @@
+ import Document from './dist/pages/_document'
+ export * from './dist/pages/_document'
+-export default Document
++export = Document
+diff --git a/dynamic.d.ts b/dynamic.d.ts
+index 0659b13ec241c0645df18600dccb3e5084f3599c..8a789cafe4d7d74977ff7925a580e2ad97603872 100644
+--- a/dynamic.d.ts
++++ b/dynamic.d.ts
+@@ -1,3 +1,3 @@
+ import dynamic from './dist/shared/lib/dynamic'
+ export * from './dist/shared/lib/dynamic'
+-export default dynamic
++export = dynamic
+diff --git a/error.d.ts b/error.d.ts
+index 100590d637d4dd0ea11368d02f33fac04ef03445..05e1151ece72c77d04a15b938c912d59c3c1d335 100644
+--- a/error.d.ts
++++ b/error.d.ts
+@@ -1,3 +1,3 @@
+ import Error from './dist/pages/_error'
+ export * from './dist/pages/_error'
+-export default Error
++export = Error
+diff --git a/head.d.ts b/head.d.ts
+index 9cf09e9018339ae7e3ee7d3f543589e8b57891ae..32a38354a594fa4d364c78a8f1ab35f1c5a508a9 100644
+--- a/head.d.ts
++++ b/head.d.ts
+@@ -1,3 +1,3 @@
+ import Head from './dist/shared/lib/head'
+ export * from './dist/shared/lib/head'
+-export default Head
++export = Head
+diff --git a/image.d.ts b/image.d.ts
+index e6bb49fb54098791ad8f30c525b97b52398bf1f3..2f8df85be99d8df47f9a6db63e658abdc4b2de24 100644
+--- a/image.d.ts
++++ b/image.d.ts
+@@ -1,3 +1,3 @@
+ import Image from './dist/shared/lib/image-external'
+ export * from './dist/shared/lib/image-external'
+-export default Image
++export = Image
+diff --git a/link.d.ts b/link.d.ts
+index eb83179a5d2fde0606b9353b1d3b0ca77aa083f8..6a1d84b45d504a574b8ba47340abd3e956bc2c55 100644
+--- a/link.d.ts
++++ b/link.d.ts
+@@ -1,3 +1,3 @@
+ import Link from './dist/client/link'
+ export * from './dist/client/link'
+-export default Link
++export = Link
+diff --git a/script.d.ts b/script.d.ts
+index 78c2dab08d00d9a4cbd17d781875b87cafa3c065..e9354ad1049ce5d0b4c10bf960f86128c218858a 100644
+--- a/script.d.ts
++++ b/script.d.ts
+@@ -1,3 +1,2 @@
+ import Script from './dist/client/script'
+-export * from './dist/client/script'
+-export default Script
++export = Script
+diff --git a/types/global.d.ts b/types/global.d.ts
+index 431b7f30438c336d478c30d2341df0f48ea80f7a..87f76d1947da304d5873ac5f94acd550a0c83570 100644
+--- a/types/global.d.ts
++++ b/types/global.d.ts
+@@ -19,7 +19,7 @@ declare namespace NodeJS {
+   }
+ 
+   interface ProcessEnv {
+-    readonly NODE_ENV: 'development' | 'production' | 'test'
++    
+   }
+ 
+   interface RequestInit extends globalThis.RequestInit {
+@@ -58,3 +58,39 @@ interface NextFetchRequestConfig {
+ interface RequestInit {
+   next?: NextFetchRequestConfig | undefined
+ }
++declare module "next/script" {
++	const Script: typeof import('../script.js');
++	export = Script
++}
++declare module "next/navigation" {
++	const Navigation: typeof import('../navigation.js');
++	export = Navigation
++}
++declare module "next/server" {
++	const Server: typeof import('../server.js');
++	export = Server
++}
++declare module "next/dynamic" {
++	const Dynamic: typeof import('../dynamic.js');
++	export = Dynamic
++}
++declare module "next/image" {
++	const Image: typeof import('../image.js');
++	export = Image
++}
++declare module "next/link" {
++	const Link: typeof import('../link.js');
++	export = Link
++}
++declare module "next/error" {
++	const Error: typeof import('../error.js');
++	export = Error
++}
++declare module "next/document" {
++	const Document: typeof import('../document.js');
++	export = Document
++}
++declare module "next/headers" {
++	const Headers: typeof import('../headers.js');
++	export = Headers
++}

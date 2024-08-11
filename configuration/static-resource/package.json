@@ -1,0 +1,7 @@
+{
+	"name": "@-/static-resource",
+	"type": "module",
+	"imports": { "#utils/*": "./utils/*", "#types": "./types/_.ts" },
+	"exports": "./exports/main.ts",
+	"publishable": true
+}

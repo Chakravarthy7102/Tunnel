@@ -1,0 +1,5 @@
+{
+	"main": "../../.build/tunnel.js",
+	"output": "./.build-sea/sea-prep.blob",
+	"disableExperimentalSEAWarning": true
+}

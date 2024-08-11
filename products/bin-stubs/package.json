@@ -1,0 +1,43 @@
+{
+	"name": "@-/bin-stubs",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#scripts/*": "./scripts/*",
+		"#stubs/*": "./stubs/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@tunnel/release": "1.1.0",
+		"outdent": "0.8.0",
+		"pathe": "1.1.2"
+	},
+	"devDependencies": {
+		"@-/cli-source": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/instrumentation": "workspace:*",
+		"@-/local-project": "workspace:*",
+		"@-/packages-config": "workspace:*",
+		"@-/tunnel-public-packages-metadata": "workspace:*",
+		"@-/unbuild": "workspace:*",
+		"@types/is-file-esm": "1.0.2",
+		"ansi-regex": "6.0.1",
+		"compose-regexp": "0.7.1",
+		"desm": "1.3.0",
+		"es-main": "1.3.0",
+		"esbuild": "0.20.1",
+		"escapesh": "0.0.2",
+		"import-meta-resolve": "3.0.0",
+		"is-file-esm-ts": "0.1.8",
+		"pathe": "1.1.2",
+		"type-fest": "4.15.0"
+	},
+	"publishable": {
+		".": true,
+		"./scripts": false
+	}
+}

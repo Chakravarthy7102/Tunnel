@@ -1,0 +1,21 @@
+diff --git a/package.json b/package.json
+index 13d211d45ee7a8114d0a9a4797a0ae221f36388b..9005c405c79332cc767a69b65882202c582dfb93 100644
+--- a/package.json
++++ b/package.json
+@@ -6,6 +6,16 @@
+   "module": "dist/tippy.esm.js",
+   "unpkg": "dist/tippy-bundle.umd.min.js",
+   "types": "index.d.ts",
++"exports": {
++	".": {
++		"types": "./index.d.ts",
++		"default": "./dist/tippy.cjs.js"
++	},
++	"./dist": {
++		"types": "./index.d.ts",
++		"default": "./dist/tippy.cjs.js"
++	}
++},
+   "sideEffects": [
+     "**/*.css"
+   ],

@@ -1,0 +1,8 @@
+diff --git a/index.d.ts b/index.d.ts
+index 0eb4e330ad176f7d04ddaa1c9e6dd57e73ed543a..b5c54e508bdb0e23d51abec63061c3f482af6e97 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,2 +1,2 @@
+ /* eslint-disable import/no-unresolved */
+-export * from "./dist/generated-client/index";
++export * from "./dist/generated-client/index.ts";

@@ -1,0 +1,12 @@
+{
+	"name": "@-/stripe",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"onetime": "7.0.0",
+		"stripe": "12.10.0"
+	}
+}

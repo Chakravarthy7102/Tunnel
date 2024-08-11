@@ -1,0 +1,50 @@
+{
+	"name": "@-/auth",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#api": "./api/_.ts",
+		"#errors/*": "./errors/*",
+		"#functions/*": "./functions/*",
+		"#procedures/*": "./procedures/*",
+		"#tables/*": "./tables/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/cli-storage": "workspace:*",
+		"@-/convex": "workspace:*",
+		"@-/cookies": "workspace:*",
+		"@-/database": "workspace:*",
+		"@-/env": "workspace:*",
+		"@-/errors": "workspace:*",
+		"@-/tunnel-instance-page-secret-storage": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/user": "workspace:*",
+		"@-/webapp": "workspace:*",
+		"@-/zod": "workspace:*",
+		"@tunnel/namespace": "2.3.1",
+		"@workos-inc/node": "7.0.0",
+		"corvex": "0.0.42",
+		"errok": "0.1.2",
+		"es-cookie": "1.4.0",
+		"filter-obj": "6.0.0",
+		"iron-session": "8.0.1",
+		"jwt-decode": "4.0.0",
+		"ky": "1.2.3",
+		"nullthrows-es": "1.0.1",
+		"onetime": "7.0.0",
+		"p-memoize": "7.1.1",
+		"type-fest": "4.15.0"
+	},
+	"devDependencies": {
+		"@workos-inc/authkit-nextjs": "0.4.2",
+		"next": "14.2.1",
+		"react": "*",
+		"react-dom": "*"
+	},
+	"publishable": true
+}

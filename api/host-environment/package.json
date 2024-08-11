@@ -1,0 +1,24 @@
+{
+	"name": "@-/host-environment",
+	"type": "module",
+	"exports": {
+		".": "./exports/main.ts",
+		"./*": "./exports/*.ts"
+	},
+	"imports": {
+		"#enums/*": "./enums/*",
+		"#schemas/*": "./schemas/*",
+		"#types": "./types/_.ts",
+		"#utils/*": "./utils/*"
+	},
+	"dependencies": {
+		"@-/git-metadata": "workspace:*",
+		"@-/local-project": "workspace:*",
+		"@-/logger": "workspace:*",
+		"@-/url": "workspace:*",
+		"@-/with-errors": "workspace:*",
+		"@-/zod": "workspace:*",
+		"safer-url": "1.0.1"
+	},
+	"publishable": true
+}
