@@ -1,5 +1,7 @@
 # Tunnel
 
+> This repository is a shallow copy (no git history) of the private version in the [@Tunnel-Labs](https://github.com/Tunnel-Labs) GitHub organization.
+
 To clone the Tunnel repository, you will need to install and set up [Git](https://git-scm.org). All the other dependencies in Tunnel will get auto-installed using [pkgx](https://pkgx.sh).
 
 Once you have Git installed, download and set up the repo by running the following commands:
